@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongtu.mapper.TbPubSellerMapper" >
+  <resultMap id="BaseResultMap" type="com.dongtu.pojo.TbPubSeller" >
+    <id column="pub_seller_id" property="pubSellerId" jdbcType="BIGINT" />
+    <result column="pub_name" property="pubName" jdbcType="VARCHAR" />
+    <result column="pub_password" property="pubPassword" jdbcType="VARCHAR" />
+    <result column="pub_status" property="pubStatus" jdbcType="INTEGER" />
+    <result column="pub_pic" property="pubPic" jdbcType="VARCHAR" />
+    <result column="pub_address" property="pubAddress" jdbcType="VARCHAR" />
+    <result column="pub_linkman_name" property="pubLinkmanName" jdbcType="VARCHAR" />
+    <result column="pub_telephone" property="pubTelephone" jdbcType="VARCHAR" />
+    <result column="pub_brief" property="pubBrief" jdbcType="VARCHAR" />
+    <result column="pub_create_time" property="pubCreateTime" jdbcType="TIMESTAMP" />
+    <result column="pub_salt" property="pubSalt" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    pub_seller_id, pub_name, pub_password, pub_status, pub_pic, pub_address, pub_linkman_name, 
+    pub_telephone, pub_brief, pub_create_time, pub_salt
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.dongtu.pojo.TbPubSellerExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_pub_seller
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_pub_seller
+    where pub_seller_id = #{pubSellerId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tb_pub_seller
+    where pub_seller_id = #{pubSellerId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.dongtu.pojo.TbPubSellerExample" >
+    delete from tb_pub_seller
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.dongtu.pojo.TbPubSeller" >
+    insert into tb_pub_seller (pub_seller_id, pub_name, pub_password, 
+      pub_status, pub_pic, pub_address, 
+      pub_linkman_name, pub_telephone, pub_brief, 
+      pub_create_time, pub_salt)
+    values (#{pubSellerId,jdbcType=BIGINT}, #{pubName,jdbcType=VARCHAR}, #{pubPassword,jdbcType=VARCHAR}, 
+      #{pubStatus,jdbcType=INTEGER}, #{pubPic,jdbcType=VARCHAR}, #{pubAddress,jdbcType=VARCHAR}, 
+      #{pubLinkmanName,jdbcType=VARCHAR}, #{pubTelephone,jdbcType=VARCHAR}, #{pubBrief,jdbcType=VARCHAR}, 
+      #{pubCreateTime,jdbcType=TIMESTAMP}, #{pubSalt,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dongtu.pojo.TbPubSeller" >
+    insert into tb_pub_seller
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pubSellerId != null" >
+        pub_seller_id,
+      </if>
+      <if test="pubName != null" >
+        pub_name,
+      </if>
+      <if test="pubPassword != null" >
+        pub_password,
+      </if>
+      <if test="pubStatus != null" >
+        pub_status,
+      </if>
+      <if test="pubPic != null" >
+        pub_pic,
+      </if>
+      <if test="pubAddress != null" >
+        pub_address,
+      </if>
+      <if test="pubLinkmanName != null" >
+        pub_linkman_name,
+      </if>
+      <if test="pubTelephone != null" >
+        pub_telephone,
+      </if>
+      <if test="pubBrief != null" >
+        pub_brief,
+      </if>
+      <if test="pubCreateTime != null" >
+        pub_create_time,
+      </if>
+      <if test="pubSalt != null" >
+        pub_salt,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pubSellerId != null" >
+        #{pubSellerId,jdbcType=BIGINT},
+      </if>
+      <if test="pubName != null" >
+        #{pubName,jdbcType=VARCHAR},
+      </if>
+      <if test="pubPassword != null" >
+        #{pubPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="pubStatus != null" >
+        #{pubStatus,jdbcType=INTEGER},
+      </if>
+      <if test="pubPic != null" >
+        #{pubPic,jdbcType=VARCHAR},
+      </if>
+      <if test="pubAddress != null" >
+        #{pubAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="pubLinkmanName != null" >
+        #{pubLinkmanName,jdbcType=VARCHAR},
+      </if>
+      <if test="pubTelephone != null" >
+        #{pubTelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="pubBrief != null" >
+        #{pubBrief,jdbcType=VARCHAR},
+      </if>
+      <if test="pubCreateTime != null" >
+        #{pubCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pubSalt != null" >
+        #{pubSalt,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.dongtu.pojo.TbPubSellerExample" resultType="java.lang.Integer" >
+    select count(*) from tb_pub_seller
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_pub_seller
+    <set >
+      <if test="record.pubSellerId != null" >
+        pub_seller_id = #{record.pubSellerId,jdbcType=BIGINT},
+      </if>
+      <if test="record.pubName != null" >
+        pub_name = #{record.pubName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pubPassword != null" >
+        pub_password = #{record.pubPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pubStatus != null" >
+        pub_status = #{record.pubStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.pubPic != null" >
+        pub_pic = #{record.pubPic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pubAddress != null" >
+        pub_address = #{record.pubAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pubLinkmanName != null" >
+        pub_linkman_name = #{record.pubLinkmanName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pubTelephone != null" >
+        pub_telephone = #{record.pubTelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pubBrief != null" >
+        pub_brief = #{record.pubBrief,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pubCreateTime != null" >
+        pub_create_time = #{record.pubCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.pubSalt != null" >
+        pub_salt = #{record.pubSalt,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_pub_seller
+    set pub_seller_id = #{record.pubSellerId,jdbcType=BIGINT},
+      pub_name = #{record.pubName,jdbcType=VARCHAR},
+      pub_password = #{record.pubPassword,jdbcType=VARCHAR},
+      pub_status = #{record.pubStatus,jdbcType=INTEGER},
+      pub_pic = #{record.pubPic,jdbcType=VARCHAR},
+      pub_address = #{record.pubAddress,jdbcType=VARCHAR},
+      pub_linkman_name = #{record.pubLinkmanName,jdbcType=VARCHAR},
+      pub_telephone = #{record.pubTelephone,jdbcType=VARCHAR},
+      pub_brief = #{record.pubBrief,jdbcType=VARCHAR},
+      pub_create_time = #{record.pubCreateTime,jdbcType=TIMESTAMP},
+      pub_salt = #{record.pubSalt,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dongtu.pojo.TbPubSeller" >
+    update tb_pub_seller
+    <set >
+      <if test="pubName != null" >
+        pub_name = #{pubName,jdbcType=VARCHAR},
+      </if>
+      <if test="pubPassword != null" >
+        pub_password = #{pubPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="pubStatus != null" >
+        pub_status = #{pubStatus,jdbcType=INTEGER},
+      </if>
+      <if test="pubPic != null" >
+        pub_pic = #{pubPic,jdbcType=VARCHAR},
+      </if>
+      <if test="pubAddress != null" >
+        pub_address = #{pubAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="pubLinkmanName != null" >
+        pub_linkman_name = #{pubLinkmanName,jdbcType=VARCHAR},
+      </if>
+      <if test="pubTelephone != null" >
+        pub_telephone = #{pubTelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="pubBrief != null" >
+        pub_brief = #{pubBrief,jdbcType=VARCHAR},
+      </if>
+      <if test="pubCreateTime != null" >
+        pub_create_time = #{pubCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pubSalt != null" >
+        pub_salt = #{pubSalt,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where pub_seller_id = #{pubSellerId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dongtu.pojo.TbPubSeller" >
+    update tb_pub_seller
+    set pub_name = #{pubName,jdbcType=VARCHAR},
+      pub_password = #{pubPassword,jdbcType=VARCHAR},
+      pub_status = #{pubStatus,jdbcType=INTEGER},
+      pub_pic = #{pubPic,jdbcType=VARCHAR},
+      pub_address = #{pubAddress,jdbcType=VARCHAR},
+      pub_linkman_name = #{pubLinkmanName,jdbcType=VARCHAR},
+      pub_telephone = #{pubTelephone,jdbcType=VARCHAR},
+      pub_brief = #{pubBrief,jdbcType=VARCHAR},
+      pub_create_time = #{pubCreateTime,jdbcType=TIMESTAMP},
+      pub_salt = #{pubSalt,jdbcType=VARCHAR}
+    where pub_seller_id = #{pubSellerId,jdbcType=BIGINT}
+  </update>
+
+  <select id="findByName" resultMap="BaseResultMap">
+    select * from tb_pub_seller where pub_name = #{pubName}
+  </select>
+  <select id="findByNameLogin" resultMap="BaseResultMap">
+    select * from tb_pub_seller where pub_name = #{username}
+  </select>
+</mapper>

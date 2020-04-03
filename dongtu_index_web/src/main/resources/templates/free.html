@@ -1,0 +1,289 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+
+<link rel="stylesheet" type="text/css" href="/css/index.css" />
+
+<!--[if IE 6]>
+<script type="text/javascript" language="javascript" src="/js/png.js"></script>
+<![endif]-->
+
+<script type="text/javascript" src="/js/jquery.js"></script>
+<script type="text/javascript" src="/js/web.js"></script>
+<link rel="shortcut icon" href="bitbug_favicon.ico"/>
+<link rel="stylesheet" type="text/css" href="/css/style.css" />
+<link rel="stylesheet" type="text/css" href="/css/global.css" /> 
+
+<script type="text/javascript" src="/jquery-1.7.2.min.js"></script>
+<script type="text/javascript">
+    $(function(){
+        // 导航
+        $(".nav>ul>li").mouseenter(function(event) {
+            $(this).addClass("cur").siblings().removeClass("cur")
+            $(this).children(".yincang").stop().slideDown()
+
+        });
+        $(".nav>ul>li").mouseleave(function(event) {
+            $(this).removeClass("cur")
+            $(this).children(".yincang").stop().slideUp()
+        });
+        // tejia
+        $(".tejia .wenzi span").mouseenter(function(event) {
+           $(this).addClass("cur").siblings().removeClass("cur")
+        });
+        // 品牌目的地
+        $(".pinpai_inr ul li").mouseenter(function(event) {
+            $(this).addClass("cur").siblings().removeClass("cur")
+        });
+          $(".pinpai_inr ul li").mouseleave(function(event) {
+            $(".pinpai_inr ul li").removeClass("cur")
+        });
+         // 
+         $(".tututu").mouseenter(function(event) {
+             $(this).children(".heibu").stop().slideDown()
+         });
+         $(".tututu").mouseleave(function(event) {
+             $(this).children(".heibu").stop().slideUp()
+         });
+        //banner
+                var nowing = 0 
+                var $imglis = $(".banner .list0 li")
+                var $fadeCover = $(".fadeCover")
+                var fadeIntime = 500
+                var fadeOutime = 800
+                var $circle = $(".circle li")
+                var timer
+
+                    // 定义函数
+                    function rightbtn(){
+                        // 先信号量的改变，
+                    
+                    nowing++
+                    if(nowing>$imglis.length-1){
+                        nowing=0
+                       }
+                       // 再调用函数
+                    dong();
+                    }
+                    // 定时器业务
+                     timer = setInterval(rightbtn,2000)
+                    $(".banner").mouseenter(function(){
+                        clearInterval(timer)
+                    
+                    })
+                    $(".banner").mouseleave(function(){
+                        clearInterval(timer)
+                        timer = setInterval(rightbtn,2000)
+                    })
+                    // 点击小圆点业务
+                    $circle.click(function(){
+                        nowing = $(this).index()
+                        dong()
+                    })
+                 function dong(){
+                     // 先让fadecover淡入，让全局变白 
+                  $fadeCover.fadeIn(fadeIntime,function(){
+                    // ,function(){
+                    // 回调函数中，就表示fadecover淡入后做的事情。
+                    // 换图是干蹦的，不是淡入淡出的换,进行暗箱操作，兄弟去cur，自己加cur
+                    $imglis.eq(nowing).addClass('cur').siblings().removeClass('cur')
+                    // 淡出让黑布小事
+                    $(this).fadeOut(fadeOutime)
+                  })
+                  $circle.eq(nowing).addClass("cur").siblings().removeClass("cur")
+                 }
+
+    })
+</script>
+
+</head>
+<body>
+<div th:insert="head.html"></div>
+
+<div>
+<div class="product_sort fl" style="float:left">
+	<div class="hd">旅游产品导航</div>
+	<div class="bd" >
+		<div class="item" th:each="list : ${areaData}" th:onmouseover="sheng([[${list.areaId}]])">
+			<div class="title one"><a href="#"><i></i>[[${list.areaName}]]</a></div>
+			<div class="list">
+			</div>
+			<div class="arrow">&gt;</div>
+			<div class="line"></div>
+			<div class="subitem" >
+				<div class="inner" >
+					<div class="tit tit1" >
+                        <div class="name" th:id="${list.areaId}"></div>
+                            <ul th:id="${list.areaId}+jingdian">
+                            </ul>
+                    </div>
+				</div>
+			</div>
+		</div>
+		</div>
+	</div>
+	<div class="banner"  style="float:clear;margin-left:20%;">
+
+	<div class="chujingyou-l">
+		<div class="pinpai">
+			<p class="wenzi">
+				自由行境内游
+			</p>
+
+		</div>
+        <ul>
+            <li class="li11 tututu" th:each="list : ${freelist}">
+                <a th:href="'http://localhost/'+${list.tpId}+.html">
+                <img th:src="${list.tpImg}" alt=""  class="img11" />
+                <span>[[${list.tpTitle}]]&nbsp;&nbsp;&nbsp;¥[[${list.minPrice}]]</span>
+				<span style="color:#ff1309"></span>
+                <div class="heibu1 heibu">心动吉之岛</div></a>
+            </li>
+        </ul>
+    </div>
+
+	</div>
+</div>
+
+
+
+<script type="text/javascript">
+//首页旅游产品分类
+$(".product_sort .bd .item").hover(function(){
+	$(this).addClass("layer");
+},function(){
+	$(this).removeClass("layer");
+});
+</script>
+
+<div class="chujingyou">
+<div class="pinpai">
+    <p class="wenzi">
+        自由行出境游
+    </p>
+
+</div>
+    <div class="chujingyou-l">
+        <ul>
+			<li class="li11 tututu" th:each="olist : ${overseaslist}">
+                <a th:href="'http://localhost/'+${olist.tpId}+.html">
+					<img th:src="${olist.tpImg}" alt=""  class="img11" />
+					<span>[[${olist.tpTitle}]]&nbsp;&nbsp;¥[[${olist.minPrice}]]</span>
+					<span style="color:red"></span>
+					<div class="heibu1 heibu">心动吉之岛</div></a>
+			</li>
+        </ul>
+    </div>
+    <!--游记展示-->
+	  <div class="chujingyou-r">
+            <span></span>
+            <img src="/img/cheshow.jpg" alt="" />
+            <div class="show" id="travels">
+            </div>
+    </div>
+</div>
+<div class="footer">
+    <div class="navfoot">
+   <ul>
+       <li><a href="#">关于我们</a></li>
+       <li><a href="#">营销服务</a></li>
+       <li><a href="#">商家服务</a></li>
+       <li><a href="#">新手上路</a></li>
+       <li><a href="#">合作伙伴</a></li>
+       <li><a href="#">关注我们</a></li>
+   </ul>
+   </div>
+    <div class="share">
+        <span class="s1"></span>
+        <span class="s2"></span>
+        <span class="s3"></span>
+        <span class="s4"></span>
+    </div>
+    <div class="cl"></div>
+    <p>版权所有&copy;2019 FREE TRAVEL北京东途网有限公司</p>
+    <p>京ICP备11099888号 京公网安备1101888888</p>
+</div>
+<!-- topback -->
+
+</body>
+<script>
+    //省级的名称
+    function sheng(areaId) {
+        $.ajax({
+            url:"/freeController/sheng?areaId="+areaId,
+            data:{},
+            type:"post",
+            dataType:"json",
+            async:false,
+            success:function(result){
+                var div = "";
+                $(result).each(function (i,e) {
+                    div += "<div class='name'>"+e['areaName']+"</div>";
+                    //查询景点
+                    $.ajax({
+                        url:"/freeController/sheng?areaId="+e['areaId'],
+                        data:{},
+                        type:"post",
+                        dataType:"json",
+                        async:false,
+                        success:function(result){
+                            console.log(result)
+                            $(result).each(function (i,e) {
+                                var areaId =  e['areaId'];
+                                div += "<li><a href='/freeController/findAreaByIdTravel?areaId="+e['areaId']+"'>"+e['areaName']+"</a></li>";
+                               // div += "<li onclick='jingdian("+areaId+")'><a href='javascript:void(0)'；>"+e['areaName']+"</a></li>";
+                               //  div +="<a href='#' th:onclick='jingdian("+e['areaId']+")'>"+e['areaName']+"</a>";
+                            })
+                        },
+                        error:function(){
+                            alert("系统错误");
+                        }
+                    });
+                });
+                $("#"+areaId).html(div);
+            },
+            error:function(){
+                alert("系统错误");
+            }
+        });
+    }
+    // function jingdian(id) {
+    //     alert(id)
+    // }
+    $(function () {
+        findTravelsAll();
+    })
+    //游记查询
+    function findTravelsAll() {
+        $.ajax({
+            url: "/travelsController/findTravelsAll",
+            data: {},
+            type: "post",
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                var list = result.data;
+                console.log(list);
+                var div = "";
+                div += "<ul>";
+                for (var i = 0; i < list.length; i++) {
+                    var content = list[i].trvelsContent;
+                    var travelsId = list[i].travelsId;
+                    if (content != null && content != "") {
+                        var reg = /[\u4e00-\u9fa5]/g;
+                        var trvelsContent = content.match(reg).join("");
+                        div += "<li><a href='/travelsController/findTravelsById?travelsId=" + travelsId + "'>" + "【游记】" + (trvelsContent).substring(0, 10) + "..." + "</a></li>"
+                    }
+                }
+                div += "</ul>";
+                $("#travels").html(div);
+            },
+            error: function () {
+                alert("系统错误");
+            }
+        });
+    }
+</script>
+</html>

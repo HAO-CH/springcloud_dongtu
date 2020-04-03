@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form id="addForm">
+        商品名：<input name="seckillTitle"><br><br>
+        图片：
+            <input type="hidden" name="seckillSmallPic" id="img">
+            <input type="file" id="myFile" name="myFile" multiple><br><br>
+        成人原价：<input name="seckillAdultPrice"><br><br>
+        成人秒杀价：<input name="seckillAdultCostPrice"><br><br>
+        儿童原价：<input name="seckillChildPrice"><br><br>
+        儿童秒杀价：<input name="seckillChildCostPrice"><br><br>
+        地区：
+        目的地：
+            <select id="tpAreaId1" onchange="findByAreaPId(this.value)">
+                <option value="-1">-请选择-</option>
+                <option th:each="area:${areaList}" th:value="${area.areaId}">[[${area.areaName}]]</option>
+            </select>
+            <div id="tpAreaId2">
+
+            </div>
+            <div id="tpAreaId3">
+
+            </div>
+            <br><br>
+        类型：
+            <select name="seckillType">
+                <option value="-1">-请选择-</option>
+                <option th:each="navbar:${navbarList}" th:value="${navbar.nid}">[[${navbar.nname}]]</option>
+            </select><br><br>
+        酒店：
+            <div id="seckillPubId">
+
+            </div>
+        库存：<input name="seckillStockCount"><br><br>
+        秒杀开始时间：<input name="seckillStartDate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"><br><br>
+        秒杀结束时间：<input name="seckillEndDate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"><br><br>
+        商品描述：<input name="seckillProductDesc"><br><br>
+        出发时间：<input name="tpGoTime" onclick="WdatePicker()"><br><br>
+    </form>
+</body>
+<script type="text/javascript">
+    $('#myFile').fileinput({
+        language: 'zh',
+        uploadUrl: "/file/upload",
+        browseClass: 'btn btn-primary',
+        allowedFileExtensions: ['jpg','gif','png','xls','xlsx'], //允许上传类型
+        maxFileSize: 2048,
+        maxFileCount: 2,
+        enctype: "multipart/form-data"
+    });
+
+    $('#myFile').on('fileuploaded',function(event, data, previewId, index){
+        console.log(data.response.imgUrl)
+        if (data.response != null) {
+            $("#img").val(data.response.imgUrl);
+        }
+    })
+
+    function findByAreaPId(pid) {
+        $.ajax({
+            url: "/area/findByAreaPId",
+            data: {areaPid:pid},
+            type: "post",
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                var arealist = result.data.data;
+                console.log(arealist)
+                var div = "<select onchange=\"findByAreaPid3(this.value)\"><option>-请选择-</option></option>";
+                for (var i = 0; i < arealist.length; i++) {
+                    div += "<option value='"+arealist[i].areaId+"'>"+arealist[i].areaName+"</option>";
+                }
+                div += "</select>";
+                console.log(div)
+                $("#tpAreaId2").html(div);
+            },
+            error: function () {
+                toastr.error("系统错误");
+            }
+        });
+    }
+
+    function findByAreaPid3(pid) {
+        $.ajax({
+            url: "/area/findByAreaPId",
+            data: {areaPid:pid},
+            type: "post",
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                var arealist = result.data.data;
+                console.log(arealist)
+                var div = "<select name='seckillArea' onchange=\"findPubByAreaId(this.value)\"><option>-请选择-</option></option>";
+                for (var i = 0; i < arealist.length; i++) {
+                    div += "<option value='"+arealist[i].areaId+"'>"+arealist[i].areaName+"</option>";
+                }
+                div += "</select>";
+                console.log(div)
+                $("#tpAreaId3").html(div);
+            },
+            error: function () {
+                toastr.error("系统错误");
+            }
+        });
+    }
+
+    function findPubByAreaId(areaId) {
+        $.ajax({
+            url: "/pub/findByArea",
+            data: {areaId:areaId},
+            type: "post",
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                var publist = result.data;
+                console.log(publist)
+                var div = "<select name='seckillPubId'><option>-请选择-</option></option>";
+                for (var i = 0; i < publist.length; i++) {
+                    div += "<option value='"+publist[i].pubsId+"'>"+publist[i].pubsName+"</option>";
+                }
+                div += "</select>";
+                console.log(div)
+                $("#seckillPubId").html(div);
+            },
+            error: function () {
+                toastr.error("系统错误");
+            }
+        });
+    }
+</script>
+</html>

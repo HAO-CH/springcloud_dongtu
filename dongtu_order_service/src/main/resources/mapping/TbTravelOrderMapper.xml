@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongtu.mapper.TbTravelOrderMapper" >
+  <resultMap id="BaseResultMap" type="com.dongtu.pojo.TbTravelOrder" >
+    <id column="tr_order_id" property="trOrderId" jdbcType="BIGINT" />
+    <result column="tr_user_id" property="trUserId" jdbcType="BIGINT" />
+    <result column="tr_travel_seller_id" property="trTravelSellerId" jdbcType="BIGINT" />
+    <result column="tr_user_name" property="trUserName" jdbcType="VARCHAR" />
+    <result column="tr_user_phone" property="trUserPhone" jdbcType="VARCHAR" />
+    <result column="tr_travel_num" property="trTravelNum" jdbcType="BIGINT" />
+    <result column="tr_travel_price" property="trTravelPrice" jdbcType="DECIMAL" />
+    <result column="tr_travel_id" property="trTravelId" jdbcType="BIGINT" />
+    <result column="tr_create_time" property="trCreateTime" jdbcType="TIMESTAMP" />
+    <result column="tr_pay_time" property="trPayTime" jdbcType="TIMESTAMP" />
+    <result column="tr_status" property="trStatus" jdbcType="INTEGER" />
+    <result column="tr_transaction_id" property="trTransactionId" jdbcType="VARCHAR" />
+    <result column="tr_travel_total_fee" property="trTravelTotalFee" jdbcType="DECIMAL" />
+    <result column="tp_go_time" property="tpGoTime" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    tr_order_id, tr_user_id, tr_travel_seller_id, tr_user_name, tr_user_phone, tr_travel_num, 
+    tr_travel_price, tr_travel_id, tr_create_time, tr_pay_time, tr_status, tr_transaction_id, 
+    tr_travel_total_fee, tp_go_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.dongtu.pojo.TbTravelOrderExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_travel_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_travel_order
+    where tr_order_id = #{trOrderId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tb_travel_order
+    where tr_order_id = #{trOrderId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.dongtu.pojo.TbTravelOrderExample" >
+    delete from tb_travel_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.dongtu.pojo.TbTravelOrder" >
+    insert into tb_travel_order (tr_order_id, tr_user_id, tr_travel_seller_id, 
+      tr_user_name, tr_user_phone, tr_travel_num, 
+      tr_travel_price, tr_travel_id, tr_create_time, 
+      tr_pay_time, tr_status, tr_transaction_id, 
+      tr_travel_total_fee, tp_go_time)
+    values (#{trOrderId,jdbcType=BIGINT}, #{trUserId,jdbcType=BIGINT}, #{trTravelSellerId,jdbcType=BIGINT}, 
+      #{trUserName,jdbcType=VARCHAR}, #{trUserPhone,jdbcType=VARCHAR}, #{trTravelNum,jdbcType=BIGINT}, 
+      #{trTravelPrice,jdbcType=DECIMAL}, #{trTravelId,jdbcType=BIGINT}, #{trCreateTime,jdbcType=TIMESTAMP}, 
+      #{trPayTime,jdbcType=TIMESTAMP}, #{trStatus,jdbcType=INTEGER}, #{trTransactionId,jdbcType=VARCHAR}, 
+      #{trTravelTotalFee,jdbcType=DECIMAL}, #{tpGoTime,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dongtu.pojo.TbTravelOrder" >
+    insert into tb_travel_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="trOrderId != null" >
+        tr_order_id,
+      </if>
+      <if test="trUserId != null" >
+        tr_user_id,
+      </if>
+      <if test="trTravelSellerId != null" >
+        tr_travel_seller_id,
+      </if>
+      <if test="trUserName != null" >
+        tr_user_name,
+      </if>
+      <if test="trUserPhone != null" >
+        tr_user_phone,
+      </if>
+      <if test="trTravelNum != null" >
+        tr_travel_num,
+      </if>
+      <if test="trTravelPrice != null" >
+        tr_travel_price,
+      </if>
+      <if test="trTravelId != null" >
+        tr_travel_id,
+      </if>
+      <if test="trCreateTime != null" >
+        tr_create_time,
+      </if>
+      <if test="trPayTime != null" >
+        tr_pay_time,
+      </if>
+      <if test="trStatus != null" >
+        tr_status,
+      </if>
+      <if test="trTransactionId != null" >
+        tr_transaction_id,
+      </if>
+      <if test="trTravelTotalFee != null" >
+        tr_travel_total_fee,
+      </if>
+      <if test="tpGoTime != null" >
+        tp_go_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="trOrderId != null" >
+        #{trOrderId,jdbcType=BIGINT},
+      </if>
+      <if test="trUserId != null" >
+        #{trUserId,jdbcType=BIGINT},
+      </if>
+      <if test="trTravelSellerId != null" >
+        #{trTravelSellerId,jdbcType=BIGINT},
+      </if>
+      <if test="trUserName != null" >
+        #{trUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="trUserPhone != null" >
+        #{trUserPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="trTravelNum != null" >
+        #{trTravelNum,jdbcType=BIGINT},
+      </if>
+      <if test="trTravelPrice != null" >
+        #{trTravelPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="trTravelId != null" >
+        #{trTravelId,jdbcType=BIGINT},
+      </if>
+      <if test="trCreateTime != null" >
+        #{trCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="trPayTime != null" >
+        #{trPayTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="trStatus != null" >
+        #{trStatus,jdbcType=INTEGER},
+      </if>
+      <if test="trTransactionId != null" >
+        #{trTransactionId,jdbcType=VARCHAR},
+      </if>
+      <if test="trTravelTotalFee != null" >
+        #{trTravelTotalFee,jdbcType=DECIMAL},
+      </if>
+      <if test="tpGoTime != null" >
+        #{tpGoTime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.dongtu.pojo.TbTravelOrderExample" resultType="java.lang.Integer" >
+    select count(*) from tb_travel_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_travel_order
+    <set >
+      <if test="record.trOrderId != null" >
+        tr_order_id = #{record.trOrderId,jdbcType=BIGINT},
+      </if>
+      <if test="record.trUserId != null" >
+        tr_user_id = #{record.trUserId,jdbcType=BIGINT},
+      </if>
+      <if test="record.trTravelSellerId != null" >
+        tr_travel_seller_id = #{record.trTravelSellerId,jdbcType=BIGINT},
+      </if>
+      <if test="record.trUserName != null" >
+        tr_user_name = #{record.trUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.trUserPhone != null" >
+        tr_user_phone = #{record.trUserPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.trTravelNum != null" >
+        tr_travel_num = #{record.trTravelNum,jdbcType=BIGINT},
+      </if>
+      <if test="record.trTravelPrice != null" >
+        tr_travel_price = #{record.trTravelPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.trTravelId != null" >
+        tr_travel_id = #{record.trTravelId,jdbcType=BIGINT},
+      </if>
+      <if test="record.trCreateTime != null" >
+        tr_create_time = #{record.trCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.trPayTime != null" >
+        tr_pay_time = #{record.trPayTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.trStatus != null" >
+        tr_status = #{record.trStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.trTransactionId != null" >
+        tr_transaction_id = #{record.trTransactionId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.trTravelTotalFee != null" >
+        tr_travel_total_fee = #{record.trTravelTotalFee,jdbcType=DECIMAL},
+      </if>
+      <if test="record.tpGoTime != null" >
+        tp_go_time = #{record.tpGoTime,jdbcType=DATE},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_travel_order
+    set tr_order_id = #{record.trOrderId,jdbcType=BIGINT},
+      tr_user_id = #{record.trUserId,jdbcType=BIGINT},
+      tr_travel_seller_id = #{record.trTravelSellerId,jdbcType=BIGINT},
+      tr_user_name = #{record.trUserName,jdbcType=VARCHAR},
+      tr_user_phone = #{record.trUserPhone,jdbcType=VARCHAR},
+      tr_travel_num = #{record.trTravelNum,jdbcType=BIGINT},
+      tr_travel_price = #{record.trTravelPrice,jdbcType=DECIMAL},
+      tr_travel_id = #{record.trTravelId,jdbcType=BIGINT},
+      tr_create_time = #{record.trCreateTime,jdbcType=TIMESTAMP},
+      tr_pay_time = #{record.trPayTime,jdbcType=TIMESTAMP},
+      tr_status = #{record.trStatus,jdbcType=INTEGER},
+      tr_transaction_id = #{record.trTransactionId,jdbcType=VARCHAR},
+      tr_travel_total_fee = #{record.trTravelTotalFee,jdbcType=DECIMAL},
+      tp_go_time = #{record.tpGoTime,jdbcType=DATE}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dongtu.pojo.TbTravelOrder" >
+    update tb_travel_order
+    <set >
+      <if test="trUserId != null" >
+        tr_user_id = #{trUserId,jdbcType=BIGINT},
+      </if>
+      <if test="trTravelSellerId != null" >
+        tr_travel_seller_id = #{trTravelSellerId,jdbcType=BIGINT},
+      </if>
+      <if test="trUserName != null" >
+        tr_user_name = #{trUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="trUserPhone != null" >
+        tr_user_phone = #{trUserPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="trTravelNum != null" >
+        tr_travel_num = #{trTravelNum,jdbcType=BIGINT},
+      </if>
+      <if test="trTravelPrice != null" >
+        tr_travel_price = #{trTravelPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="trTravelId != null" >
+        tr_travel_id = #{trTravelId,jdbcType=BIGINT},
+      </if>
+      <if test="trCreateTime != null" >
+        tr_create_time = #{trCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="trPayTime != null" >
+        tr_pay_time = #{trPayTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="trStatus != null" >
+        tr_status = #{trStatus,jdbcType=INTEGER},
+      </if>
+      <if test="trTransactionId != null" >
+        tr_transaction_id = #{trTransactionId,jdbcType=VARCHAR},
+      </if>
+      <if test="trTravelTotalFee != null" >
+        tr_travel_total_fee = #{trTravelTotalFee,jdbcType=DECIMAL},
+      </if>
+      <if test="tpGoTime != null" >
+        tp_go_time = #{tpGoTime,jdbcType=DATE},
+      </if>
+    </set>
+    where tr_order_id = #{trOrderId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dongtu.pojo.TbTravelOrder" >
+    update tb_travel_order
+    set tr_user_id = #{trUserId,jdbcType=BIGINT},
+      tr_travel_seller_id = #{trTravelSellerId,jdbcType=BIGINT},
+      tr_user_name = #{trUserName,jdbcType=VARCHAR},
+      tr_user_phone = #{trUserPhone,jdbcType=VARCHAR},
+      tr_travel_num = #{trTravelNum,jdbcType=BIGINT},
+      tr_travel_price = #{trTravelPrice,jdbcType=DECIMAL},
+      tr_travel_id = #{trTravelId,jdbcType=BIGINT},
+      tr_create_time = #{trCreateTime,jdbcType=TIMESTAMP},
+      tr_pay_time = #{trPayTime,jdbcType=TIMESTAMP},
+      tr_status = #{trStatus,jdbcType=INTEGER},
+      tr_transaction_id = #{trTransactionId,jdbcType=VARCHAR},
+      tr_travel_total_fee = #{trTravelTotalFee,jdbcType=DECIMAL},
+      tp_go_time = #{tpGoTime,jdbcType=DATE}
+    where tr_order_id = #{trOrderId,jdbcType=BIGINT}
+  </update>
+
+    <select id="findUnpaidOrPaid" resultMap="BaseResultMap">
+        select * from tb_travel_order where tr_status = #{status} and tr_user_id = #{userId}
+    </select>
+
+    <select id="getOrderIsPaid" resultMap="BaseResultMap">
+        select * from tb_travel_order where tr_order_id = #{orderId}
+    </select>
+</mapper>

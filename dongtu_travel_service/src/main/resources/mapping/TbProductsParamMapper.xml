@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongtu.mapper.TbProductsParamMapper" >
+  <resultMap id="BaseResultMap" type="com.dongtu.pojo.TbProductsParam" >
+    <id column="tp_id" property="tpId" jdbcType="BIGINT" />
+    <result column="tp_introduce" property="tpIntroduce" jdbcType="VARCHAR" />
+    <result column="tp_buy_notes" property="tpBuyNotes" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    tp_id, tp_introduce, tp_buy_notes
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.dongtu.pojo.TbProductsParamExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_products_param
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_products_param
+    where tp_id = #{tpId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tb_products_param
+    where tp_id = #{tpId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.dongtu.pojo.TbProductsParamExample" >
+    delete from tb_products_param
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.dongtu.pojo.TbProductsParam" >
+    insert into tb_products_param (tp_id, tp_introduce, tp_buy_notes
+      )
+    values (#{tpId,jdbcType=BIGINT}, #{tpIntroduce,jdbcType=VARCHAR}, #{tpBuyNotes,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.dongtu.pojo.TbProductsParam" >
+    insert into tb_products_param
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="tpId != null" >
+        tp_id,
+      </if>
+      <if test="tpIntroduce != null" >
+        tp_introduce,
+      </if>
+      <if test="tpBuyNotes != null" >
+        tp_buy_notes,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="tpId != null" >
+        #{tpId,jdbcType=BIGINT},
+      </if>
+      <if test="tpIntroduce != null" >
+        #{tpIntroduce,jdbcType=VARCHAR},
+      </if>
+      <if test="tpBuyNotes != null" >
+        #{tpBuyNotes,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.dongtu.pojo.TbProductsParamExample" resultType="java.lang.Integer" >
+    select count(*) from tb_products_param
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_products_param
+    <set >
+      <if test="record.tpId != null" >
+        tp_id = #{record.tpId,jdbcType=BIGINT},
+      </if>
+      <if test="record.tpIntroduce != null" >
+        tp_introduce = #{record.tpIntroduce,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tpBuyNotes != null" >
+        tp_buy_notes = #{record.tpBuyNotes,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_products_param
+    set tp_id = #{record.tpId,jdbcType=BIGINT},
+      tp_introduce = #{record.tpIntroduce,jdbcType=VARCHAR},
+      tp_buy_notes = #{record.tpBuyNotes,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dongtu.pojo.TbProductsParam" >
+    update tb_products_param
+    <set >
+      <if test="tpIntroduce != null" >
+        tp_introduce = #{tpIntroduce,jdbcType=VARCHAR},
+      </if>
+      <if test="tpBuyNotes != null" >
+        tp_buy_notes = #{tpBuyNotes,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where tp_id = #{tpId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dongtu.pojo.TbProductsParam" >
+    update tb_products_param
+    set tp_introduce = #{tpIntroduce,jdbcType=VARCHAR},
+      tp_buy_notes = #{tpBuyNotes,jdbcType=VARCHAR}
+    where tp_id = #{tpId,jdbcType=BIGINT}
+  </update>
+</mapper>

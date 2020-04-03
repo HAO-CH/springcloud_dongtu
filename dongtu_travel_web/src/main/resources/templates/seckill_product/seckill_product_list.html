@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:insert="common/common.html"></div>
+
+<div id="toolbar">
+    <form class="form-inline" role="form">
+        <div class="form-group">
+            <label for="pname">商品名：</label>
+            <input name="pname" id="pname" class="form-control">
+        </div>
+        <!--<div class="form-group">-->
+            <!--<label for="cid">类型：</label>-->
+            <!--<select name="cid" id="cid" class="form-control">-->
+                <!--<option value="-1">请选择</option>-->
+                <!--<c:forEach items="${category}" var="c">-->
+                    <!--<option value="${c.cid}">${c.cname}</option>-->
+                <!--</c:forEach>-->
+            <!--</select>-->
+        <!--</div>-->
+        <input type="button" class="btn btn-primary" value="搜索" onclick="getData()"><br>
+        <input type="button" class="btn btn-success" value="增加" onclick="addProduct()">
+        <input type="button" class="btn btn-danger" value="批量删除" onclick="deleteBatch()">
+    </form>
+</div>
+
+<table id="table"></table>
+</body>
+<script type="text/javascript">
+    $('#table').bootstrapTable({
+        url: '/seckillProduct/find',
+        method: 'post',
+        contentType: "application/x-www-form-urlencoded",//请求参数方式
+        toolbar: '#toolbar',
+        striped: true,//是否显示行间隔色
+        cache: false, //是否使用缓存
+        sidePagination: "server",//分页方式：client客户端分页，server服务端分页（*）
+        pagination: true,//是否显示分页（*）
+        pageNumber: 1,
+        pageSize: 3,
+        pageList: [3,5,8],
+        //showColumns: true,//选择显示的列
+        showRefresh: true,//是否显示刷新按钮
+        queryParams : function(params){
+            var temp = {
+                pageSize : params.limit,
+                pageNum : (params.offset / params.limit) +1,
+                pname : $("#pname").val(),
+                cid : $("#cid").val()
+            }
+            return temp;
+        },
+        columns: [
+            {
+                checkbox: true,
+                visible: true
+            }, {
+                field: 'id',
+                title: 'ID',
+            }, {
+                field: 'seckillTitle',
+                title: '商品名'
+            }, {
+                field: 'seckillSmallPic',
+                title: '图片',
+                formatter: function (value, row, index) {
+                    // value 当前字段值， row 当前行数据， index下标
+                    // var img = row.eimg; 也可
+                    // return ('<img width="60" src="/file/download?filename=' + value + '">');
+                    return ('<img width="60" src="'+JSON.parse(value)[0]+'"+>');
+                }
+            }, {
+                field: 'seckillAdultCostPrice',
+                title: '成人价'
+            }, {
+                field: 'seckillChildCostPrice',
+                title: '儿童票价'
+            }, {
+                field: 'seckillArea',
+                title: '目的地'
+            }, {
+                field: 'seckillStartDate',
+                title: '秒杀开始时间'
+            }, {
+                field: 'seckillEndDate',
+                title: '秒杀结束时间'
+            }, {
+                field: 'tpGoTime',
+                title: '出发日期'
+            }, {
+                field: 'seckillProductDesc',
+                title: '商品描述'
+            }, {
+                title: '操作',
+                formatter: function (value, row, index){
+                    var id = row.id;
+                    var result = "";
+                    result += "<a href='javascript:updateProduct("+ id +")'>修改</a> ";
+                    result += "<a href='javascript:deleteProduct("+ id +")'>删除</a>";
+                    return result;
+                }
+            },
+        ]
+    });
+
+    function getData(){
+        $("#table").bootstrapTable("refresh");
+    }
+
+    function addProduct(){
+        BootstrapDialog.show({
+            title: '增加 ',
+            message: $('<div></div>').load("/seckillProduct/toAdd"),
+            size : BootstrapDialog.SIZE_SMALL,
+            buttons: [{
+                label: '确定',
+                cssClass: 'btn-success',
+                action: function (dialog) {
+                    var tpPics = $("[name=seckillSmallPic]").val();
+                    var tpPic = tpPics.split(",")
+                    var tpImgs = [];
+                    for (var i = 0; i < tpPic.length; i++) {
+                        tpImgs.push("http://10.112.3.12:8888/" + tpPic[i]);
+                    }
+                    var tpImg = JSON.stringify(tpImgs);
+                    $.ajax({
+                        url: "/seckillProduct/addProduct",
+                        data: {
+                            seckillTitle:$("[name=seckillTitle]").val(),
+                            seckillSmallPic:tpImg,
+                            seckillAdultPrice:$("[name=seckillAdultPrice]").val(),
+                            seckillAdultCostPrice:$("[name=seckillAdultCostPrice]").val(),
+                            seckillChildPrice:$("[name=seckillChildPrice]").val(),
+                            seckillChildCostPrice:$("[name=seckillChildCostPrice]").val(),
+                            seckillArea:$("[name=seckillArea]").val(),
+                            seckillType:$("[name=seckillType]").val(),
+                            seckillPubId:$("[name=seckillPubId]").val(),
+                            seckillStockCount:$("[name=seckillStockCount]").val(),
+                            seckillStartDate:$("[name=seckillStartDate]").val(),
+                            seckillEndDate:$("[name=seckillEndDate]").val(),
+                            seckillProductDesc:$("[name=seckillProductDesc]").val(),
+                            tpGoTime:$("[name=tpGoTime]").val()
+                        },
+                        type: "post",
+                        dataType: "json",
+                        async: false,
+                        success: function (result) {
+                            toastr.success("增加成功");
+                            getData();
+                            dialog.close();
+                        },
+                        error: function () {
+                            toastr.error("系统错误");
+                        }
+                    });
+                }
+            },{
+                label: '关闭',
+                action: function (dialog) {
+                    dialog.close();
+                }
+            }],
+        });
+    }
+
+    function updateProduct(id){
+        BootstrapDialog.show({
+            title: '修改 ',
+            message: $('<div></div>').load("/seckillProduct/toUpdate/" + id),
+            size : BootstrapDialog.SIZE_SMALL,
+            buttons: [{
+                label: '确定',
+                cssClass: 'btn-success',
+                action: function (dialog) {
+                    $.ajax({
+                        url: "/seckillProduct/updateProduct",
+                        data: $("#updateForm").serialize(),
+                        type: "post",
+                        dataType: "json",
+                        async: false,
+                        success: function (result) {
+                            toastr.success("修改成功");
+                            getData();
+                            dialog.close();
+                        },
+                        error: function () {
+                            toastr.error("系统错误");
+                        }
+                    });
+                }
+            },{
+                label: '关闭',
+                action: function (dialog) {
+                    dialog.close();
+                }
+            }],
+        });
+    }
+
+    function deleteBatch(){
+        var ids = [];
+        var rows = $("#table").bootstrapTable('getSelections');
+        $(rows).each(function(i,e){
+            ids.push(e.pid);
+        })
+
+        if (ids.length <= 0) {
+            toastr.error("请选择要删除的数据")
+            return;
+        }
+        alert(ids)
+
+        if (confirm("确定删除")) {
+            $.ajax({
+                url:"<%=path%>/product/deleteBatch",
+                data:{ids:ids},
+                type:"post",
+                dataType:"json",
+                async:false,
+                success:function(result){
+                    if(result){
+                        toastr.success("删除成功");
+                        getData();
+                    }
+                },
+                error:function(){
+                    toastr.error("系统错误");
+                }
+            });
+        }
+    }
+
+    function deleteProduct(id){
+        if (confirm("确认删除？")) {
+            $.ajax({
+                url: "/seckillProduct/deleteProduct",
+                data: {id:id},
+                type: "post",
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                    if (result) {
+                        toastr.success("删除成功");
+                        getData();
+                    }
+                },
+                error: function () {
+                    toastr.error("系统错误");
+                }
+            });
+        }
+    }
+</script>
+</html>

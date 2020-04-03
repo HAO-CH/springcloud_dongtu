@@ -1,0 +1,290 @@
+<!doctype html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <title>东途旅游，随心而行，随意而留</title>
+    <link rel="shortcut icon" href="bitbug_favicon.ico"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/global.css"/>
+
+    <script type="text/javascript" src="../jquery-1.7.2.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            // 导航
+            $(".nav>ul>li").mouseenter(function (event) {
+                $(this).addClass("cur").siblings().removeClass("cur")
+                $(this).children(".yincang").stop().slideDown()
+
+            });
+            $(".nav>ul>li").mouseleave(function (event) {
+                $(this).removeClass("cur")
+                $(this).children(".yincang").stop().slideUp()
+            });
+            // tejia
+            $(".tejia .wenzi span").mouseenter(function (event) {
+                $(this).addClass("cur").siblings().removeClass("cur")
+            });
+            // 品牌目的地
+            $(".pinpai_inr ul li").mouseenter(function (event) {
+                $(this).addClass("cur").siblings().removeClass("cur")
+            });
+            $(".pinpai_inr ul li").mouseleave(function (event) {
+                $(".pinpai_inr ul li").removeClass("cur")
+            });
+            //
+            $(".tututu").mouseenter(function (event) {
+                $(this).children(".heibu").stop().slideDown()
+            });
+            $(".tututu").mouseleave(function (event) {
+                $(this).children(".heibu").stop().slideUp()
+            });
+            //banner
+            var nowing = 0
+            var $imglis = $(".banner .list0 li")
+            var $fadeCover = $(".fadeCover")
+            var fadeIntime = 500
+            var fadeOutime = 800
+            var $circle = $(".circle li")
+            var timer
+
+            // 定义函数
+            function rightbtn() {
+                // 先信号量的改变，
+
+                nowing++
+                if (nowing > $imglis.length - 1) {
+                    nowing = 0
+                }
+                // 再调用函数
+                dong();
+            }
+
+            // 定时器业务
+            timer = setInterval(rightbtn, 2000)
+            $(".banner").mouseenter(function () {
+                clearInterval(timer)
+
+            })
+            $(".banner").mouseleave(function () {
+                clearInterval(timer)
+                timer = setInterval(rightbtn, 2000)
+            })
+            // 点击小圆点业务
+            $circle.click(function () {
+                nowing = $(this).index()
+                dong()
+            })
+
+            function dong() {
+                // 先让fadecover淡入，让全局变白
+                $fadeCover.fadeIn(fadeIntime, function () {
+                    // ,function(){
+                    // 回调函数中，就表示fadecover淡入后做的事情。
+                    // 换图是干蹦的，不是淡入淡出的换,进行暗箱操作，兄弟去cur，自己加cur
+                    $imglis.eq(nowing).addClass('cur').siblings().removeClass('cur')
+                    // 淡出让黑布小事
+                    $(this).fadeOut(fadeOutime)
+                })
+                $circle.eq(nowing).addClass("cur").siblings().removeClass("cur")
+            }
+
+            getContent();
+            //游记查询
+            findTravelsAll();
+
+        })
+
+        function findTravelsAll() {
+            $.ajax({
+                url: "/travelsController/findTravelsAll",
+                data: {},
+                type: "post",
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                    var list = result.data;
+                    console.log(list);
+                    var div = "";
+                    div += "<ul>";
+                    for (var i = 0; i < list.length; i++) {
+                        var content = list[i].trvelsContent;
+                        var travelsId = list[i].travelsId;
+                        if (content != null && content != "") {
+                            var reg = /[\u4e00-\u9fa5]/g;
+                            var trvelsContent = content.match(reg).join("");
+                            div += "<li><a href='/travelsController/findTravelsById?travelsId=" + travelsId + "'>" + "【游记】" + (trvelsContent).substring(0, 10) + "..." + "</a></li>"
+                        }
+                    }
+                    div += "</ul>";
+                    $("#travels").html(div);
+                },
+                error: function () {
+                    alert("系统错误");
+                }
+            });
+        }
+
+        /*跳转编辑游记页面*/
+        function toUe() {
+            location.href = "/travelsController/toUe";
+        }
+
+        function getContent() {
+            var ues = $("#editorValue").val();
+            $("#ueditorValue").html(ues);
+        }
+    </script>
+</head>
+<body>
+<div th:insert="head.html"></div>
+<!--内容-->
+<div class="banner">
+    <div>
+        <a href="#"><img style="width:1200px;height:350px" th:src="${data.titleImg}" alt="游记主题"/></a>
+        <table cellpadding="5" cellspacing="20" width="80%">
+            <tr>
+                <td><font size="3" id="browse">浏览量：[[${increment}]]</font></td>
+                <td><font size="3" id="CommentAmount"></font></td>
+                <td><font size="3">发布人:[[${data.userName}]]</font></td>
+                <td><font size="3">发布日期:[[${#dates.format(data.postedTime, 'yyyy-MM-dd HH:mm')}]]</font></td>
+                <td><font size="3">
+                    <button onclick="toUe()">发表游记</button>
+                </font></td>
+            </tr>
+        </table>
+        <div>
+        </div>
+        <!--当前游记的id-->
+        <input type="hidden" id="travelsId" th:value="${data.travelsId}">
+        <div>
+            <h3>内容区</h3>
+            <div style="float:left; display:inline;">
+                <div style="margin-left:20%" id="ueditorValue">
+                    <input id="editorValue" th:value="${data.trvelsContent}" type="hidden"/>
+                </div>
+                <h3>评论区</h3>
+                <div style="margin-left:20%" id="comments">
+
+                </div>
+            </div>
+            <!--添加评论-->
+            <div id="commentbox" style="margin-left: 20%">
+                <textarea id="content" cols="100" rows="4"
+                          style="background-attachment: fixed; background-repeat: no-repeat; border-style: solid; border-color: #0000cc"
+                          placeholder="记得好评哦..."></textarea>
+                <input type="button" value="评论" onclick="saveComments()" style="background: #0000cc">
+            </div>
+            <!--判断登录状态-->
+            <input id="loginStatus" type="hidden" th:value="${loginStatus}">
+            <div style="float:right; display:inline">
+                <span>游记列表</span>
+                <img src="" alt=""/>
+                <div class="show" id="travels">
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="footer">
+            <div class="navfoot">
+                <ul>
+                    <li><a href="#">关于我们</a></li>
+                    <li><a href="#">营销服务</a></li>
+                    <li><a href="#">商家服务</a></li>
+                    <li><a href="#">新手上路</a></li>
+                    <li><a href="#">合作伙伴</a></li>
+                    <li><a href="#">关注我们</a></li>
+                </ul>
+            </div>
+            <div class="share">
+                <span class="s1"></span>
+                <span class="s2"></span>
+                <span class="s3"></span>
+                <span class="s4"></span>
+            </div>
+            <div class="cl"></div>
+            <p>版权所有&copy;2019 FREE TRAVEL北京东途网有限公司</p>
+            <p>京ICP备11099888号 京公网安备1101888888</p>
+        </div>
+        <!-- topback -->
+
+    </div>
+</div>
+</body>
+</html>
+<script type="text/javascript">
+    $(function () {
+        //查询所有评论
+        travelComments()
+        //判断是否登录
+        loginStatus()
+    })
+
+    //查询游记的评论
+    function travelComments() {
+        $.ajax({
+            url: "/travelsController/findTravelsComments",
+            type: "post",
+            data: {travelsId: $("#travelsId").val()},
+            async: false,//同步
+            dataType: "json",
+            success: function (result) {
+                //评论量
+                var commentAmount = result.length;
+                $("#CommentAmount").html("评论量：" + commentAmount);
+                //评论内容
+                var comments = "";
+                $(result).each(function (i, e) {
+                    comments += "<hr style='background-color:blue;height:1px;border:none;'><table><tr><td><img src='" + e['headPic'] + "' style='height: 50px;width: 50px'></td>";
+                    comments += "<td>" + e['userName'] + "</td>";
+                    comments += "</tr><tr><td>评论内容：</td>";
+                    comments += "<td>" + e['content'] + "</td>";
+                    comments += "</tr><tr><td>日期：</td>";
+                    comments += "<td>" + e['commentTime'] + "</td>";
+                    comments += "</tr></table>";
+                })
+                $("#comments").html(comments);
+            },
+            error: function () {
+                alert('系统错误');
+            }
+        })
+    }
+    //判断当前用户是否登录
+    function loginStatus() {
+        var loginStatus = $("#loginStatus").val()
+        if (loginStatus == 0) {
+            $("#commentbox").hide();
+        }
+        if (loginStatus == 1) {
+            $("#commentbox").show();
+        }
+    }
+
+    //添加评论
+    function saveComments() {
+        var content = $("#content").val()
+        if (content.replace(/(^s*)|(s*$)/g, "").length == 0) {
+            alert("请填写评论后提交");
+            return;
+        } else {
+            $.ajax({
+                url: "/travelsController/saveTravelsComments",
+                type: "post",
+                data: {travelsId: $("#travelsId").val(), content: $("#content").val()},
+                async: false,//同步
+                dataType: "json",
+                success: function (result) {
+                    if(result.code==10000){
+                        alert("评论成功");
+                        location.reload();
+                    }
+                },
+                error: function () {
+                    alert('系统错误');
+                }
+            })
+        }
+    }
+</script>

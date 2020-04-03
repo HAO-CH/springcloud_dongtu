@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.dongtu</groupId>
+    <artifactId>springcloud_dongtu</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>dongtu_common</module>
+        <module>dongtu_api</module>
+        <module>dongtu_config_service</module>
+        <module>dongtu_euerka_service</module>
+        <module>dongtu_manager_web</module>
+        <module>dongtu_manager_service</module>
+        <module>dongtu_travel_web</module>
+        <module>dongtu_travel_service</module>
+        <module>dongtu_pub_web</module>
+        <module>dongtu_pub_service</module>
+        <module>dongtu_index_web</module>
+        <module>dongtu_free_stroke_service</module>
+        <module>dongtu_package_tour_service</module>
+        <module>dongtu_advertise_service</module>
+        <module>dongtu_es_service</module>
+        <module>dongtu_travel_notes</module>
+        <module>dongtu_detail_pages_service</module>
+        <module>dongtu_order_service</module>
+        <module>dongtu_pay_service</module>
+        <module>dongtu_user_service</module>
+        <module>dongtu_comment_service</module>
+        <module>dongtu_points_service</module>
+        <module>dongtu_seckill_service</module>
+        <module>dongtu_collect_service</module>
+    </modules>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.2.1.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <properties>
+        <!-- Environment Settings -->
+        <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <!-- Spring Settings-->
+        <spring-cloud.version>Hoxton.RELEASE</spring-cloud.version>
+    </properties>
+
+
+    <!-- 锁定springcloud版本号-->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+</project>

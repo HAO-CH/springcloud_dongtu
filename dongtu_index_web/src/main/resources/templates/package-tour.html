@@ -1,0 +1,286 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>跟团游</title>
+    <meta name="renderer" content="webkit">
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="applicable-device" content="pc,mobile">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="generator" content="" data-variable="https://breeze.cn/muban/M1156012/359/,cn,103,,3,M1156012"/>
+    <meta name="description" content=""/>
+    <meta name="keywords" content="旅游景点|境内旅游"/>
+    <link rel='stylesheet' href='/static/css/style.css?2017070701901'>
+    <link rel="shortcut icon" href="/bitbug_favicon.ico"/>
+    <link rel="stylesheet" type="text/css" href="/css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/global.css"/>
+
+    <link href="/css/style.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/common.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="/js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="/js/imgtoggle.js"></script>
+    <script type="text/javascript"></script>
+
+    <script type="text/javascript" src="/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            // 导航
+            $(".nav>ul>li").mouseenter(function (event) {
+                $(this).addClass("cur").siblings().removeClass("cur")
+                $(this).children(".yincang").stop().slideDown()
+
+            });
+            $(".nav>ul>li").mouseleave(function (event) {
+                $(this).removeClass("cur")
+                $(this).children(".yincang").stop().slideUp()
+            });
+            // tejia
+            $(".tejia .wenzi span").mouseenter(function (event) {
+                $(this).addClass("cur").siblings().removeClass("cur")
+            });
+            // 品牌目的地
+            $(".pinpai_inr ul li").mouseenter(function (event) {
+                $(this).addClass("cur").siblings().removeClass("cur")
+            });
+            $(".pinpai_inr ul li").mouseleave(function (event) {
+                $(".pinpai_inr ul li").removeClass("cur")
+            });
+            //
+            $(".tututu").mouseenter(function (event) {
+                $(this).children(".heibu").stop().slideDown()
+            });
+            $(".tututu").mouseleave(function (event) {
+                $(this).children(".heibu").stop().slideUp()
+            });
+            //banner
+            var nowing = 0
+            var $imglis = $(".banner .list0 li")
+            var $fadeCover = $(".fadeCover")
+            var fadeIntime = 500
+            var fadeOutime = 800
+            var $circle = $(".circle li")
+            var timer
+
+            // 定义函数
+            function rightbtn() {
+                // 先信号量的改变，
+
+                nowing++
+                if (nowing > $imglis.length - 1) {
+                    nowing = 0
+                }
+                // 再调用函数
+                dong();
+            }
+
+            // 定时器业务
+            timer = setInterval(rightbtn, 2000)
+            $(".banner").mouseenter(function () {
+                clearInterval(timer)
+
+            })
+            $(".banner").mouseleave(function () {
+                clearInterval(timer)
+                timer = setInterval(rightbtn, 2000)
+            })
+            // 点击小圆点业务
+            $circle.click(function () {
+                nowing = $(this).index()
+                dong()
+            })
+
+            function dong() {
+                // 先让fadecover淡入，让全局变白
+                $fadeCover.fadeIn(fadeIntime, function () {
+                    // ,function(){
+                    // 回调函数中，就表示fadecover淡入后做的事情。
+                    // 换图是干蹦的，不是淡入淡出的换,进行暗箱操作，兄弟去cur，自己加cur
+                    $imglis.eq(nowing).addClass('cur').siblings().removeClass('cur')
+                    // 淡出让黑布小事
+                    $(this).fadeOut(fadeOutime)
+                })
+                $circle.eq(nowing).addClass("cur").siblings().removeClass("cur")
+            }
+
+        })
+    </script>
+</head>
+<body>
+<div th:insert="head.html"></div>
+
+<div class="add_01">
+    <center><img src="/images/add00.jpg"></center>
+</div>
+<div class="clumn_w clearfix">
+    <div class="clumn_cl" style="margin-left:12%">
+        <div class="mf_box">
+            <div class="mf_tit clearfix">
+                <span>境内跟团游</span>
+            </div>
+            <div class="js_wrap claerdix" id="churchyard">
+
+            </div>
+        </div>
+        <div class="df_wrap">
+            <div class="tc_tit"><span>境外跟团游</span></div>
+            <div class="tc_wrap clearfix" id="overseas">
+
+            </div>
+        </div>
+    </div>
+    <div class="clumn_cr" style="margin-right:10%">
+        <div class="clumn">
+            <div class="clumn_tit t01"><span>排行榜</span></div>
+            <div class="clumn_con" id="ranke">
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="met-page-ajax-body visible-xs-block invisible" data-plugin="appear" data-animate="slide-bottom"
+     data-repeat="false">
+    <button type="button" class="btn btn-default btn-block btn-squared ladda-button" id="met-page-btn"
+            data-style="slide-left"
+            data-url="/muban/M1156012/359/gent/?lang=cn&class1=103&class2=0&class3=0&mbpagelist=1" data-page="1"><i
+            class="icon wb-chevron-down margin-right-5" aria-hidden="true"></i>更多产品
+    </button>
+</div>
+
+</div>
+</div>
+
+</div>
+</section>
+
+
+<div class="footer">
+    <div class="navfoot">
+        <ul>
+            <li><a href="#">关于我们</a></li>
+            <li><a href="#">营销服务</a></li>
+            <li><a href="#">商家服务</a></li>
+            <li><a href="#">新手上路</a></li>
+            <li><a href="#">合作伙伴</a></li>
+            <li><a href="#">关注我们</a></li>
+        </ul>
+    </div>
+    <div class="share">
+        <span class="s1"></span>
+        <span class="s2"></span>
+        <span class="s3"></span>
+        <span class="s4"></span>
+    </div>
+    <div class="cl"></div>
+    <p>版权所有&copy;2019 FREE TRAVEL北京东途网有限公司</p>
+    <p>京ICP备11099888号 京公网安备1101888888</p>
+</div>
+
+
+<script src="/static/js/shop_lang_cn.js"></script>
+
+<script src="/static/js/style.js"></script>
+
+<script src="/static/js/shop_v3.js"></script>
+
+</body>
+</html>
+<script type="text/javascript">
+    $(function () {
+        //境内跟团
+        findDomesticTourGroup()
+        //境外跟团游
+        OutboundGroupTour()
+        //查询商品信息
+        rankingList()
+    })
+
+    //查询境内跟团游
+    function findDomesticTourGroup() {
+        $.ajax({
+            url: "/pockageTour/findTravelProductsByTravelTypeId",
+            type: "post",
+            data: {travelTypeId: 4},
+            async: false,//同步
+            dataType: "json",
+            success: function (result) {
+                var churchyard = "";
+                $(result).each(function (i, e) {
+                    churchyard += "<div class='js_con clearfix'>";
+                    churchyard += "<div class='js_l'>";
+                    churchyard += "<a href='http://localhost/" + e['tpId'] + ".html'>";
+                    var tpImgs = JSON.parse(e['tpImg'])
+                    churchyard += "<img style='width: 312px;height: 219px' src='" + tpImgs[0] + "'></a></div>";
+                    churchyard += "<div class='js_c'>";
+                    var title = e['tpTitle'].substring(0, 10) + "...";
+                    churchyard += "<p><b><a href='http://localhost/" + e['tpId'] + ".html'>" + title + "</a></b></p>";
+                    churchyard += "<p>&nbsp;商家：" + e['tpSellerName'] + "</p>";
+                    churchyard += "</div>";
+                    churchyard += "<div class='js_r'>";
+                    churchyard += "<p><span class='fn_o'>￥</span><b>" + e['tpAdultPrice'] + "</b>起</p>";
+                    churchyard += "</div></div>";
+                })
+                $("#churchyard").html(churchyard);
+            },
+            error: function () {
+                alert('系统错误');
+            }
+        })
+    }
+
+    //查询境外跟团游
+    function OutboundGroupTour() {
+        $.ajax({
+            url: "/pockageTour/findTravelProductsByTravelTypeId",
+            type: "post",
+            data: {travelTypeId: 2},
+            async: false,//同步
+            dataType: "json",
+            success: function (result) {
+                var overseas = "";
+                $(result).each(function (i, e) {
+                    overseas += "<dl>";
+                    var tpImgs = JSON.parse(e['tpImg'])
+                    overseas += "<dt><a href='http://localhost/" + e['tpId'] + ".html'><img style='width: 312px;height: 219px' src='" + tpImgs[0] + "'></a></dt>";
+                    overseas += "<dd>";
+                    var title = e['tpTitle'].substring(0, 10) + "...";
+                    overseas += "<p class='d01'><a href='http://localhost/" + e['tpId'] + ".html'>" + title + "</a></p>";
+                    overseas += "<p><span>商家：" + e['tpSellerName'] + "</span></p>";
+                    overseas += "<p>优惠价：<span>¥" + e['tpAdultPrice'] + "</span></p>";
+                    overseas += "</dd></dl>";
+                })
+                $("#overseas").html(overseas);
+            },
+            error: function () {
+                alert('系统错误');
+            }
+        })
+    }
+
+    //查询前八条记录
+    function rankingList() {
+        $.ajax({
+            url: "/pockageTour/findProductsRanke",
+            type: "post",
+            data: {},
+            async: false,//同步
+            dataType: "json",
+            success: function (result) {
+                var ranke = "";
+                $(result).each(function (i, e) {
+                    var tpImgs = JSON.parse(e['tpImg'])
+                    ranke += "<a href='http://localhost/" + e['tpId'] + ".html'><img style='width: 312px;height: 219px' src='" + tpImgs[0] + "'></a>";
+                    var title = e['tpTitle'].substring(0, 10) + "...";
+                    ranke += "<p><a href='http://localhost/" + e['tpId'] + ".html'>" + title + "</a></p>";
+                    ranke += "<p><span>商家：" + e['tpSellerName'] + "</span></p>";
+                    ranke += "<p>优惠价：<span>¥" + e['tpAdultPrice'] + "</span></p>";
+                })
+                $("#ranke").html(ranke);
+            },
+            error: function () {
+                alert('系统错误');
+            }
+        })
+    }
+</script>

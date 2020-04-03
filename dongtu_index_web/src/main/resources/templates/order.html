@@ -1,0 +1,300 @@
+<!--订单页-->
+<!doctype html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <title>订单系统</title>
+    <link href="/css/style3.css" rel="stylesheet" type="text/css">
+    <link href="/css/form.css" rel="stylesheet" type="text/css">
+
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/jquery-migrate-1.2.1.min.js"></script>
+    <script type="text/javascript" src="/js/common2.js"></script>
+    <script type="text/javascript" src="/js/jquery.Form.js"></script>
+    <script type="text/javascript" src="/js/jquery.Area.js"></script>
+    <script type="text/javascript" src="/js/jquery.Spinner.js"></script>
+
+
+</head>
+
+<body>
+
+<div style="height:60px">
+    <h1 style="color:green">订单详情：</h1>
+</div>
+
+<div class="iDo-main">
+    <form class="registerform" action="ajax_post.php">
+        <input type="hidden" id="prodPubPrice" th:value="${orderParams.totalFee}">
+        <div class="iDo-title"></div>
+        <div class="iDo-list">
+            <ul class="iDo-list-ul">
+                <li class="iDo-list-li-title">
+                    <div class="iDo-list-li-d2">商品名</div>
+                    <div class="iDo-list-li-d4">成人票</div>
+                    <div class="iDo-list-li-d4">儿童票</div>
+                    <div class="iDo-list-li-d4">酒店房间数</div>
+                    <div class="iDo-list-li-d5">小计</div>
+                </li>
+                <li class="iDo-list-li">
+                    <div class="iDo-list-li-d2"><label for="iDo-product-1">直飞巴厘岛>>>[[${orderParams.pubName}]]</label>
+                    </div>
+                    <div class="iDo-list-li-d4"><span>[[${orderParams.adultNum}]]</span></div>
+                    <div class="iDo-list-li-d4"><span>[[${orderParams.childNum}]]</span></div>
+                    <div class="iDo-list-li-d4"><label for="iDo-product-1">[[${orderParams.pubNum}]]</label></div>
+                    <div class="iDo-list-li-d5"><label for="iDo-product-1" class="subtotal">¥[[${orderParams.totalFee}]]元</label>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+        <div style="height:30px">
+
+        </div>
+        <div class="iDo-list">
+            <ul class="iDo-list-ul">
+                <li class="iDo-list-li-title">
+                    <div class="iDo-list-li-d1">选择</div>
+                    <div class="iDo-list-li-d2">保险名称</div>
+                    <div class="iDo-list-li-d3">商品单价</div>
+                    <div class="iDo-list-li-d4">数量</div>
+                    <div class="iDo-list-li-d5">小计</div>
+                </li>
+                <li class="iDo-list-li">
+                    <div class="iDo-list-li-d1"><input type="checkbox" id="iDo-product-1" price="800"
+                                                       datatype="*"></div>
+                    <div class="iDo-list-li-d2"><label for="iDo-product-1">太平洋保险</label></div>
+                    <div class="iDo-list-li-d3"><label for="iDo-product-1">官网直销价：¥800元</label></div>
+                    <div class="iDo-list-li-d4"><span id="p1" class="Spinner"></span></div>
+                    <div class="iDo-list-li-d5"><label for="iDo-product-1" class="subtotal">¥800.00元</label></div>
+                </li>
+                <li class="iDo-list-li">
+                    <div class="iDo-list-li-d1"><input type="checkbox" id="iDo-product-2" price="500" ></div>
+                    <div class="iDo-list-li-d2"><label for="iDo-product-2">中国人寿</label></div>
+                    <div class="iDo-list-li-d3"><label for="iDo-product-2">官网直销价：¥500元</label></div>
+                    <div class="iDo-list-li-d4"><span id="p2" class="Spinner"></span></div>
+                    <div class="iDo-list-li-d5"><label for="iDo-product-2" class="subtotal">¥500.00元</label></div>
+                </li>
+                <input type="button" value="增加保险人信息" id="addTable"/>
+                <input type="button" value="删除" id="deleteTable"/>
+                <table id="table1"></table>
+                <script>
+                    $(document).ready(function () {
+                        $("#addTable").click(function () {
+                            var tr = "<tr><td><input type=\"checkbox\" name=\"check\"></td><td>姓名:</td><td><input placeholder=\"不是必填\" type=\"text\" /></td><td>身份证号:</td><td><input type=\"text\" placeholder=\"不是必填\" /></td></tr>";
+
+                            $("#table1").append(tr);
+                        });
+                        $("#deleteTable").click(function () {
+                            var check = document.getElementsByName("check");
+                            for (var i = 0; i <= check.length; i++) {
+                                if (check[i].checked) {
+                                    document.getElementById('table1').deleteRow(i);
+                                }
+                            }
+                        })
+                    })
+                </script>
+                <li class="iDo-list-li-count">
+                    <input type="hidden" id="insureCost">
+                    <i
+                            class="iDo-info-tips">温馨提示：请填写真实信息</i><span></span><em>商品总价：</em><em
+                        class="iDo-cl"></em>
+                </li>
+            </ul>
+        </div>
+
+
+        <div class="iDo-basic">
+
+            <p class="iDo-info-p">
+                <span class="iDo-info-title">姓　　名：</span>
+                <span class="iDo-info-box"><input placeholder="必填" class="txt-len-1"></span>
+                <span class="iDo-cl"></span>
+            </p>
+            <p class="iDo-info-p">
+                <span class="iDo-info-title">手　　机：</span>
+                <span class="iDo-info-box"><input placeholder="必填" class="txt-len-1"></span>
+                <span class="iDo-cl"></span>
+            </p>
+            <p class="iDo-info-p">
+                <span class="iDo-info-title">选择省市：</span>
+                <span class="iDo-info-box iDo-info-select">
+				<label id="province"><select class="txt-len-4" id="iDo-province"><option>--请选择--</option></select></label><span
+                        class="iDo-sc"></span>
+				<label id="city"><select class="txt-len-5" id="iDo-city"><option>--请选择--</option></select></label><span
+                        class="iDo-sc"></span>
+				<label id="county"><select class="txt-len-6" id="iDo-county"><option>--请选择--</option></select></label>
+			</span>
+                <span class="iDo-cl"></span>
+            </p>
+            <p class="iDo-info-p">
+                <span class="iDo-info-title">详细地址：</span>
+                <span class="iDo-info-box"><input placeholder="不是必填" class="txt-len-7"></span>
+                <span class="iDo-cl"></span>
+            </p>
+        </div>
+
+        <div class="iDo-details">
+            <p class="iDo-info-p">
+                <span class="iDo-info-title">付款方式：</span>
+                <span class="iDo-info-box">
+				<span class="iDo-pay"><input type="radio" id="iDo-pay-1" name="name"><label class="iDo-pay-1"
+                                                                                            for="iDo-pay-1">货到付款</label></span>
+				<span class="iDo-pay"><input type="radio" id="iDo-pay-2" name="name" checked><label class="iDo-pay-2"
+                                                                                                    for="iDo-pay-2">支付宝付款</label></span>
+				<span class="iDo-pay"><input type="radio" id="iDo-pay-3" name="name"><label class="iDo-pay-3"
+                                                                                            for="iDo-pay-3">网银付款</label></span>
+			</span>
+                <span class="iDo-cl"></span>
+            </p>
+            <p class="iDo-info-p">
+                <span class="iDo-info-title">订单备注：</span>
+                <span class="iDo-info-box"><input type="text" placeholder="不是必填" name="name" class="txt-len-7"></span>
+                <span class="iDo-cl"></span>
+            </p>
+
+        </div>
+
+        <div>
+            <input type="hidden" id="totalFee">
+            <input type="hidden" id="pointsFee">
+            <input type="hidden" id="zkprice1" th:value="${orderParams.pointsToMoney}">
+            <h5>应付金额: &nbsp&nbsp&nbsp<span id="price111" style="color: red;font-size: 18px;">¥99999.00</span></h5>
+            <h5>当前积分:　<span style="color: #9d261d" id="integral">[[${orderParams.pionts}]]</span></h5>
+            <h5>可折扣:　<span style="color: #1aa5fb" id="zkprice">[[${orderParams.pointsToMoney}]]</span></h5>
+            <h5>折扣后金额:　<span class="price" id="price6" style="color: red;font-size: 18px;">¥99933.00</span></h5>
+            <div id="jfPay">
+
+            </div>
+
+        </div>
+
+        <br><br><br>
+        <div style="margin-left:20%">
+            <button style="background-color:red;width:105px;height:55px" onclick="submitForm()"><font size="5">去支付</font>
+            </button>
+        </div>
+        <br><br><br><br><br><br>
+    </form>
+</div>
+<div class="iDo-side">
+    <div class="iDo-side-tel iDo-side-bg">
+        <div class="iDo-side-icon">
+            <span>全国免费订购咨询热线</span>
+            <strong>400-0000-000</strong>
+        </div>
+    </div>
+    <div class="iDo-side-hours iDo-side-bg">
+        <div class="iDo-side-icon">
+            <span>营业时间</span>
+            <strong>8:00-23:00</strong>
+        </div>
+    </div>
+    <div class="iDo-side-tips">
+        <div class="iDo-side-icon">温馨提示</div>
+        <div class="iDo-side-tips-contents">
+            1.为保障隐私，产品均以保密方式配送；<br>
+            2.本品纯天然产品，不可代替药品使用；<br>
+            3.为了保证您的权益，每盒产品防伪贴上验证码仅能验证1次，敬请知悉；<br>
+            4.为达最佳效果，请以套装坚持服用。
+        </div>
+    </div>
+    <div class="iDo-side-btn">
+        <a href="#"></a>
+    </div>
+    <div class="iDo-side-sale">
+        <div class="iDo-side-icon">发货信息</div>
+        <ul>
+            <li>
+                <div class="iDo-side-sale-t"><span>河南&nbsp;刘自豪</span><em>132****6595</em></div>
+                <div class="iDo-side-sale-c"><span>出境·五星酒店直飞日本</span><em>大阪</em></div>
+            </li>
+            <li>
+                <div class="iDo-side-sale-t"><span>山东&nbsp;郝成硕</span><em>132****6595</em></div>
+                <div class="iDo-side-sale-c"><span>出境·五星酒店直飞日本</span><em>大阪</em></div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+<script type="text/javascript" src="/js/jquery.Validform.js"></script>
+<script type="text/javascript">
+
+    $(function () {
+        $(".iDo-main:last").Validform({tiptype: 3});  //就这一行代码！下面是演示两种不同的验证效果;
+    })
+
+    function changeMoney() {
+        var prodPubPrice = $("#prodPubPrice").val(); //
+
+        var zkprice1 = $("#zkprice1").val(); // 积分可低多少钱
+
+        var total = parseInt($("#insureCost").val()) + parseInt(prodPubPrice); // 应付总金额
+
+        var price6 = parseInt(total) - parseInt(zkprice1); // 折扣后金额
+
+        $("#price111").html("¥" + total);
+        $("#price6").html("¥" + price6);
+        $("#totalFee").val(total)
+        $("#pointsFee").val(price6)
+    }
+
+    $(function () {
+        showJfPay();
+    })
+
+    function showJfPay() {
+        var div = "";
+        if ($("#zkprice1").val() < 100) {
+            div += "<input type=\"radio\" name=\"zfprice\" value=\"1\" checked=\"checked\">原价支付<br>";
+            div += "<input type=\"radio\" name=\"zfprice\" value=\"2\" disabled>积分折扣支付";
+        } else {
+            div += "<input type=\"radio\" name=\"zfprice\" value=\"1\" checked=\"checked\">原价支付<br>";
+            div += "<input type=\"radio\" name=\"zfprice\" value=\"2\">积分折扣支付"
+        }
+        $("#jfPay").html(div);
+    }
+
+    function submitForm() {
+        if ($(".txt-len-1").val() == null || $(".txt-len-1").val() == "") {
+            alert("请填写用户姓名，手机号")
+            return;
+        }
+
+        var totalFee = 0;
+        if ($("[name=zfprice]:checked").val() == 1) {
+            totalFee = $("#totalFee").val();
+        } else {
+            totalFee = $("#pointsFee").val();
+        }
+        $.ajax({
+            url: "/order/createOrder",
+            data: {
+                insureCost: $("#insureCost").val(),
+                totalFee: totalFee,
+                usePoints: $("[name=zfprice]:checked").val(),
+                flag: 1
+            },
+            type: "post",
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                if (result.code == 20000) {
+                    alert("您已经下过该订单了，快去支付吧~")
+                    location.href = "/order/orderList";
+                }else{
+                    location.href = "/order/waitPage";
+                }
+            },
+            error: function () {
+                alert("系统错误")
+            }
+        });
+    }
+</script>
+</body>
+
+</body>
+</html>

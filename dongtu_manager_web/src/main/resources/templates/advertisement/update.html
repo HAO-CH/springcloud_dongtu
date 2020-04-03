@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form id="updateForm">
+        <input type="hidden" name="adId" th:value="${advertisement.adId}">
+        广告名称：<input name="adName" th:value="${advertisement.adName}"><br><br>
+        媒介类型：
+            <select name="adMediaTypeId">
+                <option value="-1">请选择</option>
+                <option th:each="gg:${list}" th:value="${gg.mediaId}" th:selected="${gg.mediaId eq advertisement.adMediaTypeId}" >[[${gg.mediaName}]]</option>
+            </select><br><br>
+        广告栏位:
+        <select name="adFieldId">
+            <option value="-1">请选择</option>
+            <option th:each="adv:${adveList}" th:value="${adv.fieldId}" th:selected="${adv.fieldId eq advertisement.adFieldId}">[[${adv.fieldName}]]</option>
+        </select><br><br>
+        开始日期: <input type="date" name="adStartTime" th:value="${#dates.format(advertisement.adStartTime,'yyyy-MM-dd')}"><br><br>
+        结束日期: <input type="date" name="adEndTime" th:value="${#dates.format(advertisement.adEndTime,'yyyy-MM-dd')}" ><br><br>
+        广告链接: <input name="adLink" th:value="${advertisement.adLink}"><br><br>
+        图片:
+            <input type="hidden" name="adImg" id="img">
+            <img th:src='${advertisement.adImg}' width="100" height="100" class="img-rounded" >
+            <input type="file" id="myFile" name="myFile"><br><br>
+        图片网址: <input name="adImgurl" th:value="${advertisement.adImgurl}"><br><br>
+        是否开启：
+            <input type="radio" name="isOpen" value="1" th:checked="${advertisement.isOpen eq 1}">开启
+            <input type="radio" name="isOpen" th:value="0" th:checked="${advertisement.isOpen eq 0}">关闭<br><br>
+        广告联系人: <input name="adLinkMan" th:value="${advertisement.adLinkMan}"><br><br>
+        联系人邮箱: <input name="adEmail" th:value="${advertisement.adEmail}"><br><br>
+        联系人电话: <input name="adPhone" th:value="${advertisement.adPhone}"><br><br>
+    </form>
+</body>
+<script type="text/javascript">
+
+    $('#myFile').fileinput({
+        language: 'zh',
+        uploadUrl: "/file/upload",
+        browseClass: 'btn btn-primary',
+        allowedFileExtensions: ['jpg','gif','png','xls','xlsx'], //允许上传类型
+        maxFileSize: 2048,
+        maxFileCount: 2,
+        enctype: "multipart/form-data"
+    });
+
+    $('#myFile').on('fileuploaded',function(event, data, previewId, index){
+        console.log(data.response.imgUrl)
+        if (data.response != null) {
+            $("#img").val(data.response.imgUrl);
+        }
+    })
+</script>
+</html>

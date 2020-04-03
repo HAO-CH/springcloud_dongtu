@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>酒店商品审核</title>
+    <div th:insert="/common/common.html"></div>
+</head>
+<body>
+<div id="toolbar">
+    <!--<input type="button" value="增加" onclick="addSuser()" class="btn btn-primary">-->
+</div>
+<table id="table"></table>
+</body>
+</html>
+<script type="text/javascript">
+    $(function () {
+        $('#table').bootstrapTable({
+            url: '/pubProductController/findPubProductAuditAll',
+            toolbar: "#toolbar",
+            striped: true,                      //是否显示行间隔色
+            cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+            pagination: false,                   //是否显示分页（*）
+            sortable: true,                     //是否启用排序
+            sortOrder: "asc",                   //排序方式
+            search: true,                      //是否显示表格搜索
+            strictSearch: false,
+            showColumns: true,                  //是否显示所有的列（选择显示的列）
+            showRefresh: true,                  //是否显示刷新按钮
+            minimumCountColumns: 2,             //最少允许的列数
+            clickToSelect: true,                //是否启用点击选中行
+            //height: 500,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+            uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
+            showToggle: true,                   //是否显示详细视图和列表视图的切换按钮
+            cardView: false,                    //是否显示详细视图
+            detailView: false,                  //是否显示父子表
+            columns: [{
+                checkbox: true,
+                visible: true                  //是否显示复选框
+            }, {
+                field: 'pubsId',
+                title: '酒店商品ID'
+            }, {
+                field: 'areaName',
+                title: '地区'
+            },{
+                field: 'pubsName',
+                title: '酒店名称'
+            },{
+                field: 'pubsPrice',
+                title: '酒店价格'
+            },{
+                field: 'pubsPhone',
+                title: '酒店电话',
+            },{
+                field: 'pubsLinkman',
+                title: '酒店联系人',
+            },{
+                field: 'pubName',
+                title: '酒店商家',
+            },{
+                field: 'pubImg',
+                title: '酒店图片',
+                formatter: function (value, row, index) {
+                return '<img src='+value+' width="100" height="100" class="img-rounded" >';
+        }
+            },{
+                field: 'pubsSatus',
+                title: '审核状态',
+                formatter: function (value, row, index){
+                    var result = "";
+                    if (value == 0) {
+                        result += "未审核";
+                    } else if (value == 1){
+                        result += "审核通过";
+                    }else if (value == 3){
+                        result += "审核不通过";
+                    }
+                    return result;
+                }
+            }, {
+                title: '操作',
+                width: 120,
+                align: 'center',
+                valign: 'middle',
+                formatter: actionFormatter
+            }]
+        });
+    })
+
+    //操作栏的格式化
+    function actionFormatter(value, row, index) {
+        var id = row.pubsId;
+        var result = "";
+        result += "<a href='javascript:;' class='btn btn-xs blue' onclick=\"pass('" + id + "')\" title='通过'><span class='glyphicon glyphicon-pencil'></span></a>";
+        result += "<a href='javascript:;' class='btn btn-xs red' onclick=\"nopass('" + id + "')\" title='不通过'><span class='glyphicon glyphicon-remove'></span></a>";
+        return result;
+    }
+
+    //图片
+    function travelPicFormatter(value, row, index) {
+        return "http://10.112.3.12:8888" + row.travelPic;
+    }
+
+    //刷新
+    function getData() {
+        $("#table").bootstrapTable("refresh");      /* 刷新*/
+    }
+
+    //审核通过
+    function pass(pubsId) {
+        $.ajax({
+            url: "/pubProductController/updatePubProductStatus",
+            type: "post",
+            data: {pubsId: pubsId, pubsSatus: 1},
+            async: false,//同步
+            dataType: "json",
+            success: function (result) {
+                if (result) {
+                    alert("审核通过");
+                    $("#table").bootstrapTable("refresh");
+                } else {
+                    alert("审核失败");
+                    $("#table").bootstrapTable("refresh");
+                }
+            },
+            error: function () {
+                alert('系统错误');
+            }
+        })
+    }
+
+    //审核不通过
+    function nopass(pubsId) {
+        $.ajax({
+            url: "/pubProductController/updatePubProductStatus",
+            type: "post",
+            data: {pubsId: pubsId, pubsSatus: 2},
+            async: false,//同步
+            dataType: "json",
+            success: function (result) {
+                if (result) {
+                    alert("审核驳回");
+                    $("#table").bootstrapTable("refresh");
+                } else {
+                    alert("审核失败");
+                    $("#table").bootstrapTable("refresh");
+                }
+            },
+            error: function () {
+                alert('系统错误');
+            }
+        })
+    }
+</script>

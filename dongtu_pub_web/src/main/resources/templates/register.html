@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:insert="common/common.html"></div>
+
+<div align="center">
+    <div class="panel panel-primary" style="width:400px" align="left">
+        <div class="panel-heading" >
+            <h1>注册</h1>
+        </div>
+        <div class="panel-body">
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="pubName">名</label>
+                    <!--onblur="findEmpByName(this)"-->
+                    <input type="text" class="form-control" name="pubName" id="pubName"  placeholder=""><span id="msg"></span>
+                    <div id="tips"></div>
+                </div>
+                <div class="form-group">
+                    <label for="pubPassword">密码</label>
+                    <input type="text" class="form-control" name="pubPassword" id="pubPassword">
+                </div>
+
+                <div class="form-group">
+                    酒店图片
+                    <input type="text" name="pubPic" id="pubPic">
+                    <input type="file"  id="myFile" name="myFile" multiple >
+                </div>
+                <!--<div class="form-group">-->
+                    <!--<label for="pubAddress">酒店地址</label>-->
+                    <!--<input type="text" class="form-control" name="pubAddress" id="pubAddress">-->
+                <!--</div>-->
+                <div class="form-group">
+                    <label for="pubLinkmanName">联系人姓名</label>
+                    <input type="text" class="form-control" name="pubLinkmanName" id="pubLinkmanName">
+                </div>
+                <div class="form-group">
+                    <label for="pubTelephone">联系电话</label>
+                    <input type="text" class="form-control" name="pubTelephone" id="pubTelephone">
+                </div>
+                <div class="form-group">
+                    <label for="pubBrief">酒店介绍</label>
+                    <input type="text" class="form-control" name="pubBrief" id="pubBrief">
+                </div>
+                <div>
+                    <input type="button" value="注册" class="btn btn-success" onclick="register()">
+                </div>
+
+            </form>
+        </div>
+        <div class="panel-footer">
+            <a href="#"></a>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+
+    $('#myFile').fileinput({
+        language: 'zh',
+        uploadUrl: "/file/upLoadFile",
+        browseClass: 'btn btn-primary',
+        allowedFileExtensions: ['jpg','gif','png','xls','xlsx'], //允许上传类型
+        maxFileSize: 2048,
+        maxFileCount: 2,
+        enctype: "multipart/form-data"
+    });
+    $('#myFile').on('fileuploaded',function(event, data, previewId, index){
+        console.log(data.response.imgUrl)
+        if (data.response != null) {
+            $("#pubPic").val(data.response.imgUrl);
+        }
+    })
+
+
+    function register(){
+        $.ajax({
+            url:"/registerController/registerInsertSeller",
+            data:$("#registerForm").serialize(),
+            dataType:"json",
+            type:"post",
+            async:false,
+            success:function(result){
+                console.log(result)
+                if (result.code == 10000) {
+                    alert("注册成功");
+                    location.href="/";
+                } else {
+                    msg("该用户名已存在aaaa");
+                }
+            },
+            error:function(){
+                msg("系统错误",2000);
+            }
+        })
+    }
+</script>
+</html>

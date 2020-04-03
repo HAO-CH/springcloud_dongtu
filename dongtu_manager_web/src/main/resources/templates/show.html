@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <div th:insert="/common/common.html"></div>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-3">
+            <div id="tree"></div>
+        </div>
+        <div class="col-lg-9">
+            <ul class="nav nav-tabs" id="myTab">
+            </ul>
+            <div class="tab-content">
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<script type="text/javascript">
+    //获取权限信息，构建树
+    function getTree() {
+        var tree = [];
+        $.ajax({
+            url: "/travel/getPermissions",
+            data: {},
+            dataType: "json",
+            async: false,
+            type: "post",
+            success: function (result) {
+                tree = result;
+            },
+            error: function () {
+                toastr.error("系统错误");
+            }
+        })
+        return tree;
+    }
+
+    $(function () {
+        $('#tree').treeview({
+            data: getTree(),
+            //合并
+            collapseIcon: "glyphicon glyphicon-star-empty",
+            //展开
+            expandIcon: "glyphicon glyphicon-star",
+            onNodeSelected: function (event, data) {
+                if (data.nodes == undefined) {
+                    $.addtabs.add({
+                        title: data.text,
+                        url: data.url,
+                        id: data.id
+                    })
+                }
+            }
+        });
+    })
+</script>

@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongtu.mapper.TbCollectMapper" >
+  <resultMap id="BaseResultMap" type="com.dongtu.pojo.TbCollect" >
+    <id column="collect_id" property="collectId" jdbcType="BIGINT" />
+    <result column="tp_id" property="tpId" jdbcType="BIGINT" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="collect_date" property="collectDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    collect_id, tp_id, user_name, collect_date
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.dongtu.pojo.TbCollectExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_collect
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_collect
+    where collect_id = #{collectId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tb_collect
+    where collect_id = #{collectId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.dongtu.pojo.TbCollectExample" >
+    delete from tb_collect
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.dongtu.pojo.TbCollect" >
+    insert into tb_collect (collect_id, tp_id, user_name, 
+      collect_date)
+    values (#{collectId,jdbcType=BIGINT}, #{tpId,jdbcType=BIGINT}, #{userName,jdbcType=VARCHAR}, 
+      #{collectDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dongtu.pojo.TbCollect" >
+    insert into tb_collect
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="collectId != null" >
+        collect_id,
+      </if>
+      <if test="tpId != null" >
+        tp_id,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="collectDate != null" >
+        collect_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="collectId != null" >
+        #{collectId,jdbcType=BIGINT},
+      </if>
+      <if test="tpId != null" >
+        #{tpId,jdbcType=BIGINT},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="collectDate != null" >
+        #{collectDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.dongtu.pojo.TbCollectExample" resultType="java.lang.Integer" >
+    select count(*) from tb_collect
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_collect
+    <set >
+      <if test="record.collectId != null" >
+        collect_id = #{record.collectId,jdbcType=BIGINT},
+      </if>
+      <if test="record.tpId != null" >
+        tp_id = #{record.tpId,jdbcType=BIGINT},
+      </if>
+      <if test="record.userName != null" >
+        user_name = #{record.userName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.collectDate != null" >
+        collect_date = #{record.collectDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_collect
+    set collect_id = #{record.collectId,jdbcType=BIGINT},
+      tp_id = #{record.tpId,jdbcType=BIGINT},
+      user_name = #{record.userName,jdbcType=VARCHAR},
+      collect_date = #{record.collectDate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dongtu.pojo.TbCollect" >
+    update tb_collect
+    <set >
+      <if test="tpId != null" >
+        tp_id = #{tpId,jdbcType=BIGINT},
+      </if>
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="collectDate != null" >
+        collect_date = #{collectDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where collect_id = #{collectId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dongtu.pojo.TbCollect" >
+    update tb_collect
+    set tp_id = #{tpId,jdbcType=BIGINT},
+      user_name = #{userName,jdbcType=VARCHAR},
+      collect_date = #{collectDate,jdbcType=TIMESTAMP}
+    where collect_id = #{collectId,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="shortcut icon" href="bitbug_favicon.ico"/>
+    <link rel="stylesheet" type="text/css" href="/css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/global.css"/>
+
+    <script type="text/javascript" src="/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            // 导航
+            $(".nav>ul>li").mouseenter(function (event) {
+                $(this).addClass("cur").siblings().removeClass("cur")
+                $(this).children(".yincang").stop().slideDown()
+
+            });
+            $(".nav>ul>li").mouseleave(function (event) {
+                $(this).removeClass("cur")
+                $(this).children(".yincang").stop().slideUp()
+            });
+            // tejia
+            $(".tejia .wenzi span").mouseenter(function (event) {
+                $(this).addClass("cur").siblings().removeClass("cur")
+            });
+            // 品牌目的地
+            $(".pinpai_inr ul li").mouseenter(function (event) {
+                $(this).addClass("cur").siblings().removeClass("cur")
+            });
+            $(".pinpai_inr ul li").mouseleave(function (event) {
+                $(".pinpai_inr ul li").removeClass("cur")
+            });
+            //
+            $(".tututu").mouseenter(function (event) {
+                $(this).children(".heibu").stop().slideDown()
+            });
+            $(".tututu").mouseleave(function (event) {
+                $(this).children(".heibu").stop().slideUp()
+            });
+            //banner
+            var nowing = 0
+            var $imglis = $(".banner .list0 li")
+            var $fadeCover = $(".fadeCover")
+            var fadeIntime = 500
+            var fadeOutime = 800
+            var $circle = $(".circle li")
+            var timer
+
+            // 定义函数
+            function rightbtn() {
+                // 先信号量的改变，
+
+                nowing++
+                if (nowing > $imglis.length - 1) {
+                    nowing = 0
+                }
+                // 再调用函数
+                dong();
+            }
+
+            // 定时器业务
+            timer = setInterval(rightbtn, 2000)
+            $(".banner").mouseenter(function () {
+                clearInterval(timer)
+
+            })
+            $(".banner").mouseleave(function () {
+                clearInterval(timer)
+                timer = setInterval(rightbtn, 2000)
+            })
+            // 点击小圆点业务
+            $circle.click(function () {
+                nowing = $(this).index()
+                dong()
+            })
+
+            function dong() {
+                // 先让fadecover淡入，让全局变白
+                $fadeCover.fadeIn(fadeIntime, function () {
+                    // ,function(){
+                    // 回调函数中，就表示fadecover淡入后做的事情。
+                    // 换图是干蹦的，不是淡入淡出的换,进行暗箱操作，兄弟去cur，自己加cur
+                    $imglis.eq(nowing).addClass('cur').siblings().removeClass('cur')
+                    // 淡出让黑布小事
+                    $(this).fadeOut(fadeOutime)
+                })
+                $circle.eq(nowing).addClass("cur").siblings().removeClass("cur")
+            }
+
+        })
+    </script>
+</head>
+<body>
+<div th:insert="head.html"></div>
+<div style="width: 1000px;text-align: center;margin-left: 15%">
+    <div>
+        <input placeholder="出发地" type="text" id="start" style="height: 40px;width: 250px;background-color: #0b96e5">
+        <input type="button" value="<==转==>" readonly="readonly" style='border: none;outline: none;background: #f4f4f4;text-align:center;' onclick="transform()">
+        <input placeholder="目的地" type="text" id="end" style="height: 40px;width: 250px;background-color: #0b96e5">
+        <input type="button" value="查询" onclick="findTrain()"
+               style="height: 40px;width: 100px;background-color: #0b96e5">
+    </div>
+    <br><br>
+    <div id="train">
+
+    </div>
+</div>
+
+<div class="footer">
+    <div class="navfoot">
+        <ul>
+            <li><a href="#">关于我们</a></li>
+            <li><a href="#">营销服务</a></li>
+            <li><a href="#">商家服务</a></li>
+            <li><a href="#">新手上路</a></li>
+            <li><a href="#">合作伙伴</a></li>
+            <li><a href="#">关注我们</a></li>
+        </ul>
+    </div>
+    <div class="share">
+        <span class="s1"></span>
+        <span class="s2"></span>
+        <span class="s3"></span>
+        <span class="s4"></span>
+    </div>
+    <div class="cl"></div>
+    <p>版权所有&copy;2019 FREE TRAVEL北京东途网有限公司</p>
+    <p>京ICP备11099888号 京公网安备1101888888</p>
+</div>
+<!-- topback -->
+
+</div>
+</div>
+</body>
+</html>
+<script type="text/javascript">
+    //查询火车信息
+    function findTrain() {
+        if ($("#start").val() == "" || $("#end").val() == "") {
+            alert("请填写地址");
+            return false;
+        }
+        $.ajax({
+            url: "/train/findTrain",
+            data: {start: $("#start").val(), end: $("#end").val()},
+            type: "post",
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                var train = "";
+                $(result).each(function (i, e) {
+                    train += "<hr><ul>";
+                    train += "<li>车次：" + e['trainno'] + "</li>";
+                    train += "<li>出发地：" + e['station'] + "</li>";
+                    train += "<li>目的地：" + e['endstation'] + "</li>";
+                    train += "<li>发车时间：" + e['departuretime'] + "</li>";
+                    train += "<li>到站时间：" + e['arrivaltime'] + "</li>";
+                    train += "<li>用时：" + e['costtime'] + "</li>";
+                    train += "<li>二等票价：" + e['priceed'] + "</li>";
+                    train += "<li>硬卧：" + e['priceyw1'] + "</li>";
+                    train += "<li>软卧：" + e['priceyw1'] + "</li>";
+                    train += "<li>高级软卧：" + e['pricegr1'] + "</li></ul>";
+                })
+                $("#train").html(train);
+            },
+            error: function () {
+                alert("系统错误");
+            }
+        });
+    }
+
+    //转换起始位置
+    function transform() {
+        var start = $("#start").val()
+        var end = $("#end").val()
+        $("#start").val(end)
+        $("#end").val(start)
+    }
+</script>

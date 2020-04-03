@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongtu.mapper.TbSeckillProductMapper" >
+  <resultMap id="BaseResultMap" type="com.dongtu.pojo.TbSeckillProduct" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="seckill_sp_id" property="seckillSpId" jdbcType="BIGINT" />
+    <result column="seckill_title" property="seckillTitle" jdbcType="VARCHAR" />
+    <result column="seckill_small_pic" property="seckillSmallPic" jdbcType="VARCHAR" />
+    <result column="seckill_desc_pic" property="seckillDescPic" jdbcType="VARCHAR" />
+    <result column="seckill_adult_price" property="seckillAdultPrice" jdbcType="DECIMAL" />
+    <result column="seckill_adult_cost_price" property="seckillAdultCostPrice" jdbcType="DECIMAL" />
+    <result column="seckill_child_price" property="seckillChildPrice" jdbcType="DECIMAL" />
+    <result column="seckill_child_cost_price" property="seckillChildCostPrice" jdbcType="DECIMAL" />
+    <result column="seckill_travel_seller_id" property="seckillTravelSellerId" jdbcType="BIGINT" />
+    <result column="seckill_area" property="seckillArea" jdbcType="BIGINT" />
+    <result column="seckill_type" property="seckillType" jdbcType="BIGINT" />
+    <result column="seckill_status" property="seckillStatus" jdbcType="INTEGER" />
+    <result column="seckill_num" property="seckillNum" jdbcType="BIGINT" />
+    <result column="seckill_stock_count" property="seckillStockCount" jdbcType="BIGINT" />
+    <result column="seckill_start_date" property="seckillStartDate" jdbcType="TIMESTAMP" />
+    <result column="seckill_end_date" property="seckillEndDate" jdbcType="TIMESTAMP" />
+    <result column="seckill_product_desc" property="seckillProductDesc" jdbcType="VARCHAR" />
+    <result column="seckill_pub_id" property="seckillPubId" jdbcType="BIGINT" />
+    <result column="tp_go_time" property="tpGoTime" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, seckill_sp_id, seckill_title, seckill_small_pic, seckill_desc_pic, seckill_adult_price, 
+    seckill_adult_cost_price, seckill_child_price, seckill_child_cost_price, seckill_travel_seller_id, 
+    seckill_area, seckill_type, seckill_status, seckill_num, seckill_stock_count, seckill_start_date, 
+    seckill_end_date, seckill_product_desc, seckill_pub_id, tp_go_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.dongtu.pojo.TbSeckillProductExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_seckill_product
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_seckill_product
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tb_seckill_product
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.dongtu.pojo.TbSeckillProductExample" >
+    delete from tb_seckill_product
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.dongtu.pojo.TbSeckillProduct" >
+    insert into tb_seckill_product (id, seckill_sp_id, seckill_title, 
+      seckill_small_pic, seckill_desc_pic, seckill_adult_price, 
+      seckill_adult_cost_price, seckill_child_price, 
+      seckill_child_cost_price, seckill_travel_seller_id, 
+      seckill_area, seckill_type, seckill_status, 
+      seckill_num, seckill_stock_count, seckill_start_date, 
+      seckill_end_date, seckill_product_desc, seckill_pub_id, 
+      tp_go_time)
+    values (#{id,jdbcType=BIGINT}, #{seckillSpId,jdbcType=BIGINT}, #{seckillTitle,jdbcType=VARCHAR}, 
+      #{seckillSmallPic,jdbcType=VARCHAR}, #{seckillDescPic,jdbcType=VARCHAR}, #{seckillAdultPrice,jdbcType=DECIMAL}, 
+      #{seckillAdultCostPrice,jdbcType=DECIMAL}, #{seckillChildPrice,jdbcType=DECIMAL}, 
+      #{seckillChildCostPrice,jdbcType=DECIMAL}, #{seckillTravelSellerId,jdbcType=BIGINT}, 
+      #{seckillArea,jdbcType=BIGINT}, #{seckillType,jdbcType=BIGINT}, #{seckillStatus,jdbcType=INTEGER}, 
+      #{seckillNum,jdbcType=BIGINT}, #{seckillStockCount,jdbcType=BIGINT}, #{seckillStartDate,jdbcType=TIMESTAMP}, 
+      #{seckillEndDate,jdbcType=TIMESTAMP}, #{seckillProductDesc,jdbcType=VARCHAR}, #{seckillPubId,jdbcType=BIGINT}, 
+      #{tpGoTime,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dongtu.pojo.TbSeckillProduct" >
+    insert into tb_seckill_product
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="seckillSpId != null" >
+        seckill_sp_id,
+      </if>
+      <if test="seckillTitle != null" >
+        seckill_title,
+      </if>
+      <if test="seckillSmallPic != null" >
+        seckill_small_pic,
+      </if>
+      <if test="seckillDescPic != null" >
+        seckill_desc_pic,
+      </if>
+      <if test="seckillAdultPrice != null" >
+        seckill_adult_price,
+      </if>
+      <if test="seckillAdultCostPrice != null" >
+        seckill_adult_cost_price,
+      </if>
+      <if test="seckillChildPrice != null" >
+        seckill_child_price,
+      </if>
+      <if test="seckillChildCostPrice != null" >
+        seckill_child_cost_price,
+      </if>
+      <if test="seckillTravelSellerId != null" >
+        seckill_travel_seller_id,
+      </if>
+      <if test="seckillArea != null" >
+        seckill_area,
+      </if>
+      <if test="seckillType != null" >
+        seckill_type,
+      </if>
+      <if test="seckillStatus != null" >
+        seckill_status,
+      </if>
+      <if test="seckillNum != null" >
+        seckill_num,
+      </if>
+      <if test="seckillStockCount != null" >
+        seckill_stock_count,
+      </if>
+      <if test="seckillStartDate != null" >
+        seckill_start_date,
+      </if>
+      <if test="seckillEndDate != null" >
+        seckill_end_date,
+      </if>
+      <if test="seckillProductDesc != null" >
+        seckill_product_desc,
+      </if>
+      <if test="seckillPubId != null" >
+        seckill_pub_id,
+      </if>
+      <if test="tpGoTime != null" >
+        tp_go_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="seckillSpId != null" >
+        #{seckillSpId,jdbcType=BIGINT},
+      </if>
+      <if test="seckillTitle != null" >
+        #{seckillTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="seckillSmallPic != null" >
+        #{seckillSmallPic,jdbcType=VARCHAR},
+      </if>
+      <if test="seckillDescPic != null" >
+        #{seckillDescPic,jdbcType=VARCHAR},
+      </if>
+      <if test="seckillAdultPrice != null" >
+        #{seckillAdultPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="seckillAdultCostPrice != null" >
+        #{seckillAdultCostPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="seckillChildPrice != null" >
+        #{seckillChildPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="seckillChildCostPrice != null" >
+        #{seckillChildCostPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="seckillTravelSellerId != null" >
+        #{seckillTravelSellerId,jdbcType=BIGINT},
+      </if>
+      <if test="seckillArea != null" >
+        #{seckillArea,jdbcType=BIGINT},
+      </if>
+      <if test="seckillType != null" >
+        #{seckillType,jdbcType=BIGINT},
+      </if>
+      <if test="seckillStatus != null" >
+        #{seckillStatus,jdbcType=INTEGER},
+      </if>
+      <if test="seckillNum != null" >
+        #{seckillNum,jdbcType=BIGINT},
+      </if>
+      <if test="seckillStockCount != null" >
+        #{seckillStockCount,jdbcType=BIGINT},
+      </if>
+      <if test="seckillStartDate != null" >
+        #{seckillStartDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="seckillEndDate != null" >
+        #{seckillEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="seckillProductDesc != null" >
+        #{seckillProductDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="seckillPubId != null" >
+        #{seckillPubId,jdbcType=BIGINT},
+      </if>
+      <if test="tpGoTime != null" >
+        #{tpGoTime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.dongtu.pojo.TbSeckillProductExample" resultType="java.lang.Integer" >
+    select count(*) from tb_seckill_product
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_seckill_product
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.seckillSpId != null" >
+        seckill_sp_id = #{record.seckillSpId,jdbcType=BIGINT},
+      </if>
+      <if test="record.seckillTitle != null" >
+        seckill_title = #{record.seckillTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.seckillSmallPic != null" >
+        seckill_small_pic = #{record.seckillSmallPic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.seckillDescPic != null" >
+        seckill_desc_pic = #{record.seckillDescPic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.seckillAdultPrice != null" >
+        seckill_adult_price = #{record.seckillAdultPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.seckillAdultCostPrice != null" >
+        seckill_adult_cost_price = #{record.seckillAdultCostPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.seckillChildPrice != null" >
+        seckill_child_price = #{record.seckillChildPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.seckillChildCostPrice != null" >
+        seckill_child_cost_price = #{record.seckillChildCostPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.seckillTravelSellerId != null" >
+        seckill_travel_seller_id = #{record.seckillTravelSellerId,jdbcType=BIGINT},
+      </if>
+      <if test="record.seckillArea != null" >
+        seckill_area = #{record.seckillArea,jdbcType=BIGINT},
+      </if>
+      <if test="record.seckillType != null" >
+        seckill_type = #{record.seckillType,jdbcType=BIGINT},
+      </if>
+      <if test="record.seckillStatus != null" >
+        seckill_status = #{record.seckillStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.seckillNum != null" >
+        seckill_num = #{record.seckillNum,jdbcType=BIGINT},
+      </if>
+      <if test="record.seckillStockCount != null" >
+        seckill_stock_count = #{record.seckillStockCount,jdbcType=BIGINT},
+      </if>
+      <if test="record.seckillStartDate != null" >
+        seckill_start_date = #{record.seckillStartDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.seckillEndDate != null" >
+        seckill_end_date = #{record.seckillEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.seckillProductDesc != null" >
+        seckill_product_desc = #{record.seckillProductDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.seckillPubId != null" >
+        seckill_pub_id = #{record.seckillPubId,jdbcType=BIGINT},
+      </if>
+      <if test="record.tpGoTime != null" >
+        tp_go_time = #{record.tpGoTime,jdbcType=DATE},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_seckill_product
+    set id = #{record.id,jdbcType=BIGINT},
+      seckill_sp_id = #{record.seckillSpId,jdbcType=BIGINT},
+      seckill_title = #{record.seckillTitle,jdbcType=VARCHAR},
+      seckill_small_pic = #{record.seckillSmallPic,jdbcType=VARCHAR},
+      seckill_desc_pic = #{record.seckillDescPic,jdbcType=VARCHAR},
+      seckill_adult_price = #{record.seckillAdultPrice,jdbcType=DECIMAL},
+      seckill_adult_cost_price = #{record.seckillAdultCostPrice,jdbcType=DECIMAL},
+      seckill_child_price = #{record.seckillChildPrice,jdbcType=DECIMAL},
+      seckill_child_cost_price = #{record.seckillChildCostPrice,jdbcType=DECIMAL},
+      seckill_travel_seller_id = #{record.seckillTravelSellerId,jdbcType=BIGINT},
+      seckill_area = #{record.seckillArea,jdbcType=BIGINT},
+      seckill_type = #{record.seckillType,jdbcType=BIGINT},
+      seckill_status = #{record.seckillStatus,jdbcType=INTEGER},
+      seckill_num = #{record.seckillNum,jdbcType=BIGINT},
+      seckill_stock_count = #{record.seckillStockCount,jdbcType=BIGINT},
+      seckill_start_date = #{record.seckillStartDate,jdbcType=TIMESTAMP},
+      seckill_end_date = #{record.seckillEndDate,jdbcType=TIMESTAMP},
+      seckill_product_desc = #{record.seckillProductDesc,jdbcType=VARCHAR},
+      seckill_pub_id = #{record.seckillPubId,jdbcType=BIGINT},
+      tp_go_time = #{record.tpGoTime,jdbcType=DATE}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dongtu.pojo.TbSeckillProduct" >
+    update tb_seckill_product
+    <set >
+      <if test="seckillSpId != null" >
+        seckill_sp_id = #{seckillSpId,jdbcType=BIGINT},
+      </if>
+      <if test="seckillTitle != null" >
+        seckill_title = #{seckillTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="seckillSmallPic != null" >
+        seckill_small_pic = #{seckillSmallPic,jdbcType=VARCHAR},
+      </if>
+      <if test="seckillDescPic != null" >
+        seckill_desc_pic = #{seckillDescPic,jdbcType=VARCHAR},
+      </if>
+      <if test="seckillAdultPrice != null" >
+        seckill_adult_price = #{seckillAdultPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="seckillAdultCostPrice != null" >
+        seckill_adult_cost_price = #{seckillAdultCostPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="seckillChildPrice != null" >
+        seckill_child_price = #{seckillChildPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="seckillChildCostPrice != null" >
+        seckill_child_cost_price = #{seckillChildCostPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="seckillTravelSellerId != null" >
+        seckill_travel_seller_id = #{seckillTravelSellerId,jdbcType=BIGINT},
+      </if>
+      <if test="seckillArea != null" >
+        seckill_area = #{seckillArea,jdbcType=BIGINT},
+      </if>
+      <if test="seckillType != null" >
+        seckill_type = #{seckillType,jdbcType=BIGINT},
+      </if>
+      <if test="seckillStatus != null" >
+        seckill_status = #{seckillStatus,jdbcType=INTEGER},
+      </if>
+      <if test="seckillNum != null" >
+        seckill_num = #{seckillNum,jdbcType=BIGINT},
+      </if>
+      <if test="seckillStockCount != null" >
+        seckill_stock_count = #{seckillStockCount,jdbcType=BIGINT},
+      </if>
+      <if test="seckillStartDate != null" >
+        seckill_start_date = #{seckillStartDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="seckillEndDate != null" >
+        seckill_end_date = #{seckillEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="seckillProductDesc != null" >
+        seckill_product_desc = #{seckillProductDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="seckillPubId != null" >
+        seckill_pub_id = #{seckillPubId,jdbcType=BIGINT},
+      </if>
+      <if test="tpGoTime != null" >
+        tp_go_time = #{tpGoTime,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dongtu.pojo.TbSeckillProduct" >
+    update tb_seckill_product
+    set seckill_sp_id = #{seckillSpId,jdbcType=BIGINT},
+      seckill_title = #{seckillTitle,jdbcType=VARCHAR},
+      seckill_small_pic = #{seckillSmallPic,jdbcType=VARCHAR},
+      seckill_desc_pic = #{seckillDescPic,jdbcType=VARCHAR},
+      seckill_adult_price = #{seckillAdultPrice,jdbcType=DECIMAL},
+      seckill_adult_cost_price = #{seckillAdultCostPrice,jdbcType=DECIMAL},
+      seckill_child_price = #{seckillChildPrice,jdbcType=DECIMAL},
+      seckill_child_cost_price = #{seckillChildCostPrice,jdbcType=DECIMAL},
+      seckill_travel_seller_id = #{seckillTravelSellerId,jdbcType=BIGINT},
+      seckill_area = #{seckillArea,jdbcType=BIGINT},
+      seckill_type = #{seckillType,jdbcType=BIGINT},
+      seckill_status = #{seckillStatus,jdbcType=INTEGER},
+      seckill_num = #{seckillNum,jdbcType=BIGINT},
+      seckill_stock_count = #{seckillStockCount,jdbcType=BIGINT},
+      seckill_start_date = #{seckillStartDate,jdbcType=TIMESTAMP},
+      seckill_end_date = #{seckillEndDate,jdbcType=TIMESTAMP},
+      seckill_product_desc = #{seckillProductDesc,jdbcType=VARCHAR},
+      seckill_pub_id = #{seckillPubId,jdbcType=BIGINT},
+      tp_go_time = #{tpGoTime,jdbcType=DATE}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+    <select id="findSeckillProductBySellerId" resultMap="BaseResultMap">
+      select * from tb_seckill_product where seckill_travel_seller_id = #{seckillTravelSellerId}
+    </select>
+</mapper>

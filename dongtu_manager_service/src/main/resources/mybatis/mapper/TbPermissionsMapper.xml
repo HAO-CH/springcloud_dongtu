@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongtu.mapper.TbPermissionsMapper" >
+  <resultMap id="BaseResultMap" type="com.dongtu.pojo.TbPermissions" >
+    <id column="permissions_id" property="permissionsId" jdbcType="BIGINT" />
+    <result column="permissions_text" property="permissionsText" jdbcType="VARCHAR" />
+    <result column="permissions_url" property="permissionsUrl" jdbcType="VARCHAR" />
+    <result column="permissions_pid" property="permissionsPid" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    permissions_id, permissions_text, permissions_url, permissions_pid
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.dongtu.pojo.TbPermissionsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_permissions
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_permissions
+    where permissions_id = #{permissionsId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tb_permissions
+    where permissions_id = #{permissionsId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.dongtu.pojo.TbPermissionsExample" >
+    delete from tb_permissions
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.dongtu.pojo.TbPermissions" >
+    insert into tb_permissions (permissions_id, permissions_text, permissions_url, 
+      permissions_pid)
+    values (#{permissionsId,jdbcType=BIGINT}, #{permissionsText,jdbcType=VARCHAR}, #{permissionsUrl,jdbcType=VARCHAR}, 
+      #{permissionsPid,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dongtu.pojo.TbPermissions" >
+    insert into tb_permissions
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="permissionsId != null" >
+        permissions_id,
+      </if>
+      <if test="permissionsText != null" >
+        permissions_text,
+      </if>
+      <if test="permissionsUrl != null" >
+        permissions_url,
+      </if>
+      <if test="permissionsPid != null" >
+        permissions_pid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="permissionsId != null" >
+        #{permissionsId,jdbcType=BIGINT},
+      </if>
+      <if test="permissionsText != null" >
+        #{permissionsText,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionsUrl != null" >
+        #{permissionsUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionsPid != null" >
+        #{permissionsPid,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.dongtu.pojo.TbPermissionsExample" resultType="java.lang.Integer" >
+    select count(*) from tb_permissions
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_permissions
+    <set >
+      <if test="record.permissionsId != null" >
+        permissions_id = #{record.permissionsId,jdbcType=BIGINT},
+      </if>
+      <if test="record.permissionsText != null" >
+        permissions_text = #{record.permissionsText,jdbcType=VARCHAR},
+      </if>
+      <if test="record.permissionsUrl != null" >
+        permissions_url = #{record.permissionsUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.permissionsPid != null" >
+        permissions_pid = #{record.permissionsPid,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_permissions
+    set permissions_id = #{record.permissionsId,jdbcType=BIGINT},
+      permissions_text = #{record.permissionsText,jdbcType=VARCHAR},
+      permissions_url = #{record.permissionsUrl,jdbcType=VARCHAR},
+      permissions_pid = #{record.permissionsPid,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dongtu.pojo.TbPermissions" >
+    update tb_permissions
+    <set >
+      <if test="permissionsText != null" >
+        permissions_text = #{permissionsText,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionsUrl != null" >
+        permissions_url = #{permissionsUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionsPid != null" >
+        permissions_pid = #{permissionsPid,jdbcType=BIGINT},
+      </if>
+    </set>
+    where permissions_id = #{permissionsId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dongtu.pojo.TbPermissions" >
+    update tb_permissions
+    set permissions_text = #{permissionsText,jdbcType=VARCHAR},
+      permissions_url = #{permissionsUrl,jdbcType=VARCHAR},
+      permissions_pid = #{permissionsPid,jdbcType=BIGINT}
+    where permissions_id = #{permissionsId,jdbcType=BIGINT}
+  </update>
+</mapper>

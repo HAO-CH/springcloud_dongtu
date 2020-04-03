@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongtu.mapper.TbAdvertisementMapper" >
+  <resultMap id="BaseResultMap" type="com.dongtu.pojo.TbAdvertisement" >
+    <id column="ad_id" property="adId" jdbcType="BIGINT" />
+    <result column="ad_name" property="adName" jdbcType="VARCHAR" />
+    <result column="ad_media_type_id" property="adMediaTypeId" jdbcType="BIGINT" />
+    <result column="ad_field_id" property="adFieldId" jdbcType="BIGINT" />
+    <result column="ad_start_time" property="adStartTime" jdbcType="TIMESTAMP" />
+    <result column="ad_end_time" property="adEndTime" jdbcType="TIMESTAMP" />
+    <result column="ad_link" property="adLink" jdbcType="VARCHAR" />
+    <result column="ad_img" property="adImg" jdbcType="VARCHAR" />
+    <result column="ad_imgurl" property="adImgurl" jdbcType="VARCHAR" />
+    <result column="is_open" property="isOpen" jdbcType="INTEGER" />
+    <result column="ad_link_man" property="adLinkMan" jdbcType="VARCHAR" />
+    <result column="ad_email" property="adEmail" jdbcType="VARCHAR" />
+    <result column="ad_phone" property="adPhone" jdbcType="VARCHAR" />
+    <result column="ad_traverl_seller_id" property="adTraverlSellerId" jdbcType="BIGINT" />
+  </resultMap>
+  <resultMap id="BaseResultMapVO" type="com.dongtu.pojo.TbAdvertisementVO" >
+    <id column="ad_id" property="adId" jdbcType="BIGINT" />
+    <result column="ad_name" property="adName" jdbcType="VARCHAR" />
+    <result column="ad_media_type_id" property="adMediaTypeId" jdbcType="BIGINT" />
+    <result column="ad_field_id" property="adFieldId" jdbcType="BIGINT" />
+    <result column="ad_start_time" property="adStartTime" jdbcType="TIMESTAMP" />
+    <result column="ad_end_time" property="adEndTime" jdbcType="TIMESTAMP" />
+    <result column="ad_link" property="adLink" jdbcType="VARCHAR" />
+    <result column="ad_img" property="adImg" jdbcType="VARCHAR" />
+    <result column="ad_imgurl" property="adImgurl" jdbcType="VARCHAR" />
+    <result column="is_open" property="isOpen" jdbcType="INTEGER" />
+    <result column="ad_link_man" property="adLinkMan" jdbcType="VARCHAR" />
+    <result column="ad_email" property="adEmail" jdbcType="VARCHAR" />
+    <result column="ad_phone" property="adPhone" jdbcType="VARCHAR" />
+	<result column="ad_traverl_seller_id" property="adTraverlSellerId" jdbcType="BIGINT" />
+    <result column="media_name" property="mediaName" jdbcType="VARCHAR" />
+    <result column="field_Name" property="fieldName" jdbcType="VARCHAR" />
+    <result column="travel_balence" property="travelBalence" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ad_id, ad_name, ad_media_type_id, ad_field_id, ad_start_time, ad_end_time, ad_link, 
+    ad_img, ad_imgurl, is_open, ad_link_man, ad_email, ad_phone, ad_traverl_seller_id
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.dongtu.pojo.TbAdvertisementExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_advertisement
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_advertisement
+    where ad_id = #{adId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tb_advertisement
+    where ad_id = #{adId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.dongtu.pojo.TbAdvertisementExample" >
+    delete from tb_advertisement
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.dongtu.pojo.TbAdvertisement" >
+    insert into tb_advertisement (ad_id, ad_name, ad_media_type_id, 
+      ad_field_id, ad_start_time, ad_end_time, 
+      ad_link, ad_img, ad_imgurl, 
+      is_open, ad_link_man, ad_email, 
+      ad_phone, ad_traverl_seller_id)
+    values (#{adId,jdbcType=BIGINT}, #{adName,jdbcType=VARCHAR}, #{adMediaTypeId,jdbcType=BIGINT}, 
+      #{adFieldId,jdbcType=BIGINT}, #{adStartTime,jdbcType=TIMESTAMP}, #{adEndTime,jdbcType=TIMESTAMP}, 
+      #{adLink,jdbcType=VARCHAR}, #{adImg,jdbcType=VARCHAR}, #{adImgurl,jdbcType=VARCHAR}, 
+      #{isOpen,jdbcType=INTEGER}, #{adLinkMan,jdbcType=VARCHAR}, #{adEmail,jdbcType=VARCHAR}, 
+      #{adPhone,jdbcType=VARCHAR}, #{adTraverlSellerId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dongtu.pojo.TbAdvertisement" >
+    insert into tb_advertisement
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="adId != null" >
+        ad_id,
+      </if>
+      <if test="adName != null" >
+        ad_name,
+      </if>
+      <if test="adMediaTypeId != null" >
+        ad_media_type_id,
+      </if>
+      <if test="adFieldId != null" >
+        ad_field_id,
+      </if>
+      <if test="adStartTime != null" >
+        ad_start_time,
+      </if>
+      <if test="adEndTime != null" >
+        ad_end_time,
+      </if>
+      <if test="adLink != null" >
+        ad_link,
+      </if>
+      <if test="adImg != null" >
+        ad_img,
+      </if>
+      <if test="adImgurl != null" >
+        ad_imgurl,
+      </if>
+      <if test="isOpen != null" >
+        is_open,
+      </if>
+      <if test="adLinkMan != null" >
+        ad_link_man,
+      </if>
+      <if test="adEmail != null" >
+        ad_email,
+      </if>
+      <if test="adPhone != null" >
+        ad_phone,
+      </if>
+      <if test="adTraverlSellerId != null" >
+        ad_traverl_seller_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="adId != null" >
+        #{adId,jdbcType=BIGINT},
+      </if>
+      <if test="adName != null" >
+        #{adName,jdbcType=VARCHAR},
+      </if>
+      <if test="adMediaTypeId != null" >
+        #{adMediaTypeId,jdbcType=BIGINT},
+      </if>
+      <if test="adFieldId != null" >
+        #{adFieldId,jdbcType=BIGINT},
+      </if>
+      <if test="adStartTime != null" >
+        #{adStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="adEndTime != null" >
+        #{adEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="adLink != null" >
+        #{adLink,jdbcType=VARCHAR},
+      </if>
+      <if test="adImg != null" >
+        #{adImg,jdbcType=VARCHAR},
+      </if>
+      <if test="adImgurl != null" >
+        #{adImgurl,jdbcType=VARCHAR},
+      </if>
+      <if test="isOpen != null" >
+        #{isOpen,jdbcType=INTEGER},
+      </if>
+      <if test="adLinkMan != null" >
+        #{adLinkMan,jdbcType=VARCHAR},
+      </if>
+      <if test="adEmail != null" >
+        #{adEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="adPhone != null" >
+        #{adPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="adTraverlSellerId != null" >
+        #{adTraverlSellerId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.dongtu.pojo.TbAdvertisementExample" resultType="java.lang.Integer" >
+    select count(*) from tb_advertisement
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_advertisement
+    <set >
+      <if test="record.adId != null" >
+        ad_id = #{record.adId,jdbcType=BIGINT},
+      </if>
+      <if test="record.adName != null" >
+        ad_name = #{record.adName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.adMediaTypeId != null" >
+        ad_media_type_id = #{record.adMediaTypeId,jdbcType=BIGINT},
+      </if>
+      <if test="record.adFieldId != null" >
+        ad_field_id = #{record.adFieldId,jdbcType=BIGINT},
+      </if>
+      <if test="record.adStartTime != null" >
+        ad_start_time = #{record.adStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.adEndTime != null" >
+        ad_end_time = #{record.adEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.adLink != null" >
+        ad_link = #{record.adLink,jdbcType=VARCHAR},
+      </if>
+      <if test="record.adImg != null" >
+        ad_img = #{record.adImg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.adImgurl != null" >
+        ad_imgurl = #{record.adImgurl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isOpen != null" >
+        is_open = #{record.isOpen,jdbcType=INTEGER},
+      </if>
+      <if test="record.adLinkMan != null" >
+        ad_link_man = #{record.adLinkMan,jdbcType=VARCHAR},
+      </if>
+      <if test="record.adEmail != null" >
+        ad_email = #{record.adEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="record.adPhone != null" >
+        ad_phone = #{record.adPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.adTraverlSellerId != null" >
+        ad_traverl_seller_id = #{record.adTraverlSellerId,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_advertisement
+    set ad_id = #{record.adId,jdbcType=BIGINT},
+      ad_name = #{record.adName,jdbcType=VARCHAR},
+      ad_media_type_id = #{record.adMediaTypeId,jdbcType=BIGINT},
+      ad_field_id = #{record.adFieldId,jdbcType=BIGINT},
+      ad_start_time = #{record.adStartTime,jdbcType=TIMESTAMP},
+      ad_end_time = #{record.adEndTime,jdbcType=TIMESTAMP},
+      ad_link = #{record.adLink,jdbcType=VARCHAR},
+      ad_img = #{record.adImg,jdbcType=VARCHAR},
+      ad_imgurl = #{record.adImgurl,jdbcType=VARCHAR},
+      is_open = #{record.isOpen,jdbcType=INTEGER},
+      ad_link_man = #{record.adLinkMan,jdbcType=VARCHAR},
+      ad_email = #{record.adEmail,jdbcType=VARCHAR},
+      ad_phone = #{record.adPhone,jdbcType=VARCHAR},
+      ad_traverl_seller_id = #{record.adTraverlSellerId,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dongtu.pojo.TbAdvertisement" >
+    update tb_advertisement
+    <set >
+      <if test="adName != null" >
+        ad_name = #{adName,jdbcType=VARCHAR},
+      </if>
+      <if test="adMediaTypeId != null" >
+        ad_media_type_id = #{adMediaTypeId,jdbcType=BIGINT},
+      </if>
+      <if test="adFieldId != null" >
+        ad_field_id = #{adFieldId,jdbcType=BIGINT},
+      </if>
+      <if test="adStartTime != null" >
+        ad_start_time = #{adStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="adEndTime != null" >
+        ad_end_time = #{adEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="adLink != null" >
+        ad_link = #{adLink,jdbcType=VARCHAR},
+      </if>
+      <if test="adImg != null" >
+        ad_img = #{adImg,jdbcType=VARCHAR},
+      </if>
+      <if test="adImgurl != null" >
+        ad_imgurl = #{adImgurl,jdbcType=VARCHAR},
+      </if>
+      <if test="isOpen != null" >
+        is_open = #{isOpen,jdbcType=INTEGER},
+      </if>
+      <if test="adLinkMan != null" >
+        ad_link_man = #{adLinkMan,jdbcType=VARCHAR},
+      </if>
+      <if test="adEmail != null" >
+        ad_email = #{adEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="adPhone != null" >
+        ad_phone = #{adPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="adTraverlSellerId != null" >
+        ad_traverl_seller_id = #{adTraverlSellerId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where ad_id = #{adId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dongtu.pojo.TbAdvertisement" >
+    update tb_advertisement
+    set ad_name = #{adName,jdbcType=VARCHAR},
+      ad_media_type_id = #{adMediaTypeId,jdbcType=BIGINT},
+      ad_field_id = #{adFieldId,jdbcType=BIGINT},
+      ad_start_time = #{adStartTime,jdbcType=TIMESTAMP},
+      ad_end_time = #{adEndTime,jdbcType=TIMESTAMP},
+      ad_link = #{adLink,jdbcType=VARCHAR},
+      ad_img = #{adImg,jdbcType=VARCHAR},
+      ad_imgurl = #{adImgurl,jdbcType=VARCHAR},
+      is_open = #{isOpen,jdbcType=INTEGER},
+      ad_link_man = #{adLinkMan,jdbcType=VARCHAR},
+      ad_email = #{adEmail,jdbcType=VARCHAR},
+      ad_phone = #{adPhone,jdbcType=VARCHAR},
+      ad_traverl_seller_id = #{adTraverlSellerId,jdbcType=BIGINT}
+    where ad_id = #{adId,jdbcType=BIGINT}
+  </update>
+  
+    <!--广告查询所有-->
+  <select id="findAdvertisementAll" resultMap="BaseResultMapVO">
+      SELECT * from tb_advertisement adv
+      LEFT JOIN tb_media_type tmy on adv.ad_media_type_id = tmy.media_id
+      LEFT JOIN tb_adve_field adve on adve.field_id = adv.ad_field_id
+	  LEFT join tb_travel_seller tts on adv.ad_traverl_seller_id=tts.travel_seller_id where adv.is_open = 1 
+  </select>
+  <!--查询轮播图有效广告-->
+  <select id="getContentsInfosPlanting" resultMap="BaseResultMap">
+    SELECT * from tb_advertisement adve where adve.ad_field_id=4 and adve.is_open=1
+  </select>
+  <!--今日推荐广告栏位-->
+  <select id="TodayRecommend" resultMap="BaseResultMap">
+    SELECT * from tb_advertisement adve where adve.ad_field_id=1 and adve.is_open=1
+  </select>
+  
+</mapper>

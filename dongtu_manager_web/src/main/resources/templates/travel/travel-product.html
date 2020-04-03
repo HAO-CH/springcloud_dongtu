@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <div th:insert="/common/common.html"></div>
+</head>
+<body>
+<table id="table"></table>
+</body>
+</html>
+<script type="text/javascript">
+    $(function () {
+        $('#table').bootstrapTable({
+            url: '/travel/findTravelProducts',
+            toolbar: "#toolbar",
+            striped: true,                      //是否显示行间隔色
+            cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+            pagination: false,                   //是否显示分页（*）
+            sortable: true,                     //是否启用排序
+            sortOrder: "asc",                   //排序方式
+            search: true,                      //是否显示表格搜索
+            strictSearch: false,
+            showColumns: true,                  //是否显示所有的列（选择显示的列）
+            showRefresh: true,                  //是否显示刷新按钮
+            minimumCountColumns: 2,             //最少允许的列数
+            clickToSelect: true,                //是否启用点击选中行
+            //height: 500,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+            uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
+            showToggle: true,                   //是否显示详细视图和列表视图的切换按钮
+            cardView: false,                    //是否显示详细视图
+            detailView: false,                  //是否显示父子表
+            columns: [{
+                checkbox: true,
+                visible: true                  //是否显示复选框
+            }, {
+                field: 'tpId',
+                title: 'ID'
+            }, {
+                field: 'tpTitle',
+                title: '标题'
+            }, {
+                field: 'travelTypeName',
+                title: '类型',
+            }, {
+                field: 'tpNum',
+                title: '库存'
+            }, {
+                field: 'tpAdultPrice',
+                title: '成人价',
+            }, {
+                field: 'tpChildPrice',
+                title: '儿童价'
+            }, {
+                field: 'tpImg',
+                title: '图片',
+                formatter: tpImgFormatter
+            }, {
+                field: 'tpSellerName',
+                title: '关联商家名'
+            }, {
+                field: 'tpStatus',
+                title: '审核状态',
+                formatter: tpStatusFormatter
+            }, {
+                field: 'areaName',
+                title: '地区'
+            }, {
+                field: 'minPrice',
+                title: '最低价'
+            }, {
+                field: 'maxPrice',
+                title: '最高价'
+            }, {
+                field: 'tpGoTime',
+                title: '出发时间'
+            }, {
+                field: 'nname',
+                title: '导航位置'
+            }, {
+                title: '操作',
+                width: 120,
+                align: 'center',
+                valign: 'middle',
+                formatter: actionFormatter
+            }]
+        });
+    })
+
+    //操作栏的格式化
+    function actionFormatter(value, row, index) {
+        var id = row.tpId;
+        var result = "";
+        if (row.tpStatus == 0) {
+            result += "<a href='javascript:;' class='btn btn-xs red' onclick=\"Approved('" + id + "')\" title='审核通过'><span class='\tglyphicon glyphicon-eye-open'></span></a>";
+            result += "<a href='javascript:;' class='btn btn-xs red' onclick=\"AuditFails('" + id + "')\" title='审核不通过'><span class='glyphicon glyphicon-eye-close'></span></a>";
+        }
+        if (row.tpStatus == 1) {
+            result += "<a href='javascript:;' class='btn btn-xs red' onclick=\"AuditFails('" + id + "')\" title='审核不通过'><span class='glyphicon glyphicon-eye-close'></span></a>";
+        }
+        if (row.tpStatus == 2) {
+            result += "<a href='javascript:;' class='btn btn-xs red' onclick=\"Approved('" + id + "')\" title='审核通过'><span class='\tglyphicon glyphicon-eye-open'></span></a>";
+        }
+        return result;
+    }
+
+    //审核状态
+    function tpStatusFormatter(value, row, index) {
+        if (row.tpStatus == 0) {
+            return "未审核";
+        }
+        if (row.tpStatus == 1) {
+            return "审核通过";
+        }
+        if (row.tpStatus == 2) {
+            return "审核不通过";
+        }
+    }
+
+    //图片
+    function tpImgFormatter(value, row, index) {
+        var tpImgs = row.tpImg;
+        var tpImg = JSON.parse(tpImgs)
+        return "<img height='100px' width='100px' src=" + tpImg[0] + ">";
+    }
+
+    //刷新
+    function getData() {
+        $("#table").bootstrapTable("refresh");      /* 刷新*/
+    }
+
+    //审核通过
+    function Approved(tpId) {
+        $.ajax({
+            url: "/travel/updateTravelProductsStatus",
+            type: "post",
+            data: {tpId: tpId, tpStatus: 1},
+            async: false,//同步
+            dataType: "json",
+            success: function (result) {
+                if (result.code == 10000) {
+                    alert("审核通过");
+                    $("#table").bootstrapTable("refresh");
+                } else {
+                    alert("审核失败");
+                    $("#table").bootstrapTable("refresh");
+                }
+            },
+            error: function () {
+                alert('系统错误');
+            }
+        })
+    }
+
+    //审核不通过
+    function AuditFails(tpId) {
+        $.ajax({
+            url: "/travel/updateTravelProductsStatus",
+            type: "post",
+            data: {tpId: tpId, tpStatus: 2},
+            async: false,//同步
+            dataType: "json",
+            success: function (result) {
+                if (result.code == 10000) {
+                    alert("审核驳回");
+                    $("#table").bootstrapTable("refresh");
+                } else {
+                    alert("审核失败");
+                    $("#table").bootstrapTable("refresh");
+                }
+            },
+            error: function () {
+                alert('系统错误');
+            }
+        })
+    }
+</script>

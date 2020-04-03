@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:insert="common/common.html"></div>
+
+<div class="center">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="panel panel-primary">
+                    <div class="panel-heading" >
+                        <h1>登录</h1>
+                    </div>
+
+                    <div class="panel-body">
+                        <form id="loginForm" action="/login/toLog" method="post">
+                            <div class="form-group">
+                                <label for="name">账号</label>
+                                <input type="text" class="form-control" name="travelName" id="name" placeholder="请输入账号">
+                                <div id="tips"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password">密码</label>
+                                <input type="password" class="form-control" name="travelPassword" id="password" placeholder="请输入密码">
+                            </div>
+
+                            <input  type="submit" class="btn btn-success" value="登录">
+                            <input type="button" class="btn btn-success" value="注册" onclick="toRegister()">
+                        </form>
+                    </div>
+
+                    <div class="panel-footer">
+                        <a href="#">忘记密码？</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    function toRegister(){
+        location.href="/login/toRegister";
+    }
+</script>
+</html>

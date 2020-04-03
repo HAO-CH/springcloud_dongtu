@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongtu.mapper.TbTravelProductsMapper" >
+  <resultMap id="BaseResultMap" type="com.dongtu.pojo.TbTravelProducts" >
+    <id column="tp_id" property="tpId" jdbcType="BIGINT" />
+    <result column="tp_title" property="tpTitle" jdbcType="VARCHAR" />
+    <result column="travel_type_id" property="travelTypeId" jdbcType="BIGINT" />
+    <result column="tp_num" property="tpNum" jdbcType="BIGINT" />
+    <result column="tp_adult_price" property="tpAdultPrice" jdbcType="DECIMAL" />
+    <result column="tp_child_price" property="tpChildPrice" jdbcType="DECIMAL" />
+    <result column="tp_img" property="tpImg" jdbcType="VARCHAR" />
+    <result column="tp_seller_name" property="tpSellerName" jdbcType="VARCHAR" />
+    <result column="tp_status" property="tpStatus" jdbcType="INTEGER" />
+    <result column="tp_area_id" property="tpAreaId" jdbcType="BIGINT" />
+    <result column="is_delete" property="isDelete" jdbcType="INTEGER" />
+    <result column="min_price" property="minPrice" jdbcType="DECIMAL" />
+    <result column="max_price" property="maxPrice" jdbcType="DECIMAL" />
+    <result column="tp_seller_id" property="tpSellerId" jdbcType="BIGINT" />
+    <result column="tp_go_time" property="tpGoTime" jdbcType="TIMESTAMP" />
+    <result column="nid" property="nid" jdbcType="BIGINT" />
+    <result column="tp_pub_id" property="tpPubId" jdbcType="BIGINT" />
+  </resultMap>
+  <resultMap id="TravelProductsResultMap" type="com.dongtu.pojo.TbTravelProductsVo">
+    <id column="tp_id" property="tpId" jdbcType="BIGINT" />
+    <result column="tp_title" property="tpTitle" jdbcType="VARCHAR" />
+    <result column="travel_type_id" property="travelTypeId" jdbcType="BIGINT" />
+    <result column="tp_num" property="tpNum" jdbcType="BIGINT" />
+    <result column="tp_adult_price" property="tpAdultPrice" jdbcType="DECIMAL" />
+    <result column="tp_child_price" property="tpChildPrice" jdbcType="DECIMAL" />
+    <result column="tp_img" property="tpImg" jdbcType="VARCHAR" />
+    <result column="tp_seller_name" property="tpSellerName" jdbcType="VARCHAR" />
+    <result column="tp_status" property="tpStatus" jdbcType="INTEGER" />
+    <result column="tp_area_id" property="tpAreaId" jdbcType="BIGINT" />
+    <result column="is_delete" property="isDelete" jdbcType="INTEGER" />
+    <result column="min_price" property="minPrice" jdbcType="DECIMAL" />
+    <result column="max_price" property="maxPrice" jdbcType="DECIMAL" />
+    <result column="tp_seller_id" property="tpSellerId" jdbcType="BIGINT" />
+    <result column="tp_go_time" property="tpGoTime" jdbcType="TIMESTAMP" />
+    <result column="nid" property="nid" jdbcType="BIGINT" />
+    <result column="tp_pub_id" property="tpPubId" jdbcType="BIGINT" />
+    <result column="travelTypeName" property="travelTypeName" jdbcType="VARCHAR" />
+    <result column="areaName" property="areaName" jdbcType="VARCHAR" />
+    <result column="nname" property="nname" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    tp_id, tp_title, travel_type_id, tp_num, tp_adult_price, tp_child_price, tp_img, 
+    tp_seller_name, tp_status, tp_area_id, is_delete, min_price, max_price, tp_seller_id, 
+    tp_go_time, nid, tp_pub_id
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.dongtu.pojo.TbTravelProductsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_travel_products
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_travel_products
+    where tp_id = #{tpId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tb_travel_products
+    where tp_id = #{tpId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.dongtu.pojo.TbTravelProductsExample" >
+    delete from tb_travel_products
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.dongtu.pojo.TbTravelProducts" >
+    insert into tb_travel_products (tp_id, tp_title, travel_type_id, 
+      tp_num, tp_adult_price, tp_child_price, 
+      tp_img, tp_seller_name, tp_status, 
+      tp_area_id, is_delete, min_price, 
+      max_price, tp_seller_id, tp_go_time, 
+      nid, tp_pub_id)
+    values (#{tpId,jdbcType=BIGINT}, #{tpTitle,jdbcType=VARCHAR}, #{travelTypeId,jdbcType=BIGINT}, 
+      #{tpNum,jdbcType=BIGINT}, #{tpAdultPrice,jdbcType=DECIMAL}, #{tpChildPrice,jdbcType=DECIMAL}, 
+      #{tpImg,jdbcType=VARCHAR}, #{tpSellerName,jdbcType=VARCHAR}, #{tpStatus,jdbcType=INTEGER}, 
+      #{tpAreaId,jdbcType=BIGINT}, #{isDelete,jdbcType=INTEGER}, #{minPrice,jdbcType=DECIMAL}, 
+      #{maxPrice,jdbcType=DECIMAL}, #{tpSellerId,jdbcType=BIGINT}, #{tpGoTime,jdbcType=TIMESTAMP}, 
+      #{nid,jdbcType=BIGINT}, #{tpPubId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dongtu.pojo.TbTravelProducts" >
+    insert into tb_travel_products
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="tpId != null" >
+        tp_id,
+      </if>
+      <if test="tpTitle != null" >
+        tp_title,
+      </if>
+      <if test="travelTypeId != null" >
+        travel_type_id,
+      </if>
+      <if test="tpNum != null" >
+        tp_num,
+      </if>
+      <if test="tpAdultPrice != null" >
+        tp_adult_price,
+      </if>
+      <if test="tpChildPrice != null" >
+        tp_child_price,
+      </if>
+      <if test="tpImg != null" >
+        tp_img,
+      </if>
+      <if test="tpSellerName != null" >
+        tp_seller_name,
+      </if>
+      <if test="tpStatus != null" >
+        tp_status,
+      </if>
+      <if test="tpAreaId != null" >
+        tp_area_id,
+      </if>
+      <if test="isDelete != null" >
+        is_delete,
+      </if>
+      <if test="minPrice != null" >
+        min_price,
+      </if>
+      <if test="maxPrice != null" >
+        max_price,
+      </if>
+      <if test="tpSellerId != null" >
+        tp_seller_id,
+      </if>
+      <if test="tpGoTime != null" >
+        tp_go_time,
+      </if>
+      <if test="nid != null" >
+        nid,
+      </if>
+      <if test="tpPubId != null" >
+        tp_pub_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="tpId != null" >
+        #{tpId,jdbcType=BIGINT},
+      </if>
+      <if test="tpTitle != null" >
+        #{tpTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="travelTypeId != null" >
+        #{travelTypeId,jdbcType=BIGINT},
+      </if>
+      <if test="tpNum != null" >
+        #{tpNum,jdbcType=BIGINT},
+      </if>
+      <if test="tpAdultPrice != null" >
+        #{tpAdultPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="tpChildPrice != null" >
+        #{tpChildPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="tpImg != null" >
+        #{tpImg,jdbcType=VARCHAR},
+      </if>
+      <if test="tpSellerName != null" >
+        #{tpSellerName,jdbcType=VARCHAR},
+      </if>
+      <if test="tpStatus != null" >
+        #{tpStatus,jdbcType=INTEGER},
+      </if>
+      <if test="tpAreaId != null" >
+        #{tpAreaId,jdbcType=BIGINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="minPrice != null" >
+        #{minPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="maxPrice != null" >
+        #{maxPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="tpSellerId != null" >
+        #{tpSellerId,jdbcType=BIGINT},
+      </if>
+      <if test="tpGoTime != null" >
+        #{tpGoTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="nid != null" >
+        #{nid,jdbcType=BIGINT},
+      </if>
+      <if test="tpPubId != null" >
+        #{tpPubId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.dongtu.pojo.TbTravelProductsExample" resultType="java.lang.Integer" >
+    select count(*) from tb_travel_products
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_travel_products
+    <set >
+      <if test="record.tpId != null" >
+        tp_id = #{record.tpId,jdbcType=BIGINT},
+      </if>
+      <if test="record.tpTitle != null" >
+        tp_title = #{record.tpTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.travelTypeId != null" >
+        travel_type_id = #{record.travelTypeId,jdbcType=BIGINT},
+      </if>
+      <if test="record.tpNum != null" >
+        tp_num = #{record.tpNum,jdbcType=BIGINT},
+      </if>
+      <if test="record.tpAdultPrice != null" >
+        tp_adult_price = #{record.tpAdultPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.tpChildPrice != null" >
+        tp_child_price = #{record.tpChildPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.tpImg != null" >
+        tp_img = #{record.tpImg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tpSellerName != null" >
+        tp_seller_name = #{record.tpSellerName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tpStatus != null" >
+        tp_status = #{record.tpStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.tpAreaId != null" >
+        tp_area_id = #{record.tpAreaId,jdbcType=BIGINT},
+      </if>
+      <if test="record.isDelete != null" >
+        is_delete = #{record.isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="record.minPrice != null" >
+        min_price = #{record.minPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.maxPrice != null" >
+        max_price = #{record.maxPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.tpSellerId != null" >
+        tp_seller_id = #{record.tpSellerId,jdbcType=BIGINT},
+      </if>
+      <if test="record.tpGoTime != null" >
+        tp_go_time = #{record.tpGoTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.nid != null" >
+        nid = #{record.nid,jdbcType=BIGINT},
+      </if>
+      <if test="record.tpPubId != null" >
+        tp_pub_id = #{record.tpPubId,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_travel_products
+    set tp_id = #{record.tpId,jdbcType=BIGINT},
+      tp_title = #{record.tpTitle,jdbcType=VARCHAR},
+      travel_type_id = #{record.travelTypeId,jdbcType=BIGINT},
+      tp_num = #{record.tpNum,jdbcType=BIGINT},
+      tp_adult_price = #{record.tpAdultPrice,jdbcType=DECIMAL},
+      tp_child_price = #{record.tpChildPrice,jdbcType=DECIMAL},
+      tp_img = #{record.tpImg,jdbcType=VARCHAR},
+      tp_seller_name = #{record.tpSellerName,jdbcType=VARCHAR},
+      tp_status = #{record.tpStatus,jdbcType=INTEGER},
+      tp_area_id = #{record.tpAreaId,jdbcType=BIGINT},
+      is_delete = #{record.isDelete,jdbcType=INTEGER},
+      min_price = #{record.minPrice,jdbcType=DECIMAL},
+      max_price = #{record.maxPrice,jdbcType=DECIMAL},
+      tp_seller_id = #{record.tpSellerId,jdbcType=BIGINT},
+      tp_go_time = #{record.tpGoTime,jdbcType=TIMESTAMP},
+      nid = #{record.nid,jdbcType=BIGINT},
+      tp_pub_id = #{record.tpPubId,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dongtu.pojo.TbTravelProducts" >
+    update tb_travel_products
+    <set >
+      <if test="tpTitle != null" >
+        tp_title = #{tpTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="travelTypeId != null" >
+        travel_type_id = #{travelTypeId,jdbcType=BIGINT},
+      </if>
+      <if test="tpNum != null" >
+        tp_num = #{tpNum,jdbcType=BIGINT},
+      </if>
+      <if test="tpAdultPrice != null" >
+        tp_adult_price = #{tpAdultPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="tpChildPrice != null" >
+        tp_child_price = #{tpChildPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="tpImg != null" >
+        tp_img = #{tpImg,jdbcType=VARCHAR},
+      </if>
+      <if test="tpSellerName != null" >
+        tp_seller_name = #{tpSellerName,jdbcType=VARCHAR},
+      </if>
+      <if test="tpStatus != null" >
+        tp_status = #{tpStatus,jdbcType=INTEGER},
+      </if>
+      <if test="tpAreaId != null" >
+        tp_area_id = #{tpAreaId,jdbcType=BIGINT},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="minPrice != null" >
+        min_price = #{minPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="maxPrice != null" >
+        max_price = #{maxPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="tpSellerId != null" >
+        tp_seller_id = #{tpSellerId,jdbcType=BIGINT},
+      </if>
+      <if test="tpGoTime != null" >
+        tp_go_time = #{tpGoTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="nid != null" >
+        nid = #{nid,jdbcType=BIGINT},
+      </if>
+      <if test="tpPubId != null" >
+        tp_pub_id = #{tpPubId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where tp_id = #{tpId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dongtu.pojo.TbTravelProducts" >
+    update tb_travel_products
+    set tp_title = #{tpTitle,jdbcType=VARCHAR},
+      travel_type_id = #{travelTypeId,jdbcType=BIGINT},
+      tp_num = #{tpNum,jdbcType=BIGINT},
+      tp_adult_price = #{tpAdultPrice,jdbcType=DECIMAL},
+      tp_child_price = #{tpChildPrice,jdbcType=DECIMAL},
+      tp_img = #{tpImg,jdbcType=VARCHAR},
+      tp_seller_name = #{tpSellerName,jdbcType=VARCHAR},
+      tp_status = #{tpStatus,jdbcType=INTEGER},
+      tp_area_id = #{tpAreaId,jdbcType=BIGINT},
+      is_delete = #{isDelete,jdbcType=INTEGER},
+      min_price = #{minPrice,jdbcType=DECIMAL},
+      max_price = #{maxPrice,jdbcType=DECIMAL},
+      tp_seller_id = #{tpSellerId,jdbcType=BIGINT},
+      tp_go_time = #{tpGoTime,jdbcType=TIMESTAMP},
+      nid = #{nid,jdbcType=BIGINT},
+      tp_pub_id = #{tpPubId,jdbcType=BIGINT}
+    where tp_id = #{tpId,jdbcType=BIGINT}
+  </update>
+  <!--查询所有的旅游商品-->
+  <select id="findTravelProducts" resultMap="TravelProductsResultMap">
+    SELECT ttp.*,ttt.travel_type_name as travelTypeName,ta.area_name as areaName,tn.nname as nname from tb_travel_products ttp LEFT JOIN tb_travel_type ttt on ttp.travel_type_id=ttt.travel_type_id
+    LEFT JOIN tb_area ta on ttp.tp_area_id=ta.area_id
+    LEFT JOIN tb_navbar tn on ttp.nid=tn.nid
+    where ttp.is_delete=0
+  </select>
+
+</mapper>

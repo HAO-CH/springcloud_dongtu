@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>幸运大转盘</title>
+    <link rel="stylesheet" href="/css/index1.css">
+    <style>
+        *{
+            margin:0;
+            padding:0;
+        }
+        .lunbo{
+            position: relative;
+            width: 300px;
+            height: 50px;
+            border:0px solid red;
+            overflow: hidden;
+        }
+        ul{
+            position:absolute;
+            left: 0;
+            top:0;
+            width: 300px;
+            height: auto;
+            text-align: center;
+        }
+        ul li{
+            width: 300px;
+            height: 50px;
+            line-height: 50px;
+            font-size:20px;
+            color:red;
+            text-align: center
+        }
+    </style>
+</head>
+<body>
+
+<div class="box-lottery">
+    <div class="lottery-wrap" style="transform: rotate(-45deg);">
+            <span class="lottery-span1" data-id="8">
+                <i>积分<br>100</i><img src="/img/lottery_01.png" alt="积分100">
+            </span>
+        <span class="lottery-span2" data-id="7">
+                <i>积分<br>200</i><img src="/img/lottery_02.png" alt="积分200">
+            </span>
+        <span class="lottery-span3" data-id="6">
+                <i>积分<br>500</i><img src="/img/lottery_03.png" alt="积分500">
+            </span>
+        <span class="lottery-span4" data-id="5">
+                <i>积分<br>1000</i><img src="/img/lottery_04.png" alt="积分1000">
+            </span>
+        <span class="lottery-span5" data-id="1">
+                <i>谢谢参与</i><img src="/img/lottery_05.png" alt="谢谢参与">
+            </span>
+        <span class="lottery-span6" data-id="4">
+                <i>积分<br>2000</i><img src="/img/lottery_06.png" alt="积分2000">
+            </span>
+        <span class="lottery-span7" data-id="2">
+                <i>积分<br>5000</i><img src="/img/lottery_07.png" alt="积分5000">
+            </span>
+        <span class="lottery-span8" data-id="3">
+                <i><br>谢谢参与</i><img src="/img/lottery_05.png" alt="谢谢参与">
+            </span>
+    </div>
+    <a class="lottery-btn" href="javascript:void(0);"><i></i>立即抽奖</a>
+</div>
+<div style="font-size:20px;margin: 0 auto 40%"><a href="/" style="color: red">返回首页</a></div>
+<div class="lunbo">
+    <ul id="jiang">
+
+    </ul>
+</div>
+<div style="margin: 0 auto 0">
+    <!--<marquee scrollamount=25 direction=left behavior=alternate><h3 style="color: #5e5e5e">盘它！盘它！盘它！</h3></marquee>-->
+    <marquee width="530px" scrollamount=15><span style="font-weight: bolder;font-size: 40px;color: orange;">东途提醒您:500积分可抽取一次^_^礼物虽好不要贪抽哦</span>
+        <h3 style="color: #0EAB25">幸运大奖等你来拿 ^_^</h3></marquee>
+    <!--<marquee scrollamount=20 behavior=alternate><h3 style="color: #5e5e5e">抽我！抽我！抽我</h3></marquee>-->
+</div>
+<script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+<script src="/js/lib/anime.min.js"></script>
+<script src="/js/app/lottery.js"></script>
+<script>
+    $(function () {
+        //查询中奖信息
+        winning()
+    })
+    var Lottery = Turntable.create();
+    //点击抽奖
+    $('.lottery-btn').on('click', function () {
+        //先判断用户积分是否充足
+        $.ajax({
+            url: "/loginController/reward",
+            data: {},
+            type: "post",
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                if (result.points == 0) {
+                    alert("抱歉，您当前的积分不足以抽奖");
+                }
+                if (result.points == 1) {
+                    var num = Math.floor(Math.random() * 8);
+                    Lottery.start(num, function (index) {
+                        alert($('span').eq(index).find('i').text());
+                        console.log('index', index, 'lottery-span', 'lottery-span' + (index + 1));
+                        luckyDraw($('span').eq(index).find('i').text());
+                    });
+                }
+            },
+            error: function () {
+                alert("系统错误");
+            }
+        });
+    });
+
+    //抽奖后扣积分以及加相应积分
+    function luckyDraw(score) {
+        $.ajax({
+            url: "/loginController/changeIntegral",
+            data: {score: score},
+            type: "post",
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                window.location.reload();
+            },
+            error: function () {
+                alert("系统错误");
+            }
+        });
+    }
+
+    //用户中奖信息
+    function winning() {
+        $.ajax({
+            url: "/loginController/findWinning",
+            data: {},
+            type: "post",
+            dataType: "json",
+            async: true,
+            success: function (result) {
+                var jiang = "";
+                $(result).each(function (i, e) {
+                    jiang += "<li>恭喜用户：" + e['userName'] + "抽中" + e['award'] + "</li>";
+                })
+                $("#jiang").html(jiang);
+            },
+            error: function () {
+                alert("系统错误");
+            }
+        });
+    }
+</script>
+</body>
+</html>
+<script>
+    function lunbo(id,height){
+        var ul=$(id);
+        var liFirst=ul.find('li:first');
+        $(id).animate({top:height}).animate({"top":0},0,function(){
+            var clone=liFirst.clone();
+            $(id).append(clone);
+            liFirst.remove();
+        })
+    }
+    setInterval("lunbo('ul','-50px')",2000)
+</script>

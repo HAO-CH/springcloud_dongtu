@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+
+<h2>页面跳转中 请稍后 >>>>>></h2>
+
+</body>
+<script>
+    var id = setInterval("run()",2000)
+
+    function run() {
+        $.ajax({
+            url: "/order/checkOrderDone",
+            type: "post",
+            data: {},
+            async: false,//同步
+            dataType: "json",
+            success: function (result) {
+                if (result) {
+                    clearInterval(id);
+                    location.href = "/userOrderController/payList";
+                }
+            },
+            error: function (result) {
+                alert('系统错误');
+            }
+        })
+    }
+</script>
+</html>

@@ -1,0 +1,78 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">-->
+<!--<head>-->
+    <!--<meta charset="UTF-8">-->
+    <!--<title>Title</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<form id="addForm">-->
+    <!--<input type="hidden" name="id" value="${p.id}">-->
+    <!--商品名：<input name="seckillTitle" value="${p.seckillTitle}"><br><br>-->
+    <!--图片：-->
+        <!--<img width="60" src="/file/download?filename=${p.seckillSmallPic}">-->
+        <!--<input type="hidden" name="seckillSmallPic" id="img">-->
+        <!--<input type="file" id="myFile" name="myFile"><br><br>-->
+    <!--成人原价：<input name="seckillAdultPrice" value="${p.seckillAdultPrice}"><br><br>-->
+    <!--成人秒杀价：<input name="seckillAdultCostPrice" value="${p.seckillAdultCostPrice}"><br><br>-->
+    <!--儿童原价：<input name="seckillChildPrice" value="${p.seckillChildPrice}"><br><br>-->
+    <!--儿童秒杀价：<input name="seckillChildCostPrice" value="${p.seckillChildCostPrice}"><br><br>-->
+    <!--地区：-->
+    <!--<select name="seckillArea" th:each="area:${areaList}" onchange="findPubByAreaId(this.value)">-->
+        <!--<option th:value="${area.areaId}">[[${area.areaName}]]</option>-->
+    <!--</select>-->
+    <!--类型：-->
+    <!--<select name="seckillType" th:each="navbar:${navbarList}">-->
+        <!--<option value="${navbar.nid}">[[${navbar.nname}]]</option>-->
+    <!--</select>-->
+    <!--酒店：-->
+    <!--<div id="selectPub">-->
+
+    <!--</div>-->
+    <!--库存：<input name="seckillStockCount"><br><br>-->
+    <!--秒杀开始时间：<input name="seckillStartDate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"><br><br>-->
+    <!--秒杀结束时间：<input name="seckillEndDate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"><br><br>-->
+    <!--商品描述：<input name="seckillProductDesc" value="${p.seckillProductDesc}"><br><br>-->
+    <!--出发时间：<input name="tpGoTime" onclick="WdatePicker()"><br><br>-->
+<!--</form>-->
+<!--</body>-->
+<!--<script type="text/javascript">-->
+    <!--$('#myFile').fileinput({-->
+        <!--language: 'zh',-->
+        <!--uploadUrl: "/file/upload",-->
+        <!--browseClass: 'btn btn-primary',-->
+        <!--allowedFileExtensions: ['jpg','gif','png','xls','xlsx'], //允许上传类型-->
+        <!--maxFileSize: 2048,-->
+        <!--maxFileCount: 2,-->
+        <!--enctype: "multipart/form-data"-->
+    <!--});-->
+
+    <!--$('#myFile').on('fileuploaded',function(event, data, previewId, index){-->
+        <!--console.log(data.response.imgUrl)-->
+        <!--if (data.response != null) {-->
+            <!--$("#img").val(data.response.imgUrl);-->
+        <!--}-->
+    <!--})-->
+
+    <!--function findPubByAreaId(areaId) {-->
+        <!--$.ajax({-->
+            <!--url: "/pub/findByArea",-->
+            <!--data: {areaId:areaId},-->
+            <!--type: "post",-->
+            <!--dataType: "json",-->
+            <!--async: false,-->
+            <!--success: function (result) {-->
+                <!--var publist = result.data;-->
+                <!--var div = "<select name='seckillPubId'>";-->
+                <!--for (var i = 0; i < publist.length; i++) {-->
+                    <!--div += "<option value='"+publist[i].pubsId+"'>"+publist[i].pubsName+"</option>";-->
+                <!--}-->
+                <!--div += "</select>";-->
+                <!--$("#selectPub").html(div);-->
+            <!--},-->
+            <!--error: function () {-->
+                <!--toastr.error("系统错误");-->
+            <!--}-->
+        <!--});-->
+    <!--}-->
+<!--</script>-->
+<!--</html>-->

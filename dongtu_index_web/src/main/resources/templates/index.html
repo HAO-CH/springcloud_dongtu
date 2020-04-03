@@ -1,0 +1,488 @@
+<!doctype html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8">
+<title>东途旅游，随心而行，随意而留</title>
+<link rel="shortcut icon" href="bitbug_favicon.ico"/>
+<link rel="stylesheet" type="text/css" href="/css/style.css" />
+<link rel="stylesheet" type="text/css" href="/css/global.css" />
+
+    <script type="text/javascript" src="/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            // 导航
+            $(".nav>ul>li").mouseenter(function (event) {
+                $(this).addClass("cur").siblings().removeClass("cur")
+                $(this).children(".yincang").stop().slideDown()
+
+            });
+            $(".nav>ul>li").mouseleave(function (event) {
+                $(this).removeClass("cur")
+                $(this).children(".yincang").stop().slideUp()
+            });
+            // tejia
+            $(".tejia .wenzi span").mouseenter(function (event) {
+                $(this).addClass("cur").siblings().removeClass("cur")
+            });
+            // 品牌目的地
+            $(".pinpai_inr ul li").mouseenter(function (event) {
+                $(this).addClass("cur").siblings().removeClass("cur")
+            });
+            $(".pinpai_inr ul li").mouseleave(function (event) {
+                $(".pinpai_inr ul li").removeClass("cur")
+            });
+            //
+            $(".tututu").mouseenter(function (event) {
+                $(this).children(".heibu").stop().slideDown()
+            });
+            $(".tututu").mouseleave(function (event) {
+                $(this).children(".heibu").stop().slideUp()
+            });
+            //banner
+            var nowing = 0
+            var $imglis = $(".banner .list0 li")
+            var $fadeCover = $(".fadeCover")
+            var fadeIntime = 500
+            var fadeOutime = 800
+            var $circle = $(".circle li")
+            var timer
+
+            // 定义函数
+            function rightbtn() {
+                // 先信号量的改变，
+
+                nowing++
+                if (nowing > $imglis.length - 1) {
+                    nowing = 0
+                }
+                // 再调用函数
+                dong();
+            }
+
+            // 定时器业务
+            timer = setInterval(rightbtn, 2000)
+            $(".banner").mouseenter(function () {
+                clearInterval(timer)
+
+            })
+            $(".banner").mouseleave(function () {
+                clearInterval(timer)
+                timer = setInterval(rightbtn, 2000)
+            })
+            // 点击小圆点业务
+            $circle.click(function () {
+                nowing = $(this).index()
+                dong()
+            })
+
+            function dong() {
+                // 先让fadecover淡入，让全局变白
+                $fadeCover.fadeIn(fadeIntime, function () {
+                    // ,function(){
+                    // 回调函数中，就表示fadecover淡入后做的事情。
+                    // 换图是干蹦的，不是淡入淡出的换,进行暗箱操作，兄弟去cur，自己加cur
+                    $imglis.eq(nowing).addClass('cur').siblings().removeClass('cur')
+                    // 淡出让黑布小事
+                    $(this).fadeOut(fadeOutime)
+                })
+                $circle.eq(nowing).addClass("cur").siblings().removeClass("cur")
+            }
+
+        })
+    </script>
+</head>
+<body>
+<div th:insert="head.html"></div>
+
+<div class="banner">
+    <!--轮播图-->
+    <ul class="list0">
+        <li class="cur"><a href="#"><img src="" id="imageId1" alt=""/></a></li>
+        <li><a href="#"><img src="" alt="" id="imageId2"/></a></li>
+        <li><a href="#"><img src="" alt="" id="imageId3"/></a></li>
+    </ul>
+    <div class="fadeCover"></div>
+    <ul class="circle">
+        <li class="cur">1</li>
+        <li>2</li>
+        <li>3</li>
+    </ul>
+</div>
+<div>
+    <!--天气信息-->
+    <center>
+        <ul class="fl" th:each="list : ${lg}">
+            <span style="margin-left: 10%;font-size: 8px;color: red">
+                当前地区:[[${list.province}]]
+                天气:[[${list.weather}]]
+                温度:[[${list.temperature}]]°
+                湿度:[[${list.humidity}]]°
+            </span>
+        </ul>
+        <button onclick="toUe()">发表游记</button>
+    </center>
+</div>
+<!-- 内容区域 -->
+<!-- 分享 -->
+
+<div class="cl"></div>
+<div class="hot">
+    <div class="new">最新旅游产品
+        <span></span>
+    </div>
+    <div class="main">
+        <ul id="news">
+            <!--<li class="cur">马尔代夫真的太美了，下次还要再去！</li>-->
+            <!--<li>丽江之美，美及天下</li>-->
+            <!--<li>做一个没有故事的人,与我一起游世界。</li>-->
+            <!--<li>转机的时候还能在新加坡机场免税店购物,</li>-->
+        </ul>
+    </div>
+    <script type="text/javascript" src="js/hot.js"></script>
+
+    <div class="comeon">即刻出发
+        <span></span>
+    </div>
+</div>
+<div class="cl"></div>
+<div class="tejia">
+    <p class="wenzi">
+
+        <span class="cur">每日特价</span>
+    </p>
+    <p class="sanjiao"></p>
+</div>
+<!--每日特价秒杀商品-->
+<div class="youhuitu">
+    <ul id="seckill">
+
+    </ul>
+
+</div>
+<div class="tejia">
+    <p class="wenzi">
+
+        <span class="cur">猜你喜欢</span>
+    </p>
+    <p class="sanjiao"></p>
+</div>
+<!--猜你喜欢商品-->
+<div class="youhuitu">
+    <ul id="youlike">
+
+    </ul>
+
+</div>
+<div class="yaotiao">
+        <img src="/img/yaotiao.jpg" alt="" />
+</div>
+<!--//品牌目的地-->
+<div class="pinpai">
+    <p class="wenzi">
+        品牌目的地
+    </p>
+</div>
+<div class="pinpai_in">
+    <div class="pinpai_inl">
+        <img src="/img/pinpai_left.png" alt="" />
+        <div class="pinpai_inlin">
+        </div>
+        <span class="pinpai_inl_span1">马尔代夫超值连线游</span>
+        <span class="pinpai_inl_span2">让你一次游个够，心动不如行动吧！</span>
+    </div>
+    <div class="pinpai_inr">
+       <!--id destination表示目的地-->
+        <ul id="destination">
+        </ul>
+    </div>
+
+
+</div>
+<div class="pinpai">
+    <p class="wenzi">
+        今日推荐
+    </p>
+</div>
+<div class="chujingyou">
+    <div class="chujingyou-l">
+        <ul id="today">
+        </ul>
+    </div>
+    <!--游记展示-->
+    <div class="chujingyou-r">
+        <span></span>
+        <img src="/img/cheshow.jpg" alt="" />
+        <div class="show" id="travels">
+        </div>
+    </div>
+</div>
+<div class="footer">
+    <div class="navfoot">
+        <ul>
+            <li><a href="#">关于我们</a></li>
+            <li><a href="#">营销服务</a></li>
+            <li><a href="#">商家服务</a></li>
+            <li><a href="#">新手上路</a></li>
+            <li><a href="#">合作伙伴</a></li>
+            <li><a href="#">关注我们</a></li>
+        </ul>
+    </div>
+    <div class="share">
+        <span class="s1"></span>
+        <span class="s2"></span>
+        <span class="s3"></span>
+        <span class="s4"></span>
+    </div>
+    <div class="cl"></div>
+    <p>版权所有&copy;2019 FREE TRAVEL北京东途网有限公司</p>
+    <p>京ICP备11099888号 京公网安备1101888888</p>
+</div>
+<!-- topback -->
+
+</body>
+<script>
+
+    $(function () {
+        //轮播图
+        SlideShow();
+        //今日推荐
+        TodayRecommend();
+        //品牌目的地
+        findDestination();
+        //游记查询
+        findTravelsAll();
+    })
+
+    //游记查询
+    function findTravelsAll() {
+        $.ajax({
+            url: "/travelsController/findTravelsAll",
+            data: {},
+            type: "post",
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                var list = result.data;
+                console.log(list);
+                var div = "";
+                div += "<ul>";
+                for (var i = 0; i < list.length; i++) {
+                    var content = list[i].trvelsContent;
+                    var travelsId = list[i].travelsId;
+                    if (content != null && content != "") {
+                        var reg = /[\u4e00-\u9fa5]/g;
+                        var trvelsContent = content.match(reg).join("");
+                        div += "<li><a href='/travelsController/findTravelsById?travelsId=" + travelsId + "'>" + "【游记】" + (trvelsContent).substring(0, 10) + "..." + "</a></li>"
+                    }
+                }
+                div += "</ul>";
+                $("#travels").html(div);
+            },
+            error: function () {
+                alert("系统错误");
+            }
+        });
+    }
+    //轮播图
+    function SlideShow() {
+        $.ajax({
+            url: "/advertiseController/SlideShow",
+            data: {},
+            type: "post",
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                $("#imageId1").attr("src", result[0].adImg);
+                $("#imageId2").attr("src", result[1].adImg);
+                $("#imageId3").attr("src",result[2].adImg);
+            },
+            error: function () {
+                alert("系统错误");
+            }
+        });
+    }
+
+    //今日推荐
+    function TodayRecommend() {
+        $.ajax({
+            url: "/advertiseController/TodayRecommend",
+            data: {},
+            type: "post",
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                var div = "";
+                $(result).each(function (i,e) {
+                    var adId = e['adId'];
+                    var adFieldId = e['adFieldId'];
+                    var adLink = e['adLink'];
+                    div += "<li class='li11'>";
+                    div += "<a href='#' onclick='advDeduction("+adId+","+adFieldId+")'>";
+                    div += "<input type='hidden' id='adLink' value='"+adLink+"'>";
+                    div += "<img src='"+e['adImg']+"' alt='' class='img11'/>";
+                    div += "<span>"+e['adName']+"</span>";
+                    div += "<div class='heibu1 heibu'>";
+                    div += "'"+e['adName']+"'";
+                    div += "</div>";
+                    div += "</a>";
+                    div += "</li>";
+                })
+
+                $("#today").html(div);
+            },
+            error: function () {
+                alert("系统错误");
+            }
+        });
+    }
+
+    //品牌目的地
+    function findDestination() {
+        $.ajax({
+            url: "/advertiseController/findAreaToImg",
+            data: {},
+            type: "post",
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                var div = "";
+                $(result).each(function (i, e) {
+                    div += "<li class='cur'>";
+                    //根据地区Id查询地区内所有的景点信息
+                    div += "<a href='/advertiseController/findAreaByIdAll?areaId=" + e['areaId'] + "'>";
+                    div += "<img src='" + e['areaNameImg'] + "' alt=''/>";
+                    div += "<span></span>"
+                    div += "<p>" + e['areaName'] + "</p>";
+                    div += "<div class='heibu1 heibu'>";
+                    div += "</a>";
+                    div += "</li>";
+                })
+                $("#destination").html(div);
+            },
+            error: function () {
+                alert("系统错误");
+            }
+        });
+    }
+
+    $(function () {
+        skinlady();
+        news();
+        //猜你喜欢
+        youlike();
+    })
+
+    //每日特价
+    function skinlady() {
+        $.ajax({
+            url: "/seckillController/findSkinladyAll",
+            data: {},
+            type: "post",
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                console.log(result)
+                var div = "";
+                $(result).each(function (i, e) {
+                    div += "<li>";
+                    div += "<a href='/seckillController/findById?id=" + e['id'] + "'>";
+                    div += "<img src='" + e['seckillSmallPic'] + "' alt=''/>";
+                    div += "<div class='youhuitu-in'>";
+                    div += "<div class='youhuitu-inl'> 优惠</div>";
+                    div += "<div class='youhuitu-inr'> " + "特价:" + e['seckillAdultPrice'] + "元" + "</div>";
+                    div += "<div class='xiangxi'><font size='4'>" + e['seckillTitle'] + "</font></div>";
+                    div += "</div>";
+                    div += "</a>";
+                    div += "</li>";
+                })
+                $("#seckill").html(div);
+            },
+            error: function () {
+                alert("系统错误");
+            }
+        });
+    }
+
+    //猜你喜欢
+    function youlike() {
+        $.ajax({
+            url: "/pushController/findPushAll",
+            data: {},
+            type: "post",
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                console.log(result)
+                var div = "";
+                $(result).each(function (i, e) {
+                    var tpImgs = e['tpImg']
+                    var tpImgStr = JSON.parse(tpImgs)
+                    div += "<li>";
+                    div += "<a href='http://localhost/" + e['tpId'] + ".html'>";
+                    div += "<img src='" + tpImgStr[0] + "' alt=''/>";
+                    div += "<div class='youhuitu-in'>";
+                    div += "<div class='youhuitu-inl'> 价格</div>";
+                    div += "<div class='youhuitu-inr'>" + e['tpAdultPrice'] + "元" + "</div>";
+                    var tpTitle = e['tpTitle']
+                    div += "<div class='xiangxi'><font size='4'>" + tpTitle.substr(0,15)+"..." + "</font></div>";
+                    div += "</div>";
+                    div += "</a>";
+                    div += "</li>";
+                })
+                $("#youlike").html(div);
+            },
+            error: function () {
+                alert("系统错误");
+            }
+        });
+    }
+
+    //最新旅游商品
+    function news() {
+        $.ajax({
+            url: "/advertiseController/findNewsTravelAll",
+            data: {},
+            type: "post",
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                console.log(result)
+                var div = "";
+                $(result).each(function (i, e) {
+                    div += "<li>";
+                    div += "<a href='http://localhost/" + e['tpId'] + ".html'>" + e['tpTitle'] + "</a>";
+                    div += "</li>";
+                })
+                $("#news").html(div);
+            },
+            error: function () {
+                alert("系统错误");
+            }
+        });
+    }
+    //广告扣款
+    function advDeduction(adId,adFieldId) {
+        // alert(adId)
+        // alert(adFieldId)
+        var adLink = ($("#adLink").val());
+        $.ajax({
+            url:"/advertiseController/advDeduction",
+            data:{adId:adId,adFieldId:adFieldId},
+            type:"post",
+            dataType:"json",
+            async:false,
+            success:function(result){
+               if (result==true){
+                   location.href=adLink;
+               }
+            },
+            error:function(){
+                alert("系统错误");
+            }
+        });
+    }
+    function toUe() {
+       location.href="/travelsController/toUe";
+    }
+</script>
+</html>

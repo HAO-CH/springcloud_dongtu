@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body >
+<div th:insert="common/common.html"></div>
+
+    <!--时间单位：-->
+        <!--<select onchange="findByTimeUnit(this.value)">-->
+            <!--<option value="1">5分钟</option>-->
+            <!--<option value="2">小时</option>-->
+            <!--<option value="3">天</option>-->
+        <!--</select>-->
+
+    <!--选择商家：-->
+        <!--<select>-->
+            <!--<option></option>-->
+        <!--</select>-->
+
+<div id="main" style="width: 600px;height:400px;"></div>
+
+<script type="text/javascript">
+    $(function () {
+        findByTimeUnit(2);
+    })
+
+    function findByTimeUnit(flag){
+        var time=[]
+        var count=[]
+        $.ajax({
+            url: "/countGoods/findByTimeUnit",
+            data: {flag:flag},//参数
+            type: "post",
+            dataType: "json",
+            async: false,//同步
+            success:function(list) {
+                $(list).each(function (i, e) {
+                    time.push(i);
+                    count.push(e);
+                })
+            }
+        })
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+        var option = {
+            xAxis: {
+                type: 'category',
+                data: time
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [{
+                data: count,
+                type: 'line'
+            }]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: dongtu-config-service
+  cloud:
+    config:
+      label: master
+      server:
+        git:
+          uri: http://10.112.3.12:8003/dk1902-1zu/dongtu_config.git
+          search-paths: respo
+          username: 1225099416@qq.com
+          password: 15720781981
+
+server:
+  port: 8888
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://10.112.3.6:8761/eureka/

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form id="addForm">
+    商品名：<input name="goodsName" ><br><br>
+    需积分：<input name="goodsIntegral"><br><br>
+    库存：<input name="goodsNum"><br><br>
+    图片
+    <input type="text" name="goodsImage" id="goodsImage">
+    <input type="file"  id="myFile" name="myFile" multiple >
+
+
+</form>
+</body>
+</html>
+
+<script type="text/javascript">
+
+    $('#myFile').fileinput({
+        language: 'zh',
+        uploadUrl: "/file/upload",
+        browseClass: 'btn btn-primary',
+        allowedFileExtensions: ['jpg','gif','png','xls','xlsx'], //允许上传类型
+        maxFileSize: 2048,
+        maxFileCount: 2,
+        enctype: "multipart/form-data"
+    });
+    $('#myFile').on('fileuploaded',function(event, data, previewId, index){
+        console.log(data.response.imgUrl)
+        if (data.response != null) {
+            $("#goodsImage").val(data.response.imgUrl);
+        }
+    })
+
+
+
+</script>
+</html>

@@ -1,0 +1,431 @@
+<!doctype html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <title>东途旅游，随心而行，随意而留</title>
+    <link rel="shortcut icon" href="bitbug_favicon.ico"/>
+    <link rel="stylesheet" type="text/css" href="/css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/global.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/normalize.css"/>
+    <script type="text/javascript" src="/js/jquery-1.9.1.min.js"></script>
+    <script src="/js/common.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">
+        $(function () {
+            // 导航
+            $(".nav>ul>li").mouseenter(function (event) {
+                $(this).addClass("cur").siblings().removeClass("cur")
+                $(this).children(".yincang").stop().slideDown()
+
+            });
+            $(".nav>ul>li").mouseleave(function (event) {
+                $(this).removeClass("cur")
+                $(this).children(".yincang").stop().slideUp()
+            });
+            // tejia
+            $(".tejia .wenzi span").mouseenter(function (event) {
+                $(this).addClass("cur").siblings().removeClass("cur")
+            });
+            // 品牌目的地
+            $(".pinpai_inr ul li").mouseenter(function (event) {
+                $(this).addClass("cur").siblings().removeClass("cur")
+            });
+            $(".pinpai_inr ul li").mouseleave(function (event) {
+                $(".pinpai_inr ul li").removeClass("cur")
+            });
+            //
+            $(".tututu").mouseenter(function (event) {
+                $(this).children(".heibu").stop().slideDown()
+            });
+            $(".tututu").mouseleave(function (event) {
+                $(this).children(".heibu").stop().slideUp()
+            });
+            //banner
+            var nowing = 0
+            var $imglis = $(".banner .list0 li")
+            var $fadeCover = $(".fadeCover")
+            var fadeIntime = 500
+            var fadeOutime = 800
+            var $circle = $(".circle li")
+            var timer
+
+            // 定义函数
+            function rightbtn() {
+                // 先信号量的改变，
+
+                nowing++
+                if (nowing > $imglis.length - 1) {
+                    nowing = 0
+                }
+                // 再调用函数
+                dong();
+            }
+
+            // 定时器业务
+            timer = setInterval(rightbtn, 2000)
+            $(".banner").mouseenter(function () {
+                clearInterval(timer)
+
+            })
+            $(".banner").mouseleave(function () {
+                clearInterval(timer)
+                timer = setInterval(rightbtn, 2000)
+            })
+            // 点击小圆点业务
+            $circle.click(function () {
+                nowing = $(this).index()
+                dong()
+            })
+
+            function dong() {
+                // 先让fadecover淡入，让全局变白
+                $fadeCover.fadeIn(fadeIntime, function () {
+                    // ,function(){
+                    // 回调函数中，就表示fadecover淡入后做的事情。
+                    // 换图是干蹦的，不是淡入淡出的换,进行暗箱操作，兄弟去cur，自己加cur
+                    $imglis.eq(nowing).addClass('cur').siblings().removeClass('cur')
+                    // 淡出让黑布小事
+                    $(this).fadeOut(fadeOutime)
+                })
+                $circle.eq(nowing).addClass("cur").siblings().removeClass("cur")
+            }
+
+        })
+    </script>
+
+</head>
+<body>
+<div th:insert="head.html"></div>
+<div class="showall" th:each="tbSeckill : ${tbSeckillProduct}">
+    <!--left -->
+    <font color="red"><span class="overtime" id="second"></span></font>
+    剩余数量: <font color="red"><span class="overtime">[[${tbSeckillProduct.seckillStockCount}]]</span></font>
+    <div class="showbot">
+        <div id="showbox">
+            <img th:src="${tbSeckill.seckillSmallPic}" style="width: 450px;height: 450px"/>
+        </div><!--展示图片盒子-->
+    </div>
+    <!--conet -->
+    <div class="tb-property">
+        <div class="tr-nobdr">
+            <h4>[[${tbSeckill.seckillTitle}]]</h4>
+        </div>
+        <div class="txt">
+            <span class="nowprice">特价 ￥:<font color="red">[[${tbSeckill.seckillAdultPrice}]]</font></span>
+        </div>
+        <div class="txt-h">
+            <span class="tex-o">预订须知:&nbsp;&nbsp;&nbsp;商家将在4个工作小时内（工作日9:00-18:00）确认是否预定成功</span><br>
+
+        </div>
+
+        <div class="txt-h">
+            <span class="tex-o">合计:<font size="4" color="red"> ￥<font color="red">[[${tbPubandtbSeckillProduct}]]</font></font></span>
+
+        </div>
+
+
+        <script th:inline="javascript">
+            //获取商品详细对象
+            var tbSeckill = [[${tbSeckillProduct}]];
+            //计算结束时间和当前时间的秒数
+            var second = Math.floor((new Date(tbSeckill.seckillEndDate).getTime() - new Date().getTime()) / 1000);
+            //调用js定时器
+            var timer = setInterval(function () {
+                second -= 1;
+                $("#second").text(converTime(second));
+                //当秒小于等于0取消
+                if (second <= 0) {
+                    clearInterval(timer);
+                }
+            }, 1000);
+
+            function converTime(times) {
+                //获取天数
+                var days = Math.floor(times / (60 * 60 * 24));
+                //获取小时
+                var hous = Math.floor((times - days * 60 * 60 * 24) / (60 * 60));
+                //获取分
+                var min = Math.floor((times - days * 60 * 60 * 24 - hous * 60 * 60) / 60);
+                //获取秒
+                var second = times - days * 60 * 60 * 24 - hous * 60 * 60 - min * 60;
+                return days + "天" + hous + ":" + min + ":" + second;
+            }
+        </script>
+        <script>
+            $(document).ready(function () {
+
+                var t = $("#text_box");
+
+                $('#min').attr('disabled', true);
+
+                $("#add").click(function () {
+                    t.val(parseInt(t.val()) + 1)
+                    if (parseInt(t.val()) != 1) {
+                        $('#min').attr('disabled', false);
+                    }
+
+                })
+
+                $("#min").click(function () {
+                    t.val(parseInt(t.val()) - 1);
+                    if (parseInt(t.val()) == 1) {
+                        $('#min').attr('disabled', true);
+                    }
+
+                })
+                var t1 = $("#text_box1");
+
+                $('#min1').attr('disabled', true);
+
+                $("#add1").click(function () {
+                    t1.val(parseInt(t1.val()) + 1)
+                    if (parseInt(t1.val()) != 0) {
+                        $('#min1').attr('disabled', false);
+                    }
+
+                })
+
+                $("#min1").click(function () {
+                    t1.val(parseInt(t1.val()) - 1);
+                    if (parseInt(t1.val()) == 0) {
+                        $('#min1').attr('disabled', true);
+                    }
+
+                })
+                var t2 = $("#text_box2");
+
+                $('#min2').attr('disabled', true);
+
+                $("#add2").click(function () {
+                    t2.val(parseInt(t2.val()) + 1)
+                    if (parseInt(t2.val()) != 1) {
+                        $('#min2').attr('disabled', false);
+                    }
+
+                })
+
+                $("#min2").click(function () {
+                    t2.val(parseInt(t2.val()) - 1);
+                    if (parseInt(t2.val()) == 1) {
+                        $('#min2').attr('disabled', true);
+                    }
+
+                })
+            });
+        </script>
+
+        <div style="margin-left:20%">
+            <button style="background-color:red;width:105px;height:55px" onclick="goOrder()"><font size="5">立即秒杀</font>
+            </button>
+        </div>
+    </div>
+
+    <!-- 商品介紹 -->
+</div>
+<div class="gdetail">
+    <!-- left -->
+    <div class="aside" style="margin-top:15%">
+        <h3>看了还看<span></span></h3>
+        <dl class="ac-mod-list">
+            <dt><a href="https://www.taobao.com/"><img src="/images/hdy_09.png"/></a></dt>
+            <dd>
+                O2+车载空气净化器DM2
+                <span>￥99</span>
+            </dd>
+        </dl>
+        <dl class="ac-mod-list">
+            <dt><a href=""><img src="/images/hdy_07.png"/></a></dt>
+            <dd>
+                O2+车载空气净化器DM2
+                <span>￥99</span>
+            </dd>
+        </dl>
+        <dl class="ac-mod-list">
+            <dt><a href=""><img src="/images/hdy_11.jpg"/></a></dt>
+            <dd>
+                O2+车载空气净化器DM2
+                <span>￥99</span>
+            </dd>
+        </dl>
+    </div>
+    <!-- right -->
+    <script>
+        var detail = document.querySelector('.detail');
+        var origOffsetY = detail.offsetTop;
+
+        function onScroll(e) {
+            window.scrollY >= origOffsetY ? detail.classList.add('sticky') :
+                detail.classList.remove('sticky');
+        }
+
+        document.addEventListener('scroll', onScroll);
+    </script>
+    <div class="detail" style="margin-top:15%">
+        <div class="active_tab" id="outer">
+            <ul class="act_title_left" id="tab">
+                <li class="act_active">
+                    <a href="#">产品介绍</a>
+                </li>
+                <li>
+                    <a href="#">购买须知</a>
+                </li>
+                <li>
+                    <a href="#">商品评价</a>
+                </li>
+
+            </ul>
+
+            <div class="clear"></div>
+        </div>
+        <div id="content" class="active_list">
+            <!--0-->
+            <div id="ui-a" class="ui-a">
+                <ul style="display:block;">
+                    [[${tbSeckillProduct.seckillProductDesc}]]
+                </ul>
+            </div>
+
+            <!--购买须知-->
+
+            <div id="ui-c" class="ui-c">
+                购买须知
+                服务信息
+                本商品需二次确认，支付完成后商家会在9个工作小时内（工作日9:00-18:00）确认是否预定成功
+
+                超时未确认可申请退款，申请后系统自动退款，预计1-7个工作日退还到支付账户
+
+                本商品提供出团通知书/确认单，商家最晚在出行日期前1天发送，如未收到请及时与商家联系
+
+                退改政策
+                按规则退
+                旅游者违约退改规则
+
+                取消时间 扣除订单金额
+                使用日期前1天 17:00之前 50%
+                当到旅行开始日将不退款.
+                凡行程日期部分或全部涉及国家法定节假日（以国务院发布为准），包括元旦、春节、清明节、劳动节、端午节、中秋节、国庆节，预订成功后提出取消的，收取订单总费用的100%作为违约费。
+
+                如按上述约定比例扣除的必要的费用低于实际发生的费用，用户按照实际发生的费用支付，但不可超出订单总金额。
+
+                温馨提示
+                蜂抢活动：蜂抢优惠活动下单的客人必须对应参与活动出发城市本地户口，户口不对应不接待，望知晓。
+
+                1.游览途中请注意保护环境。
+
+                2.在海拔2800米以上地区不要走太快，否则会有缺氧的感觉。不要迷信和依赖氧气，不要过分紧张，多做深呼吸。
+
+                3.根据当地天气和交通的实际情况，旅行社有权对旅游线路、日程安排进行调整，但不减少旅游景点。跟团游线路的自费景点可自愿参加
+
+                4.请注意集体观念、时间观念，按照导游指定的时间、地点集合，也希望各位游客相互关照，相互帮助。跟团产品需您全程跟团，期间不可出现离团及脱团行为，请您予以配合。如您擅自离团，视为您单方面违约，需承担已损失的机票、车费、住宿费，旅行社有权在您违约后终止您的后继行程及服务，包括您的回程机票，之后发生的任何事情均需您自行全权负责。
+
+                5.进入酒店客房后首先要阅读酒店须知，清点好房内设施是否齐备、是否已损坏，避免退房时因为东西不全而被索赔。
+
+                6.旅行社安排的旅游定点餐厅，团队餐质量有限，敬请游客体谅。
+
+                7.云南当地景区门票已是旅行社协议价，云南当地无法再对军官证、导游证、老年证、学生证、残疾证等其他证件进行优惠和减免，敬请谅解。
+
+                8.由于云南地处高原，海拔高低悬殊较大。为了旅客的身体考虑，我们针对不同年龄段的旅客推出了最适合的线路行程，加之年轻人和老年人从思想需求和身体需求各方
+                面都存在差异，为了保证成团品质，此行程是专门为28-60岁年龄段的客人定制的，如您不在此区间范围内，请致电客服详询。行程针对正常年龄2人起订，单人联系商家找拼房或者走其他合适行程。因为云南是旅游大省，但资源有限，公司主推的都是明星产品，薄利多销，因此销量很大。如果您看中了此条线路，请在线或者致电客服免费服务热线咨询客服是否还有团位，请体谅！
+                本产品不接受70岁以上(含)客人预订，敬请原谅。
+
+                9.本产品目的地海拔较高，有严重高血压、心脏病等疾病的客人及老年客人，请根据自身条件，遵医嘱，谨慎决定是否出行。
+
+                10.本产品不接受有特殊饮食要求、有高血压、心脏病、哮喘等疾病的客人及孕妇客人预订。
+
+                11.本产品网页价格只针对此出发地户籍的顾客，如非此出发地户籍，请联系客服咨询。
+
+                12.全程旅游购物分离，无强迫消费，购物自由自愿；游客自愿购物，所购商品非质量问题一律不予退还请慎重购买；行程规定的景点、餐厅，长途中途休息站等这类购物店不属于旅游定点商店，请谨慎消费，
+                若商品出现质量问题，旅行社不承担任何责任。
+
+                13.特别注意：
+
+                （1）云南属于高原西南季风气候，昼夜温差也很大，请根据上面的天气情况携带衣物，另外云南紫外线比较强烈，爱美的女士请做好防晒准备（太阳镜、太阳帽、防晒霜、雨伞）。
+
+                （2）乘机（或火车）须携带有效证件，如身份证、军官证、护照等，无身份证的儿童须携带户口本原件或护照。如证件丢失请到户口所在地派出所开具临时登机证明。
+            </div>
+            <!--商品评价-->
+            <div id="uic" class="uic">
+                <h3>用户点评:</h3>
+                <table>
+                    <tr>
+                        <td>头像</td>
+                        <td>用户名</td>
+                    </tr>
+                    <tr>
+                        <td>评论内容</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>日期:2019-09-20</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <script>
+            $(function () {
+                window.onload = function () {
+                    var $li = $('#tab li');
+                    var $ul = $('#content ul');
+
+                    $li.mouseover(function () {
+                        var $this = $(this);
+                        var $t = $this.index();
+                        $li.removeClass();
+                        $this.addClass('act_active');
+                        $ul.css('display', 'none');
+                        $ul.eq($t).css('display', 'block');
+                    })
+                }
+            });
+        </script>
+    </div>
+</div>
+
+<script>
+    function goOrder() {
+        var prodId = [[${tbSeckillProduct.id}]];
+        var sellerId = [[${tbSeckillProduct.seckillTravelSellerId}]];
+        var prodCost = [[${tbSeckillProduct.seckillAdultPrice}]];
+        var totalFee = [[${tbPubandtbSeckillProduct}]];
+        var pubsId = [[${tbPub.pubsId}]]
+        var pubsPrice = [[${tbPub.pubsPrice}]]
+
+         $.ajax({
+             url: "/seckillController/goPurchase",
+             data: {
+                 tbId: prodId,
+                 tbPubandtbSeckillProduct : totalFee,
+
+           },
+             type: "post",
+             dataType: "json",
+             async: false,
+             success: function (result) {
+                 if (result.code == 20000){
+                     alert(result.msg);
+                     location.href ="/loginController/login"
+                 }
+                 if (result.code == 30000){
+                     alert(result.msg);
+                 }
+                 if (result.code == 10000){
+                 location.href = "/order/toSeckillOrderPage?prodId=" + prodId
+                     + "&prodCost=" + prodCost
+                     + "&totalFee=" + totalFee
+                     + "&pubId=" + pubsId
+                     + "&pubCost=" + pubsPrice
+                     + "&sellerId=" + sellerId
+                     + "&travelNum=1"
+                 ;
+                 }
+             },
+             error: function () {
+                 alert("系统错误")
+             }
+         })
+    }
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongtu.mapper.TbInsureOrderMapper" >
+  <resultMap id="BaseResultMap" type="com.dongtu.pojo.TbInsureOrder" >
+    <id column="insure_order_id" property="insureOrderId" jdbcType="BIGINT" />
+    <result column="insure1_name" property="insure1Name" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="user_phone" property="userPhone" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="pay_time" property="payTime" jdbcType="TIMESTAMP" />
+    <result column="insure_status" property="insureStatus" jdbcType="INTEGER" />
+    <result column="transaction_id" property="transactionId" jdbcType="VARCHAR" />
+    <result column="insure2_name" property="insure2Name" jdbcType="VARCHAR" />
+    <result column="insure_total_fee" property="insureTotalFee" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    insure_order_id, insure1_name, user_name, user_phone, create_time, pay_time, insure_status, 
+    transaction_id, insure2_name, insure_total_fee
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.dongtu.pojo.TbInsureOrderExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_insure_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_insure_order
+    where insure_order_id = #{insureOrderId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tb_insure_order
+    where insure_order_id = #{insureOrderId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.dongtu.pojo.TbInsureOrderExample" >
+    delete from tb_insure_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.dongtu.pojo.TbInsureOrder" >
+    insert into tb_insure_order (insure_order_id, insure1_name, user_name, 
+      user_phone, create_time, pay_time, 
+      insure_status, transaction_id, insure2_name, 
+      insure_total_fee)
+    values (#{insureOrderId,jdbcType=BIGINT}, #{insure1Name,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
+      #{userPhone,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{payTime,jdbcType=TIMESTAMP}, 
+      #{insureStatus,jdbcType=INTEGER}, #{transactionId,jdbcType=VARCHAR}, #{insure2Name,jdbcType=VARCHAR}, 
+      #{insureTotalFee,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dongtu.pojo.TbInsureOrder" >
+    insert into tb_insure_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="insureOrderId != null" >
+        insure_order_id,
+      </if>
+      <if test="insure1Name != null" >
+        insure1_name,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="userPhone != null" >
+        user_phone,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="payTime != null" >
+        pay_time,
+      </if>
+      <if test="insureStatus != null" >
+        insure_status,
+      </if>
+      <if test="transactionId != null" >
+        transaction_id,
+      </if>
+      <if test="insure2Name != null" >
+        insure2_name,
+      </if>
+      <if test="insureTotalFee != null" >
+        insure_total_fee,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="insureOrderId != null" >
+        #{insureOrderId,jdbcType=BIGINT},
+      </if>
+      <if test="insure1Name != null" >
+        #{insure1Name,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPhone != null" >
+        #{userPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payTime != null" >
+        #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="insureStatus != null" >
+        #{insureStatus,jdbcType=INTEGER},
+      </if>
+      <if test="transactionId != null" >
+        #{transactionId,jdbcType=VARCHAR},
+      </if>
+      <if test="insure2Name != null" >
+        #{insure2Name,jdbcType=VARCHAR},
+      </if>
+      <if test="insureTotalFee != null" >
+        #{insureTotalFee,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.dongtu.pojo.TbInsureOrderExample" resultType="java.lang.Integer" >
+    select count(*) from tb_insure_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_insure_order
+    <set >
+      <if test="record.insureOrderId != null" >
+        insure_order_id = #{record.insureOrderId,jdbcType=BIGINT},
+      </if>
+      <if test="record.insure1Name != null" >
+        insure1_name = #{record.insure1Name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userName != null" >
+        user_name = #{record.userName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userPhone != null" >
+        user_phone = #{record.userPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.payTime != null" >
+        pay_time = #{record.payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.insureStatus != null" >
+        insure_status = #{record.insureStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.transactionId != null" >
+        transaction_id = #{record.transactionId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.insure2Name != null" >
+        insure2_name = #{record.insure2Name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.insureTotalFee != null" >
+        insure_total_fee = #{record.insureTotalFee,jdbcType=DECIMAL},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_insure_order
+    set insure_order_id = #{record.insureOrderId,jdbcType=BIGINT},
+      insure1_name = #{record.insure1Name,jdbcType=VARCHAR},
+      user_name = #{record.userName,jdbcType=VARCHAR},
+      user_phone = #{record.userPhone,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      pay_time = #{record.payTime,jdbcType=TIMESTAMP},
+      insure_status = #{record.insureStatus,jdbcType=INTEGER},
+      transaction_id = #{record.transactionId,jdbcType=VARCHAR},
+      insure2_name = #{record.insure2Name,jdbcType=VARCHAR},
+      insure_total_fee = #{record.insureTotalFee,jdbcType=DECIMAL}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dongtu.pojo.TbInsureOrder" >
+    update tb_insure_order
+    <set >
+      <if test="insure1Name != null" >
+        insure1_name = #{insure1Name,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPhone != null" >
+        user_phone = #{userPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payTime != null" >
+        pay_time = #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="insureStatus != null" >
+        insure_status = #{insureStatus,jdbcType=INTEGER},
+      </if>
+      <if test="transactionId != null" >
+        transaction_id = #{transactionId,jdbcType=VARCHAR},
+      </if>
+      <if test="insure2Name != null" >
+        insure2_name = #{insure2Name,jdbcType=VARCHAR},
+      </if>
+      <if test="insureTotalFee != null" >
+        insure_total_fee = #{insureTotalFee,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where insure_order_id = #{insureOrderId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dongtu.pojo.TbInsureOrder" >
+    update tb_insure_order
+    set insure1_name = #{insure1Name,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
+      user_phone = #{userPhone,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      pay_time = #{payTime,jdbcType=TIMESTAMP},
+      insure_status = #{insureStatus,jdbcType=INTEGER},
+      transaction_id = #{transactionId,jdbcType=VARCHAR},
+      insure2_name = #{insure2Name,jdbcType=VARCHAR},
+      insure_total_fee = #{insureTotalFee,jdbcType=DECIMAL}
+    where insure_order_id = #{insureOrderId,jdbcType=BIGINT}
+  </update>
+</mapper>

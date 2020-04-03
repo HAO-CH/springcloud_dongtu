@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <div th:insert="/common/common.html"></div>
+</head>
+<body>
+<table id="table"></table>
+</body>
+</html>
+<script type="text/javascript">
+    $(function () {
+        $('#table').bootstrapTable({
+            url: '/travel/findSeckillProduct',
+            toolbar: "#toolbar",
+            striped: true,                      //是否显示行间隔色
+            cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+            pagination: false,                   //是否显示分页（*）
+            sortable: true,                     //是否启用排序
+            sortOrder: "asc",                   //排序方式
+            search: true,                      //是否显示表格搜索
+            strictSearch: false,
+            showColumns: true,                  //是否显示所有的列（选择显示的列）
+            showRefresh: true,                  //是否显示刷新按钮
+            minimumCountColumns: 2,             //最少允许的列数
+            clickToSelect: true,                //是否启用点击选中行
+            //height: 500,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+            uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
+            showToggle: true,                   //是否显示详细视图和列表视图的切换按钮
+            cardView: false,                    //是否显示详细视图
+            detailView: false,                  //是否显示父子表
+            columns: [{
+                checkbox: true,
+                visible: true                  //是否显示复选框
+            }, {
+                field: 'id',
+                title: 'ID'
+            }, {
+                field: 'seckillTitle',
+                title: '标题'
+            }, {
+                field: 'seckillSmallPic',
+                title: '商品图片',
+                formatter: seckillSmallPicFormatter
+            },{
+                field: 'seckillAdultPrice',
+                title: '成人票原价'
+            }, {
+                field: 'seckillAdultCostPrice',
+                title: '成人票秒杀价'
+            }, {
+                field: 'seckillChildPrice',
+                title: '儿童票原价'
+            }, {
+                field: 'seckillChildCostPrice',
+                title: '儿童票秒杀价'
+            }, {
+                field: 'travelName',
+                title: '商家名字'
+            }, {
+                field: 'areaName',
+                title: '所处地区'
+            }, {
+                field: 'nname',
+                title: '类型'
+            }, {
+                field: 'seckillStatus',
+                title: '审核状态',
+                formatter: seckillStatusFormatter
+            }, {
+                field: 'seckillNum',
+                title: '秒杀商品数'
+            }, {
+                field: 'seckillStockCount',
+                title: '剩余库存数'
+            }, {
+                field: 'seckillStartDate',
+                title: '开始时间'
+            }, {
+                field: 'seckillEndDate',
+                title: '结束时间'
+            }, {
+                field: 'seckillProductDesc',
+                title: '图文介绍'
+            }, {
+                field: 'pubsName',
+                title: '关联酒店'
+            }, {
+                field: 'tpGoTime',
+                title: '出发时间'
+            }, {
+                title: '操作',
+                width: 120,
+                align: 'center',
+                valign: 'middle',
+                formatter: actionFormatter
+            }]
+        });
+    })
+
+    //操作栏的格式化
+    function actionFormatter(value, row, index) {
+        var id = row.id;
+        var result = "";
+        if (row.seckillStatus == 0) {
+            result += "<a href='javascript:;' class='btn btn-xs red' onclick=\"Approved('" + id + "')\" title='审核通过'><span class='\tglyphicon glyphicon-eye-open'></span></a>";
+            result += "<a href='javascript:;' class='btn btn-xs red' onclick=\"AuditFails('" + id + "')\" title='审核不通过'><span class='glyphicon glyphicon-eye-close'></span></a>";
+        }
+        if (row.seckillStatus == 1) {
+            result += "<a href='javascript:;' class='btn btn-xs red' onclick=\"AuditFails('" + id + "')\" title='审核不通过'><span class='glyphicon glyphicon-eye-close'></span></a>";
+        }
+        if (row.seckillStatus == 2) {
+            result += "<a href='javascript:;' class='btn btn-xs red' onclick=\"Approved('" + id + "')\" title='审核通过'><span class='\tglyphicon glyphicon-eye-open'></span></a>";
+        }
+        return result;
+    }
+
+    //审核状态
+    function seckillStatusFormatter(value, row, index) {
+        if (row.seckillStatus == 0) {
+            return "未审核";
+        }
+        if (row.seckillStatus == 1) {
+            return "审核通过";
+        }
+        if (row.seckillStatus == 2) {
+            return "审核不通过";
+        }
+    }
+
+    //刷新
+    function getData() {
+        $("#table").bootstrapTable("refresh");      /* 刷新*/
+    }
+
+    //商品图片
+    function seckillSmallPicFormatter(value, row, index) {
+        var seckillSmallPics = row.seckillSmallPic;
+        var seckillSmallPic = JSON.parse(seckillSmallPics)
+        return "<img height='100px' width='100px' src=" + seckillSmallPic[0] + ">";
+    }
+
+    //审核通过
+    function Approved(id) {
+        $.ajax({
+            url: "/travel/updateSeckillProduct",
+            type: "post",
+            data: {id: id, seckillStatus: 1},
+            async: false,//同步
+            dataType: "json",
+            success: function (result) {
+                if (result.code == 10000) {
+                    alert("审核通过");
+                    $("#table").bootstrapTable("refresh");
+                } else {
+                    alert("审核失败");
+                    $("#table").bootstrapTable("refresh");
+                }
+            },
+            error: function () {
+                alert('系统错误');
+            }
+        })
+    }
+
+    //审核不通过
+    function AuditFails(id) {
+        $.ajax({
+            url: "/travel/updateSeckillProduct",
+            type: "post",
+            data: {id: id, seckillStatus: 2},
+            async: false,//同步
+            dataType: "json",
+            success: function (result) {
+                if (result.code == 10000) {
+                    alert("审核驳回");
+                    $("#table").bootstrapTable("refresh");
+                } else {
+                    alert("审核失败");
+                    $("#table").bootstrapTable("refresh");
+                }
+            },
+            error: function () {
+                alert('系统错误');
+            }
+        })
+    }
+</script>

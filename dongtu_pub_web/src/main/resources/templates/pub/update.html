@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form id="addForm">
+        酒店名：<input name="pubsName" ><br><br>
+        价格：<input name="pubsPrice"><br><br>
+        电话：<input name="pubsPhone"><br><br>
+        联系人：<input name="pubsLinkman"><br><br>
+        酒店图片
+        <input type="text" name="pubImg" id="pubImg">
+        <input type="file"  id="myFile" name="myFile" multiple >
+
+        商品地区：
+        <select id="tpAreaId1" onchange="findByAreaPId(this.value)">
+            <option value="-1">-请选择-</option>
+            <option th:each="area:${areaList}" th:value="${area.areaId}">[[${area.areaName}]]</option>
+        </select>
+        <div id="tpAreaId2">
+
+        </div>
+        <div id="tpAreaId3">
+
+        </div>
+        <br><br>
+
+    </form>
+</body>
+</html>
+
+<script type="text/javascript">
+
+    $('#myFile').fileinput({
+        language: 'zh',
+        uploadUrl: "/file/upLoadFile",
+        browseClass: 'btn btn-primary',
+        allowedFileExtensions: ['jpg','gif','png','xls','xlsx'], //允许上传类型
+        maxFileSize: 2048,
+        maxFileCount: 2,
+        enctype: "multipart/form-data"
+    });
+    $('#myFile').on('fileuploaded',function(event, data, previewId, index){
+        console.log(data.response.imgUrl)
+        if (data.response != null) {
+            $("#pubImg").val(data.response.imgUrl);
+        }
+    })
+
+    function findByAreaPId(pid) {
+        $.ajax({
+            url: "/pubController/findByAreaPId",
+            data: {areaPid:pid},
+            type: "post",
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                var arealist = result.data;
+                console.log(arealist)
+                var div = "<select onchange=\"findByAreaPid3(this.value)\"><option>-请选择-</option></option>";
+                for (var i = 0; i < arealist.length; i++) {
+                    div += "<option value='"+arealist[i].areaId+"'>"+arealist[i].areaName+"</option>";
+                }
+                div += "</select>";
+                console.log(div)
+                $("#tpAreaId2").html(div);
+            },
+            error: function () {
+                toastr.error("系统错误");
+            }
+        });
+    }
+
+    function findByAreaPid3(pid) {
+        $.ajax({
+            url: "/pubController/findByAreaPId",
+            data: {areaPid:pid},
+            type: "post",
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                var arealist = result.data;
+                console.log(arealist)
+                var div = "<select name='pubsAreaId' ><option>-请选择-</option></option>";
+                for (var i = 0; i < arealist.length; i++) {
+                    div += "<option name='pubsAreaId' value='"+arealist[i].areaId+"'>"+arealist[i].areaName+"</option>";
+                }
+                div += "</select>";
+                console.log(div)
+                $("#tpAreaId3").html(div);
+            },
+            error: function () {
+                toastr.error("系统错误");
+            }
+        });
+    }
+
+
+</script>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form id="addTravelProducts">
+    标题：<input type="text" id="tpTitle" name="tpTitle"><br><br>
+    类型：<select id="nid" name="nid">
+            <option value="-1"><--请选择--></option>
+            <option th:each="navbar:${navbarList}" th:value="${navbar.nid}">[[${navbar.nname}]]</option>
+          </select><br><br>
+    详细类型：<select id="travelTypeId" name="travelTypeId">
+                <option value="-1"><--请选择--></option>
+                <option th:each="type:${typeList}" th:value="${type.travelTypeId}">[[${type.travelTypeName}]]</option>
+              </select><br><br>
+    库存：<input type="text" id="tpNum" name="tpNum"><br><br>
+    成人价：<input type="text" id="tpAdultPrice" name="tpAdultPrice"><br><br>
+    儿童价：<input type="text" id="tpChildPrice" name="tpChildPrice"><br><br>
+    图片：<input type="hidden" name="tpImg" id="tpImg">
+          <input type="file" id="myFile" name="myFile" multiple><br><br>
+    地区：<select id="one" name="one" onchange="findTwo(this.value)">
+            <option value="-1"><--请选择--></option>
+            <option th:each="area:${areaList}" th:value="${area.areaId}">[[${area.areaName}]]</option>
+          </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <select id="two" name="two" onchange="findTpArea(this.value)">
+
+          </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <select id="tpAreaId" name="tpAreaId">
+
+          </select><br><br>
+    最低价：<input type="text" id="minPrice" name="minPrice"><br><br>
+    最高价：<input type="text" id="maxPrice" name="maxPrice"><br><br>
+    出发时间：<input type="date" id="tpGoTime" name="tpGoTime">
+</form>
+</body>
+</html>
+<script type="text/javascript">
+    //文件上传
+    $('#myFile').fileinput({
+        language: 'zh',//汉化
+        uploadUrl: "/file/upload",//上传地址
+        showCaption: true,//默认为true,是否展示显示框
+        showUpload: true,//默认问true,false不显示上传按钮
+        showRemove: true,//默认问true,false不显示移除按钮
+        showClose: true,//默认问true,false不显示图片右上角的关闭按钮
+        browseClass: 'btn btn-primary',
+        allowedFileExtensions: ['jpg', 'png', 'gif', 'txt', 'pdf', 'jpeg', 'xlsx'],//限制文件的上传类型
+        maxFileSize: 2048,//设置文件上传大小 单位kb
+        maxFileCount: 5,//最大上传数量
+        enctype: "multipart/form-data"
+    });
+    $('#myFile').on('fileuploaded', function (event, data, previewId, index) {
+        var tpImg = $("[name=tpImg]").val();
+        if (data.response != null) {
+            if (tpImg != null && tpImg != "") {
+                $("[name=tpImg]").val(tpImg + "," + data.response.imgUrl);
+            } else {
+                $("[name=tpImg]").val(data.response.imgUrl);
+            }
+        }
+    })
+
+    //查询二级地区
+    function findTwo() {
+        $.ajax({
+            url: "/travel/findAreaByAreaPid",
+            type: "post",
+            data: {areaPid: $("#one").val()},
+            async: false,//同步
+            dataType: "json",
+            success: function (result) {
+                var list = result;
+                var two = "<option value='-1'><--请选择--></option>";
+                $(list).each(function (i, e) {
+                    two += "<option value='" + e['areaId'] + "'>" + e['areaName'] + "</option>";
+                })
+                $("#two").html(two);
+                var tpAreaId = "<option value='-1'><--请选择--></option>";
+                $("#tpAreaId").html(tpAreaId);
+            },
+            error: function () {
+                alert('系统错误');
+            }
+        })
+    }
+
+    //查询第三级地区
+    function findTpArea() {
+        $.ajax({
+            url: "/travel/findAreaByAreaPid",
+            type: "post",
+            data: {areaPid: $("#two").val()},
+            async: false,//同步
+            dataType: "json",
+            success: function (result) {
+                var list = result;
+                var tpAreaId = "<option value='-1'><--请选择--></option>";
+                $(list).each(function (i, e) {
+                    tpAreaId += "<option value='" + e['areaId'] + "'>" + e['areaName'] + "</option>";
+                })
+                $("#tpAreaId").html(tpAreaId);
+            },
+            error: function () {
+                alert('系统错误');
+            }
+        })
+    }
+</script>

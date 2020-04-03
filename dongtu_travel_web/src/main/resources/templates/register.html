@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:insert="common/common.html"></div>
+
+<div align="center">
+    <div class="panel panel-primary" style="width:400px" align="left">
+        <div class="panel-heading" >
+            <h1>注册</h1>
+        </div>
+        <div class="panel-body">
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="name">店铺名称</label>
+                    <!--onblur="findEmpByName(this)"-->
+                    <input type="text" class="form-control" name="travelName" id="name"  placeholder=""><span id="msg"></span>
+                    <div id="tips"></div>
+                </div>
+                <div class="form-group">
+                    <label for="">密码</label>
+                    <input type="text" class="form-control" name="travelPassword" id="travelPassword">
+                </div>
+                <div class="form-group">
+                    <label for="">盐</label>
+                    <input type="text" class="form-control" name="travelSalt" id="travelSalt">
+                </div>
+                <div class="form-group">
+                    <label for="travelSalt">旅游商家图片</label>
+                    <input type="hidden" name="travelPic" id="img">
+                    <input type="file" id="myFile" name="myFile" multiple />
+                </div>
+                <div class="form-group">
+                    <label for="">店铺地址</label>
+                    <input type="text" class="form-control" name="travelAddress" id="travelAddress">
+                </div>
+                <div class="form-group">
+                    <label for="">联系人姓名</label>
+                    <input type="text" class="form-control" name="travelLinkmanName" id="travelLinkmanName">
+                </div>
+                <div class="form-group">
+                    <label for="">联系电话</label>
+                    <input type="text" class="form-control" name="travelTelephone" id="travelTelephone">
+                </div>
+                <div class="form-group">
+                    <label for="">旅游商家简介</label>
+                    <input type="text" class="form-control" name="travelBrief" id="travelBrief">
+                </div>
+                <div>
+                    <input type="button" value="注册" class="btn btn-success" onclick="register()">
+                </div>
+
+            </form>
+        </div>
+        <div class="panel-footer">
+            <a href="#"></a>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+
+    $('#myFile').fileinput({
+        language: 'zh',
+        uploadUrl: "/file/upload",
+        browseClass: 'btn btn-primary',
+        allowedFileExtensions: ['jpg','gif','png','xls','xlsx'], //允许上传类型
+        maxFileSize: 2048,
+        maxFileCount: 2,
+        enctype: "multipart/form-data"
+    });
+
+    $('#myFile').on('fileuploaded',function(event, data, previewId, index){
+        console.log(data.response.imgUrl)
+        if (data.response != null) {
+            $("#img").val(data.response.imgUrl);
+        }
+    })
+
+    function findEmpByName(obj){
+        $.ajax({
+            url:"/login/findEmpByName",
+            data:{ename:$(obj).val()},
+            type:"post",
+            dataType:"json",
+            async:false,
+            success:function(data){
+                if(data==true){
+                    $("#msg").html("<font color='green'>&nbsp&nbsp√</font>");
+                }else{
+                    $("#msg").html("<font color='red'>&nbsp&nbspX</font>");
+                }
+            },
+            error:function(){
+                msg("系统错误",2000);
+            }
+        })
+    }
+
+    function register(){
+        $.ajax({
+            url:"/login/register",
+            data:$("#registerForm").serialize(),
+            dataType:"json",
+            type:"post",
+            async:false,
+            success:function(result){
+                alert("注册成功");
+                location.href="/login/show";
+            },
+            error:function(){
+                msg("系统错误",2000);
+            }
+        })
+    }
+</script>
+</html>

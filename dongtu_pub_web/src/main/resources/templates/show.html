@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:insert="common/common.html"></div>
+
+<div align="center">
+    <h1>旅游商后台管理</h1>
+</div>
+
+
+欢迎您！
+<a href="javascript:logout()">退出登录</a>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-3">
+            <div id="tree"></div>
+        </div>
+        <div class="col-lg-9">
+            <!-- addtabs的导航栏 -->
+            <ul class="nav nav-tabs" id="myTab"></ul>
+            <!-- addtabs的内容 -->
+            <div class="tab-content"></div>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+    function getTree() {
+        var tree = [
+            {
+                text:"酒店管理",
+                state:{
+                    expanded:true
+                },
+                nodes: [
+                    {
+                        text:"酒店商品",
+                        url:"/pubController/list",
+                        id:1
+                    }
+                ]
+            },
+        ];
+        return tree;
+    }
+
+    $('#tree').treeview({
+        data: getTree(),
+        borderColor: "blue",
+        onNodeSelected: function (event, data) { //data 当前节点
+            if (data.nodes == undefined) {
+                $.addtabs.add({
+                    title: data.text,
+                    url: data.url,
+                    id: data.id
+                })
+            }
+        }
+    });
+
+    function logout(){
+        window.top.location.href="/login/logout";
+    }
+</script>
+</html>

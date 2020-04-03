@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongtu.mapper.IntegralGoodsMapper" >
+  <resultMap id="BaseResultMap" type="com.dongtu.pojo.IntegralGoods" >
+    <id column="goods_id" property="goodsId" jdbcType="BIGINT" />
+    <result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
+    <result column="goods_integral" property="goodsIntegral" jdbcType="DECIMAL" />
+    <result column="goods_image" property="goodsImage" jdbcType="VARCHAR" />
+    <result column="goods_num" property="goodsNum" jdbcType="BIGINT" />
+    <result column="goods_text" property="goodsText" jdbcType="VARCHAR" />
+    <result column="goods_int" property="goodsInt" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    goods_id, goods_name, goods_integral, goods_image, goods_num, goods_text, goods_int
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.dongtu.pojo.IntegralGoodsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from integral_goods
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from integral_goods
+    where goods_id = #{goodsId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from integral_goods
+    where goods_id = #{goodsId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.dongtu.pojo.IntegralGoodsExample" >
+    delete from integral_goods
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.dongtu.pojo.IntegralGoods" >
+    insert into integral_goods (goods_id, goods_name, goods_integral, 
+      goods_image, goods_num, goods_text, 
+      goods_int)
+    values (#{goodsId,jdbcType=BIGINT}, #{goodsName,jdbcType=VARCHAR}, #{goodsIntegral,jdbcType=DECIMAL}, 
+      #{goodsImage,jdbcType=VARCHAR}, #{goodsNum,jdbcType=BIGINT}, #{goodsText,jdbcType=VARCHAR}, 
+      #{goodsInt,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dongtu.pojo.IntegralGoods" >
+    insert into integral_goods
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="goodsId != null" >
+        goods_id,
+      </if>
+      <if test="goodsName != null" >
+        goods_name,
+      </if>
+      <if test="goodsIntegral != null" >
+        goods_integral,
+      </if>
+      <if test="goodsImage != null" >
+        goods_image,
+      </if>
+      <if test="goodsNum != null" >
+        goods_num,
+      </if>
+      <if test="goodsText != null" >
+        goods_text,
+      </if>
+      <if test="goodsInt != null" >
+        goods_int,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="goodsId != null" >
+        #{goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="goodsName != null" >
+        #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsIntegral != null" >
+        #{goodsIntegral,jdbcType=DECIMAL},
+      </if>
+      <if test="goodsImage != null" >
+        #{goodsImage,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsNum != null" >
+        #{goodsNum,jdbcType=BIGINT},
+      </if>
+      <if test="goodsText != null" >
+        #{goodsText,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsInt != null" >
+        #{goodsInt,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.dongtu.pojo.IntegralGoodsExample" resultType="java.lang.Integer" >
+    select count(*) from integral_goods
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update integral_goods
+    <set >
+      <if test="record.goodsId != null" >
+        goods_id = #{record.goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="record.goodsName != null" >
+        goods_name = #{record.goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.goodsIntegral != null" >
+        goods_integral = #{record.goodsIntegral,jdbcType=DECIMAL},
+      </if>
+      <if test="record.goodsImage != null" >
+        goods_image = #{record.goodsImage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.goodsNum != null" >
+        goods_num = #{record.goodsNum,jdbcType=BIGINT},
+      </if>
+      <if test="record.goodsText != null" >
+        goods_text = #{record.goodsText,jdbcType=VARCHAR},
+      </if>
+      <if test="record.goodsInt != null" >
+        goods_int = #{record.goodsInt,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update integral_goods
+    set goods_id = #{record.goodsId,jdbcType=BIGINT},
+      goods_name = #{record.goodsName,jdbcType=VARCHAR},
+      goods_integral = #{record.goodsIntegral,jdbcType=DECIMAL},
+      goods_image = #{record.goodsImage,jdbcType=VARCHAR},
+      goods_num = #{record.goodsNum,jdbcType=BIGINT},
+      goods_text = #{record.goodsText,jdbcType=VARCHAR},
+      goods_int = #{record.goodsInt,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dongtu.pojo.IntegralGoods" >
+    update integral_goods
+    <set >
+      <if test="goodsName != null" >
+        goods_name = #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsIntegral != null" >
+        goods_integral = #{goodsIntegral,jdbcType=DECIMAL},
+      </if>
+      <if test="goodsImage != null" >
+        goods_image = #{goodsImage,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsNum != null" >
+        goods_num = #{goodsNum,jdbcType=BIGINT},
+      </if>
+      <if test="goodsText != null" >
+        goods_text = #{goodsText,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsInt != null" >
+        goods_int = #{goodsInt,jdbcType=BIGINT},
+      </if>
+    </set>
+    where goods_id = #{goodsId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dongtu.pojo.IntegralGoods" >
+    update integral_goods
+    set goods_name = #{goodsName,jdbcType=VARCHAR},
+      goods_integral = #{goodsIntegral,jdbcType=DECIMAL},
+      goods_image = #{goodsImage,jdbcType=VARCHAR},
+      goods_num = #{goodsNum,jdbcType=BIGINT},
+      goods_text = #{goodsText,jdbcType=VARCHAR},
+      goods_int = #{goodsInt,jdbcType=BIGINT}
+    where goods_id = #{goodsId,jdbcType=BIGINT}
+  </update>
+</mapper>

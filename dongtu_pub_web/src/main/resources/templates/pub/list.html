@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div th:insert="common/common.html"></div>
+
+    <div id="toolbar">
+        <form class="form-inline" role="form" id="queryForm">
+            <input type="button" class="btn btn-success" value="增加" onclick="addPub()">
+        </form>
+    </div>
+
+    <table id="table" ></table>
+</body>
+<script>
+    $('#table').bootstrapTable({
+        url: '/pubController/findAll',
+        method: 'post',
+        contentType: "application/x-www-form-urlencoded",
+        toolbar: '#toolbar',
+        striped: true,
+        cache: false,
+        sidePagination: "client",//分页方式
+        pagination: true,//是否显示分页（*）
+        pageNumber: 1,
+        pageSize: 5,
+        pageList: [1,3,5],
+        showColumns: true,
+        showRefresh: true,
+        columns: [{
+            checkbox: true,
+            visible: true
+        },{
+            field: 'pubsId',
+            title: 'ID',
+        },{
+            field: 'areaName',
+            title: '关联地区id',
+        },{
+            field: 'pubsName',
+            title: '酒店名',
+        },{
+            field: 'pubsPrice',
+            title: '价钱',
+        },{
+            field: 'pubsPhone',
+            title: '电话',
+        },{
+            field: 'pubsLinkman',
+            title: '酒店介绍',
+        },{
+            field: 'pubsSatus',
+            title: '审核状态',
+            formatter: function (value, row, index){
+                var result = "";
+                if (value == 0) {
+                    result += "未审核";
+                } else if (value == 1){
+                    result += "审核通过";
+                }else if (value == 2){
+                    result += "审核未通过";
+                }
+                    return result;
+            }
+        },{
+            field: 'isDelete',
+            title: '是否删除',
+        },{
+            field: 'pubsSellerId',
+            title: '商家id',
+        },{
+            field: 'pubImg',
+            title: '图片',
+            align: 'center',
+            formatter: function(value,row,index){
+                return '<img  src='+value+' width="100" height="100" class="img-rounded" >';
+            }
+        }, {
+            title: '操作',
+            formatter: function (value, row, index){
+                var pubsId = row.pubsId;
+                var result = "";
+                result += " <a href='javascript:DeteleId("+ pubsId +")'>删除</a>";
+                return result;
+            }
+        },
+        ]
+    });
+
+    function getData(){
+        $('#table').bootstrapTable("refresh");
+    }
+
+
+
+    function addPub(){
+        BootstrapDialog.show({
+            title: '修改 ',
+            title: '增加 ',
+            message: $('<div></div>').load("/pubController/addPub"),
+            size : BootstrapDialog.SIZE_SMALL,
+            buttons: [{
+                label: '确定',
+                cssClass: 'btn-success',
+                action: function (dialog) {
+                    $.ajax({
+                        url: "/pubController/addTbPub",
+                        data: $("#addForm").serialize(),
+                        type: "post",
+                        dataType: "json",
+                        async: false,
+                        success: function (result) {
+                            toastr.success("增加成功");
+                            getData();
+                            dialog.close();
+                        },
+                        error: function () {
+                            toastr.error("系统错误");
+                        }
+                    });
+                }
+            },{
+                label: '关闭',
+                action: function (dialog) {
+                    dialog.close();
+                }
+            }],
+        });
+    }
+
+
+
+
+    function DeteleId(pubsId){
+
+        if (confirm("确定删除")) {
+            $.ajax({
+                url:"/pubController/deleteByPubsId/",
+                data:{pubsId:pubsId},
+                type:"post",
+                dataType:"json",
+                async:false,
+                success:function(result){
+                    if(result.code == 10000 ){
+                        alert("删除成功");
+                        getData();
+                    }
+                },
+                error:function(){
+                    toastr.error("系统错误");
+                }
+            });
+        }
+    }
+</script>
+</html>

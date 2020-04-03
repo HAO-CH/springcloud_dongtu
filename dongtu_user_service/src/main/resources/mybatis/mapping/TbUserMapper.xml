@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongtu.mapper.TbUserMapper" >
+  <resultMap id="BaseResultMap" type="com.dongtu.pojo.TbUser" >
+    <id column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="user_password" property="userPassword" jdbcType="VARCHAR" />
+    <result column="user_phone" property="userPhone" jdbcType="VARCHAR" />
+    <result column="user_created_time" property="userCreatedTime" jdbcType="TIMESTAMP" />
+    <result column="user_updated_time" property="userUpdatedTime" jdbcType="TIMESTAMP" />
+    <result column="user_real_name" property="userRealName" jdbcType="VARCHAR" />
+    <result column="user_city" property="userCity" jdbcType="VARCHAR" />
+    <result column="user_sex" property="userSex" jdbcType="INTEGER" />
+    <result column="user_email" property="userEmail" jdbcType="VARCHAR" />
+    <result column="user_head_pic" property="userHeadPic" jdbcType="VARCHAR" />
+    <result column="user_account_balance" property="userAccountBalance" jdbcType="DECIMAL" />
+    <result column="user_points" property="userPoints" jdbcType="DECIMAL" />
+    <result column="user_level" property="userLevel" jdbcType="INTEGER" />
+    <result column="user_experience_value" property="userExperienceValue" jdbcType="INTEGER" />
+    <result column="user_birthday" property="userBirthday" jdbcType="TIMESTAMP" />
+    <result column="user_last_login_time" property="userLastLoginTime" jdbcType="TIMESTAMP" />
+    <result column="user_salt" property="userSalt" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    user_id, user_name, user_password, user_phone, user_created_time, user_updated_time, 
+    user_real_name, user_city, user_sex, user_email, user_head_pic, user_account_balance, 
+    user_points, user_level, user_experience_value, user_birthday, user_last_login_time, 
+    user_salt
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.dongtu.pojo.TbUserExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_user
+    where user_id = #{userId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tb_user
+    where user_id = #{userId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.dongtu.pojo.TbUserExample" >
+    delete from tb_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.dongtu.pojo.TbUser" >
+    insert into tb_user (user_id, user_name, user_password, 
+      user_phone, user_created_time, user_updated_time, 
+      user_real_name, user_city, user_sex, 
+      user_email, user_head_pic, user_account_balance, 
+      user_points, user_level, user_experience_value, 
+      user_birthday, user_last_login_time, user_salt
+      )
+    values (#{userId,jdbcType=BIGINT}, #{userName,jdbcType=VARCHAR}, #{userPassword,jdbcType=VARCHAR}, 
+      #{userPhone,jdbcType=VARCHAR}, #{userCreatedTime,jdbcType=TIMESTAMP}, #{userUpdatedTime,jdbcType=TIMESTAMP}, 
+      #{userRealName,jdbcType=VARCHAR}, #{userCity,jdbcType=VARCHAR}, #{userSex,jdbcType=INTEGER}, 
+      #{userEmail,jdbcType=VARCHAR}, #{userHeadPic,jdbcType=VARCHAR}, #{userAccountBalance,jdbcType=DECIMAL}, 
+      #{userPoints,jdbcType=DECIMAL}, #{userLevel,jdbcType=INTEGER}, #{userExperienceValue,jdbcType=INTEGER}, 
+      #{userBirthday,jdbcType=TIMESTAMP}, #{userLastLoginTime,jdbcType=TIMESTAMP}, #{userSalt,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.dongtu.pojo.TbUser" >
+    insert into tb_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="userPassword != null" >
+        user_password,
+      </if>
+      <if test="userPhone != null" >
+        user_phone,
+      </if>
+      <if test="userCreatedTime != null" >
+        user_created_time,
+      </if>
+      <if test="userUpdatedTime != null" >
+        user_updated_time,
+      </if>
+      <if test="userRealName != null" >
+        user_real_name,
+      </if>
+      <if test="userCity != null" >
+        user_city,
+      </if>
+      <if test="userSex != null" >
+        user_sex,
+      </if>
+      <if test="userEmail != null" >
+        user_email,
+      </if>
+      <if test="userHeadPic != null" >
+        user_head_pic,
+      </if>
+      <if test="userAccountBalance != null" >
+        user_account_balance,
+      </if>
+      <if test="userPoints != null" >
+        user_points,
+      </if>
+      <if test="userLevel != null" >
+        user_level,
+      </if>
+      <if test="userExperienceValue != null" >
+        user_experience_value,
+      </if>
+      <if test="userBirthday != null" >
+        user_birthday,
+      </if>
+      <if test="userLastLoginTime != null" >
+        user_last_login_time,
+      </if>
+      <if test="userSalt != null" >
+        user_salt,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPassword != null" >
+        #{userPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="userPhone != null" >
+        #{userPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="userCreatedTime != null" >
+        #{userCreatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userUpdatedTime != null" >
+        #{userUpdatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userRealName != null" >
+        #{userRealName,jdbcType=VARCHAR},
+      </if>
+      <if test="userCity != null" >
+        #{userCity,jdbcType=VARCHAR},
+      </if>
+      <if test="userSex != null" >
+        #{userSex,jdbcType=INTEGER},
+      </if>
+      <if test="userEmail != null" >
+        #{userEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="userHeadPic != null" >
+        #{userHeadPic,jdbcType=VARCHAR},
+      </if>
+      <if test="userAccountBalance != null" >
+        #{userAccountBalance,jdbcType=DECIMAL},
+      </if>
+      <if test="userPoints != null" >
+        #{userPoints,jdbcType=DECIMAL},
+      </if>
+      <if test="userLevel != null" >
+        #{userLevel,jdbcType=INTEGER},
+      </if>
+      <if test="userExperienceValue != null" >
+        #{userExperienceValue,jdbcType=INTEGER},
+      </if>
+      <if test="userBirthday != null" >
+        #{userBirthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userLastLoginTime != null" >
+        #{userLastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userSalt != null" >
+        #{userSalt,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.dongtu.pojo.TbUserExample" resultType="java.lang.Integer" >
+    select count(*) from tb_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_user
+    <set >
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=BIGINT},
+      </if>
+      <if test="record.userName != null" >
+        user_name = #{record.userName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userPassword != null" >
+        user_password = #{record.userPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userPhone != null" >
+        user_phone = #{record.userPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userCreatedTime != null" >
+        user_created_time = #{record.userCreatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.userUpdatedTime != null" >
+        user_updated_time = #{record.userUpdatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.userRealName != null" >
+        user_real_name = #{record.userRealName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userCity != null" >
+        user_city = #{record.userCity,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userSex != null" >
+        user_sex = #{record.userSex,jdbcType=INTEGER},
+      </if>
+      <if test="record.userEmail != null" >
+        user_email = #{record.userEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userHeadPic != null" >
+        user_head_pic = #{record.userHeadPic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userAccountBalance != null" >
+        user_account_balance = #{record.userAccountBalance,jdbcType=DECIMAL},
+      </if>
+      <if test="record.userPoints != null" >
+        user_points = #{record.userPoints,jdbcType=DECIMAL},
+      </if>
+      <if test="record.userLevel != null" >
+        user_level = #{record.userLevel,jdbcType=INTEGER},
+      </if>
+      <if test="record.userExperienceValue != null" >
+        user_experience_value = #{record.userExperienceValue,jdbcType=INTEGER},
+      </if>
+      <if test="record.userBirthday != null" >
+        user_birthday = #{record.userBirthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.userLastLoginTime != null" >
+        user_last_login_time = #{record.userLastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.userSalt != null" >
+        user_salt = #{record.userSalt,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_user
+    set user_id = #{record.userId,jdbcType=BIGINT},
+      user_name = #{record.userName,jdbcType=VARCHAR},
+      user_password = #{record.userPassword,jdbcType=VARCHAR},
+      user_phone = #{record.userPhone,jdbcType=VARCHAR},
+      user_created_time = #{record.userCreatedTime,jdbcType=TIMESTAMP},
+      user_updated_time = #{record.userUpdatedTime,jdbcType=TIMESTAMP},
+      user_real_name = #{record.userRealName,jdbcType=VARCHAR},
+      user_city = #{record.userCity,jdbcType=VARCHAR},
+      user_sex = #{record.userSex,jdbcType=INTEGER},
+      user_email = #{record.userEmail,jdbcType=VARCHAR},
+      user_head_pic = #{record.userHeadPic,jdbcType=VARCHAR},
+      user_account_balance = #{record.userAccountBalance,jdbcType=DECIMAL},
+      user_points = #{record.userPoints,jdbcType=DECIMAL},
+      user_level = #{record.userLevel,jdbcType=INTEGER},
+      user_experience_value = #{record.userExperienceValue,jdbcType=INTEGER},
+      user_birthday = #{record.userBirthday,jdbcType=TIMESTAMP},
+      user_last_login_time = #{record.userLastLoginTime,jdbcType=TIMESTAMP},
+      user_salt = #{record.userSalt,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dongtu.pojo.TbUser" >
+    update tb_user
+    <set >
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPassword != null" >
+        user_password = #{userPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="userPhone != null" >
+        user_phone = #{userPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="userCreatedTime != null" >
+        user_created_time = #{userCreatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userUpdatedTime != null" >
+        user_updated_time = #{userUpdatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userRealName != null" >
+        user_real_name = #{userRealName,jdbcType=VARCHAR},
+      </if>
+      <if test="userCity != null" >
+        user_city = #{userCity,jdbcType=VARCHAR},
+      </if>
+      <if test="userSex != null" >
+        user_sex = #{userSex,jdbcType=INTEGER},
+      </if>
+      <if test="userEmail != null" >
+        user_email = #{userEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="userHeadPic != null" >
+        user_head_pic = #{userHeadPic,jdbcType=VARCHAR},
+      </if>
+      <if test="userAccountBalance != null" >
+        user_account_balance = #{userAccountBalance,jdbcType=DECIMAL},
+      </if>
+      <if test="userPoints != null" >
+        user_points = #{userPoints,jdbcType=DECIMAL},
+      </if>
+      <if test="userLevel != null" >
+        user_level = #{userLevel,jdbcType=INTEGER},
+      </if>
+      <if test="userExperienceValue != null" >
+        user_experience_value = #{userExperienceValue,jdbcType=INTEGER},
+      </if>
+      <if test="userBirthday != null" >
+        user_birthday = #{userBirthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userLastLoginTime != null" >
+        user_last_login_time = #{userLastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userSalt != null" >
+        user_salt = #{userSalt,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dongtu.pojo.TbUser" >
+    update tb_user
+    set user_name = #{userName,jdbcType=VARCHAR},
+      user_password = #{userPassword,jdbcType=VARCHAR},
+      user_phone = #{userPhone,jdbcType=VARCHAR},
+      user_created_time = #{userCreatedTime,jdbcType=TIMESTAMP},
+      user_updated_time = #{userUpdatedTime,jdbcType=TIMESTAMP},
+      user_real_name = #{userRealName,jdbcType=VARCHAR},
+      user_city = #{userCity,jdbcType=VARCHAR},
+      user_sex = #{userSex,jdbcType=INTEGER},
+      user_email = #{userEmail,jdbcType=VARCHAR},
+      user_head_pic = #{userHeadPic,jdbcType=VARCHAR},
+      user_account_balance = #{userAccountBalance,jdbcType=DECIMAL},
+      user_points = #{userPoints,jdbcType=DECIMAL},
+      user_level = #{userLevel,jdbcType=INTEGER},
+      user_experience_value = #{userExperienceValue,jdbcType=INTEGER},
+      user_birthday = #{userBirthday,jdbcType=TIMESTAMP},
+      user_last_login_time = #{userLastLoginTime,jdbcType=TIMESTAMP},
+      user_salt = #{userSalt,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+  <select id="findByUserName" resultMap="BaseResultMap">
+    select * from tb_user where user_name = #{userName}
+  </select>
+</mapper>

@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongtu.mapper.TbPubOrderMapper" >
+  <resultMap id="BaseResultMap" type="com.dongtu.pojo.TbPubOrder" >
+    <id column="po_order_id" property="poOrderId" jdbcType="BIGINT" />
+    <result column="po_user_id" property="poUserId" jdbcType="BIGINT" />
+    <result column="po_travel_seller_id" property="poTravelSellerId" jdbcType="BIGINT" />
+    <result column="po_user_name" property="poUserName" jdbcType="VARCHAR" />
+    <result column="po_user_phone" property="poUserPhone" jdbcType="VARCHAR" />
+    <result column="po_num" property="poNum" jdbcType="BIGINT" />
+    <result column="po_price" property="poPrice" jdbcType="DECIMAL" />
+    <result column="po_travel_id" property="poTravelId" jdbcType="BIGINT" />
+    <result column="po_create_time" property="poCreateTime" jdbcType="TIMESTAMP" />
+    <result column="po_pay_time" property="poPayTime" jdbcType="TIMESTAMP" />
+    <result column="po_transaction_id" property="poTransactionId" jdbcType="VARCHAR" />
+    <result column="po_status" property="poStatus" jdbcType="INTEGER" />
+    <result column="po_total_fee" property="poTotalFee" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    po_order_id, po_user_id, po_travel_seller_id, po_user_name, po_user_phone, po_num, 
+    po_price, po_travel_id, po_create_time, po_pay_time, po_transaction_id, po_status, 
+    po_total_fee
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.dongtu.pojo.TbPubOrderExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_pub_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_pub_order
+    where po_order_id = #{poOrderId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tb_pub_order
+    where po_order_id = #{poOrderId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.dongtu.pojo.TbPubOrderExample" >
+    delete from tb_pub_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.dongtu.pojo.TbPubOrder" >
+    insert into tb_pub_order (po_order_id, po_user_id, po_travel_seller_id, 
+      po_user_name, po_user_phone, po_num, 
+      po_price, po_travel_id, po_create_time, 
+      po_pay_time, po_transaction_id, po_status, 
+      po_total_fee)
+    values (#{poOrderId,jdbcType=BIGINT}, #{poUserId,jdbcType=BIGINT}, #{poTravelSellerId,jdbcType=BIGINT}, 
+      #{poUserName,jdbcType=VARCHAR}, #{poUserPhone,jdbcType=VARCHAR}, #{poNum,jdbcType=BIGINT}, 
+      #{poPrice,jdbcType=DECIMAL}, #{poTravelId,jdbcType=BIGINT}, #{poCreateTime,jdbcType=TIMESTAMP}, 
+      #{poPayTime,jdbcType=TIMESTAMP}, #{poTransactionId,jdbcType=VARCHAR}, #{poStatus,jdbcType=INTEGER}, 
+      #{poTotalFee,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dongtu.pojo.TbPubOrder" >
+    insert into tb_pub_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="poOrderId != null" >
+        po_order_id,
+      </if>
+      <if test="poUserId != null" >
+        po_user_id,
+      </if>
+      <if test="poTravelSellerId != null" >
+        po_travel_seller_id,
+      </if>
+      <if test="poUserName != null" >
+        po_user_name,
+      </if>
+      <if test="poUserPhone != null" >
+        po_user_phone,
+      </if>
+      <if test="poNum != null" >
+        po_num,
+      </if>
+      <if test="poPrice != null" >
+        po_price,
+      </if>
+      <if test="poTravelId != null" >
+        po_travel_id,
+      </if>
+      <if test="poCreateTime != null" >
+        po_create_time,
+      </if>
+      <if test="poPayTime != null" >
+        po_pay_time,
+      </if>
+      <if test="poTransactionId != null" >
+        po_transaction_id,
+      </if>
+      <if test="poStatus != null" >
+        po_status,
+      </if>
+      <if test="poTotalFee != null" >
+        po_total_fee,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="poOrderId != null" >
+        #{poOrderId,jdbcType=BIGINT},
+      </if>
+      <if test="poUserId != null" >
+        #{poUserId,jdbcType=BIGINT},
+      </if>
+      <if test="poTravelSellerId != null" >
+        #{poTravelSellerId,jdbcType=BIGINT},
+      </if>
+      <if test="poUserName != null" >
+        #{poUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="poUserPhone != null" >
+        #{poUserPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="poNum != null" >
+        #{poNum,jdbcType=BIGINT},
+      </if>
+      <if test="poPrice != null" >
+        #{poPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="poTravelId != null" >
+        #{poTravelId,jdbcType=BIGINT},
+      </if>
+      <if test="poCreateTime != null" >
+        #{poCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="poPayTime != null" >
+        #{poPayTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="poTransactionId != null" >
+        #{poTransactionId,jdbcType=VARCHAR},
+      </if>
+      <if test="poStatus != null" >
+        #{poStatus,jdbcType=INTEGER},
+      </if>
+      <if test="poTotalFee != null" >
+        #{poTotalFee,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.dongtu.pojo.TbPubOrderExample" resultType="java.lang.Integer" >
+    select count(*) from tb_pub_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_pub_order
+    <set >
+      <if test="record.poOrderId != null" >
+        po_order_id = #{record.poOrderId,jdbcType=BIGINT},
+      </if>
+      <if test="record.poUserId != null" >
+        po_user_id = #{record.poUserId,jdbcType=BIGINT},
+      </if>
+      <if test="record.poTravelSellerId != null" >
+        po_travel_seller_id = #{record.poTravelSellerId,jdbcType=BIGINT},
+      </if>
+      <if test="record.poUserName != null" >
+        po_user_name = #{record.poUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.poUserPhone != null" >
+        po_user_phone = #{record.poUserPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.poNum != null" >
+        po_num = #{record.poNum,jdbcType=BIGINT},
+      </if>
+      <if test="record.poPrice != null" >
+        po_price = #{record.poPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.poTravelId != null" >
+        po_travel_id = #{record.poTravelId,jdbcType=BIGINT},
+      </if>
+      <if test="record.poCreateTime != null" >
+        po_create_time = #{record.poCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.poPayTime != null" >
+        po_pay_time = #{record.poPayTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.poTransactionId != null" >
+        po_transaction_id = #{record.poTransactionId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.poStatus != null" >
+        po_status = #{record.poStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.poTotalFee != null" >
+        po_total_fee = #{record.poTotalFee,jdbcType=DECIMAL},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_pub_order
+    set po_order_id = #{record.poOrderId,jdbcType=BIGINT},
+      po_user_id = #{record.poUserId,jdbcType=BIGINT},
+      po_travel_seller_id = #{record.poTravelSellerId,jdbcType=BIGINT},
+      po_user_name = #{record.poUserName,jdbcType=VARCHAR},
+      po_user_phone = #{record.poUserPhone,jdbcType=VARCHAR},
+      po_num = #{record.poNum,jdbcType=BIGINT},
+      po_price = #{record.poPrice,jdbcType=DECIMAL},
+      po_travel_id = #{record.poTravelId,jdbcType=BIGINT},
+      po_create_time = #{record.poCreateTime,jdbcType=TIMESTAMP},
+      po_pay_time = #{record.poPayTime,jdbcType=TIMESTAMP},
+      po_transaction_id = #{record.poTransactionId,jdbcType=VARCHAR},
+      po_status = #{record.poStatus,jdbcType=INTEGER},
+      po_total_fee = #{record.poTotalFee,jdbcType=DECIMAL}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dongtu.pojo.TbPubOrder" >
+    update tb_pub_order
+    <set >
+      <if test="poUserId != null" >
+        po_user_id = #{poUserId,jdbcType=BIGINT},
+      </if>
+      <if test="poTravelSellerId != null" >
+        po_travel_seller_id = #{poTravelSellerId,jdbcType=BIGINT},
+      </if>
+      <if test="poUserName != null" >
+        po_user_name = #{poUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="poUserPhone != null" >
+        po_user_phone = #{poUserPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="poNum != null" >
+        po_num = #{poNum,jdbcType=BIGINT},
+      </if>
+      <if test="poPrice != null" >
+        po_price = #{poPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="poTravelId != null" >
+        po_travel_id = #{poTravelId,jdbcType=BIGINT},
+      </if>
+      <if test="poCreateTime != null" >
+        po_create_time = #{poCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="poPayTime != null" >
+        po_pay_time = #{poPayTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="poTransactionId != null" >
+        po_transaction_id = #{poTransactionId,jdbcType=VARCHAR},
+      </if>
+      <if test="poStatus != null" >
+        po_status = #{poStatus,jdbcType=INTEGER},
+      </if>
+      <if test="poTotalFee != null" >
+        po_total_fee = #{poTotalFee,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where po_order_id = #{poOrderId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dongtu.pojo.TbPubOrder" >
+    update tb_pub_order
+    set po_user_id = #{poUserId,jdbcType=BIGINT},
+      po_travel_seller_id = #{poTravelSellerId,jdbcType=BIGINT},
+      po_user_name = #{poUserName,jdbcType=VARCHAR},
+      po_user_phone = #{poUserPhone,jdbcType=VARCHAR},
+      po_num = #{poNum,jdbcType=BIGINT},
+      po_price = #{poPrice,jdbcType=DECIMAL},
+      po_travel_id = #{poTravelId,jdbcType=BIGINT},
+      po_create_time = #{poCreateTime,jdbcType=TIMESTAMP},
+      po_pay_time = #{poPayTime,jdbcType=TIMESTAMP},
+      po_transaction_id = #{poTransactionId,jdbcType=VARCHAR},
+      po_status = #{poStatus,jdbcType=INTEGER},
+      po_total_fee = #{poTotalFee,jdbcType=DECIMAL}
+    where po_order_id = #{poOrderId,jdbcType=BIGINT}
+  </update>
+</mapper>
